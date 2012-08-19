@@ -27,5 +27,5 @@ class Comments(models.Model):
 
 class Like(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
-    liker = models.Foreignkey(User)
+    liker = models.ForeignKey(User)
     post = models.ForeignKey(Post)
