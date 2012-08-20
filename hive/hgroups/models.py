@@ -11,9 +11,9 @@ class GroupProfile(models.Model):
     owner = models.CharField()
     gimage = models.ImageField(null=True)
     kinds = models.CharField(choices=GROUP_KINDS)
-    create_time = models.DataTimeField(auto_now_add=True)
+    create_time = models.DateTimeField(auto_now_add=True)
     is_public = models.BooleanField()
-
+    
     members = models.ManyToManyField(User, through='Membership')
 
 class Membership(models.Model):
