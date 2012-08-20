@@ -5,13 +5,13 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'hive.views.home', name='home'),
-    # url(r'^hive/', include('hive.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    #url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('accounts.urls')),
+    url(r'^admins/', include('admins.urls')),
+    url(r'^chats/', include('chats.urls')),
+    url(r'^hgroups/', include('hgroups.urls')),
+    url(r'^notifications/', include('notifications.urls')),
+    url(r'^posts/', include('posts.urls')),
+    url(r'^timelines/', include('posts.urls')),
 )
+
