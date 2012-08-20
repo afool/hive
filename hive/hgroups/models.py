@@ -15,5 +15,5 @@ class GroupProfile(models.Model):
 
 class UserList(models.Model):
     hgroup = models.ForeignKey(GroupProfile)
-    user = models.ForeignKey(User)
+    users = models.ManyToManyField(User)
 
