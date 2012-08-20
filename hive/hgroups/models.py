@@ -14,7 +14,7 @@ class GroupProfile(models.Model):
     create_time = models.DataTimeField(auto_now_add=True)
     is_public = models.BooleanField()
 
-    members = models.ManyToManyField(User)
+    members = models.ManyToManyField(User, through='Membership')
 
 class Membership(models.Model):
     person = models.ForeignKey(User)
