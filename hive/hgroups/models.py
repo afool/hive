@@ -12,8 +12,11 @@ class GroupProfile(models.Model):
     gimage = models.ImageField(null=True)
     kinds = models.CharField(choices=GROUP_KINDS)
     create_time = models.DataTimeField(auto_now_add=True)
+    is_public = models.BooleanField()
 
-class UserList(models.Model):
-    hgroup = models.ForeignKey(GroupProfile)
-    users = models.ManyToManyField(User)
+    members = models.ManyToManyField(User)
 
+class Membership(models.Model):
+    person = models.ForeignKey(User)
+    group = models.ForeignKey(GroupProfile)
+    date_joined = models.DateField()
