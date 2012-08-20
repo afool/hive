@@ -1,43 +1,69 @@
 from django.contrib.auth.models import User
 from django.db import models
+from posts.models import Post
 
-# Bot - Automatic Posting System 
-#     - upload the post at scheduled dated
-#     - BotContent.writer is the author, a.k.a. Bot
-class BotContent(models.Model):
+# daily activities
+class ActivitiesInformation(models.Model):
     
-    scheduled_upload_time = models.DateTimeField(null=False)
-    contents = models.TextField()
-    writer = models.ForeignKey(User)    # user or  Bot Class
-    writer_str = models.CharField()
-    has_attachments = models.BooleanField()
+    date = models.DateField()
+    num_likes = models.IntegerField(default = 0)
+    num_comments = models.IntegerField(default = 0)
+    num_web_feeds = models.IntegerField(default =0)
+    num_messages = models.IntegerField(default =0)
     
     class Meta:
-        verbose_name_plural = "BotContents"
-        ordering = ['scheduled_upload_time']    # like a query option ORDER BY pub_date DESC
+        verbose_name_plural = "ActivitiesInformations"
+        ordering = ['-date']    # like a query option ORDER BY date DESC
     
     def __unicode__(self):
-        return "%s/%s" %(self.writer, self.scheduled_upload_time.strftime("%Y%b%d").lower())
+        return "Activities of %s" %(self.date)
     
     def get_absolute_url(self):
-        return "/admin/bot/%s/%s/" %(self.writer_str, self.scheduled_upload_time.strftime("%Y%b%d").lower())
+        return "/admins/ActivitiesInformation/%s/" %(self.date.strftime("%Y%b%d").lower())
 
 
-class BotContentAttachment(models.Model):
+# daily activities
+class Trend(models.Model):
     
-    file_name = models.CharField()
-    description = models.CharField()
-    contents_file = models.FileField()
-    botContent = models.ForeignKey()
+    date = models.DateField()
+    post = models.ForeignKey(Post)
+    num_comments = models.IntegerField()
+    num_likes = models.IntegerField()
+    total_points = models.IntegerField()
     
     class Meta:
-        verbose_name_plural = "BotContentAttachments"
+        verbose_name_plural = "Trends"
+        ordering = ['-date']
     
     def __unicode__(self):
-        return self.file_name
+        return "Trend of %s" %(self.date)
     
     def get_absolute_url(self):
-        return "%s/%s/" %(self.botContent.get_absolute_url(), self.file_name)
+        return "/admins/Trend/%s/" %(self.date.strftime("%Y%b%d").lower())
+
+
+
+class CustomizeInformation(models.Model):
+    
+    THEME_DEFAULT = 0
+    THEME_1 = 1
+    THEME_2 = 2
+    THEME_CHOICES = (
+                     (THEME_DEFAULT, "DEFAULT_THEME"),
+                     (THEME_1, "THEME_1"),
+                     (THEME_2, "THEME_2")
+                     )
+    
+    logo_file_name = models.CharField()
+    logo_file = models.FileField()
+    theme = models.IntegerField(choices = THEME_CHOICES, default = THEME_DEFAULT)
+    default_profile_picture = models.FileField()
+    
+    def __unicode__(self):
+        return "CustomizeInformation"
+    
+    def get_absolute_url(self):
+        return "/admins/CustomizeInformation/"
 
 # Event - Event Management System
 class Event(models.Model):
