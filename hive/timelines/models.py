@@ -46,4 +46,3 @@ class Timeline(models.Model):
             self.number_of_fresh_posts = self.number_of_fresh_posts
         self.fresh_posts.add(post)
 
-    
