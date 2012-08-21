@@ -20,6 +20,31 @@ DATABASES = {
     }
 }
 
+
+CACHES = {
+    'default': {
+        'BACKEND' : 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION' : '127.0.0.1:11211',
+        'TIMEOUT' : 60,
+        'OPTIONS' : {
+            'MAX_ENTRIES' : 1000 
+        }
+    },
+          
+    'timeline':{
+        'BACKEND' : 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION' : '127.0.0.1:11211',
+        'TIMEOUT' : 30,
+        'OPTIONS' : {
+            'MAX_ENTRIES' : 1000
+        }
+    }
+}
+
+CACHE_MIDDLEWARE_ALIAS = "MEMCACHE_DB"
+CACHE_MIDDLEWARE_SECONDS = 60
+CACHE_MIDDLEWARE_KEY_PREFIX = "hive_"
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
