@@ -7,12 +7,14 @@ class UserProfile(models.Model):
         ('S', 'Sad')
     )
 
+    user = models.OneToOneField(User) # User Profile have to contain this field.
+    
     department = models.CharField(null=True)
     position = models.CharField(null=True)
     emotion = models.CharField(null=True, choices=EMOTION_CHOICES)
     portrait = models.ImageField(null=True)
     phone = models.CharField(null=True)
-    user = models.ForeignKey(User)
+    
 
 class EmailActivation(models.Model):
     expired_date = models.DateTimeField()
