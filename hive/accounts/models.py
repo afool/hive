@@ -14,7 +14,7 @@ class UserProfile(models.Model):
     emotion = models.CharField(null=True, choices=EMOTION_CHOICES)
     portrait = models.ImageField(null=True)
     phone = models.CharField(null=True)
-    
+        
 
 class EmailActivation(models.Model):
     expired_date = models.DateTimeField()
