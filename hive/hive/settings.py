@@ -154,3 +154,7 @@ LOGGING = {
         },
     }
 }
+
+#using UserProfile class to store additional information to User
+AUTH_PROFILE_MODULE = 'accounts.UserProfile' 
+
