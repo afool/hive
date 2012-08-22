@@ -14,10 +14,22 @@ class GroupProfile(models.Model):
     kinds = models.CharField(choices=GROUP_KINDS, max_length=50)
     create_time = models.DateTimeField(auto_now_add=True)
     is_public = models.BooleanField()
-    
+
     members = models.ManyToManyField(User, through='Membership', related_name="group_members")
+
+    class Meta:
+        pass
+
+    def __unicode__(self):
+        pass
 
 class Membership(models.Model):
     person = models.ForeignKey(User)
     group = models.ForeignKey(GroupProfile)
     date_joined = models.DateField()
+
+    class Meta:
+        pass
+
+    def __unicode__(self):
+        pass
