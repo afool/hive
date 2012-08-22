@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from posts.models import Post
 
 class FollowerList(models.Model):
-    
     owner = models.OneToOneField(User)
     followers = models.ManyToManyField(User, related_name = 'followerlist_followers')
     
@@ -23,7 +22,6 @@ class FollowerList(models.Model):
 
 
 class Timeline(models.Model):
-    
     LIMIT_OF_FRESH_POSTS = 100
     owner = models.ForeignKey(User)     # timeline's owner
     

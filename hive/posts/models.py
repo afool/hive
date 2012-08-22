@@ -11,6 +11,21 @@ class Post(models.Model):
     like_count = models.IntegerField()
     like_string = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name_plural = "Posts"
+        ordering = ['-create_time']
+    
+    def __unicode__(self):
+        return "Post by %s" %(self.author)
+    
+    def save(self, force_insert=False, force_update=False):
+        self.author = self.writer.username
+        super(Post, self).save(force_insert, force_update)
+    
+    def get_absolute_url(self):
+        return "/posts/author/%d/" %(self.id)
+
+
 class Attachments(models.Model):
     file_name = models.CharField(max_length=100)
     create_time = models.DateTimeField(auto_now_add=True)
