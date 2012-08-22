@@ -12,3 +12,5 @@ def timeline_index(request):
     
     return render_to_response('timeline/index.html', {'post_list': post_list}) 
     
+def index(request):
+    pass

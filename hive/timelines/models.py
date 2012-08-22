@@ -5,7 +5,7 @@ from posts.models import Post
 class FollowerList(models.Model):
     
     owner = models.OneToOneField(User)
-    followers = models.ManyToManyField(User)
+    followers = models.ManyToManyField(User, related_name = 'followerlist_followers')
     
     def __unicode__(self):
         return "%s's FollowerList" %(self.owner)
@@ -15,7 +15,6 @@ class FollowerList(models.Model):
     
     def on_new_follower(self, newFollower):
         self.followers.add(newFollower)
-        pass
     
     def on_add_post(self, post):
         for follower in self.followers:
@@ -27,7 +26,6 @@ class Timeline(models.Model):
     
     LIMIT_OF_FRESH_POSTS = 100
     owner = models.ForeignKey(User)     # timeline's owner
-    following_list = models.ManyToManyField(User)
     
     # I hope this ManyToManyField contains foreign_keys of the other table.
     # NOT entire of the data record

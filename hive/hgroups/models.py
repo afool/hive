@@ -7,14 +7,15 @@ class GroupProfile(models.Model):
         ('IT', 'Information Technology'),
     )
 
-    name = models.CharField()
-    owner = models.CharField()
-    gimage = models.ImageField(null=True)
-    kinds = models.CharField(choices=GROUP_KINDS)
+    name = models.CharField(max_length=50)
+    owner = models.ForeignKey(User)
+    owner_str = models.CharField(max_length=50)
+    gimage = models.FileField(null=True, upload_to="group_profile/")
+    kinds = models.CharField(choices=GROUP_KINDS, max_length=50)
     create_time = models.DateTimeField(auto_now_add=True)
     is_public = models.BooleanField()
     
-    members = models.ManyToManyField(User, through='Membership')
+    members = models.ManyToManyField(User, through='Membership', related_name="group_members")
 
 class Membership(models.Model):
     person = models.ForeignKey(User)

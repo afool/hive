@@ -54,10 +54,10 @@ class CustomizeInformation(models.Model):
                      (THEME_2, "THEME_2")
                      )
     
-    logo_file_name = models.CharField()
-    logo_file = models.FileField()
+    logo_file_name = models.CharField(max_length=100)
+    logo_file = models.FileField(upload_to="customize_info/")
     theme = models.IntegerField(choices = THEME_CHOICES, default = THEME_DEFAULT)
-    default_profile_picture = models.FileField()
+    default_profile_picture = models.FileField(upload_to="customize_info/")
     
     def __unicode__(self):
         return "CustomizeInformation"

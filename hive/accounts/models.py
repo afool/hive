@@ -9,11 +9,11 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User) # User Profile have to contain this field.
     
-    department = models.CharField(null=True)
-    position = models.CharField(null=True)
-    emotion = models.CharField(null=True, choices=EMOTION_CHOICES)
-    portrait = models.ImageField(null=True)
-    phone = models.CharField(null=True)
+    department = models.CharField(null=True, max_length=50)
+    position = models.CharField(null=True, max_length=50)
+    emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
+    portrait = models.FileField(null=True, upload_to="user_profile/")
+    phone = models.CharField(null=True, max_length=50)
         
 
 class EmailActivation(models.Model):
