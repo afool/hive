@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<title>timeline</title>
+	</head>
+	<body>
+		<h1>Test Timeline</h1>
+		{% for post in post_list.all %}
+			<p>
+			<h2>{{ post.author }} </h2>
+			{{ post.contents }}</br>
+			{% if post.has_attachments %}
+				-Has Attachments. Go Retrieve Attachment Files</br>
+			{% else %}
+				-No Attachments.</br>
+			{% endif %}
+			</p>
+			<p> Comments : {{ post.comments_count }} Likes : {{ posts.like_count }} </p>
+			
+		{% endfor %}
+	</body>
+</html>

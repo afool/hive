@@ -9,7 +9,7 @@ def timeline_index(request, timeline_id):
     timeline = Timeline.objects.get(id=timeline_id)
     post_list = timeline.fresh_posts
     
-    return render_to_response('timeline/index.html', {'post_list': post_list}) 
+    return render_to_response('timelines/timeline_view.html', {'post_list': post_list}) 
     
 def index(request):
     pass

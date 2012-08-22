@@ -60,7 +60,7 @@ class Comment(models.Model):
     
     def save(self, force_insert=False, force_update=False):
         self.author = self.writer.username
-        super(Post, self).save(force_insert, force_update)
+        super(Comment, self).save(force_insert, force_update)
     
     def get_absolute_url(self):
         return "/posts/comments/%d/" %(self.id)
