@@ -12,6 +12,6 @@ urlpatterns = patterns('',
     url(r'^hgroups/', include('hgroups.urls')),
     url(r'^notifications/', include('notifications.urls')),
     url(r'^posts/', include('posts.urls')),
-    url(r'^timelines/', include('posts.urls')),
+    url(r'^timelines/', include('timelines.urls')),
 )
 
