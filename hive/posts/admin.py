@@ -1,7 +1,7 @@
-from posts.models import Post, Attachments, Comments, Like
+from posts.models import Post, Attachment, Comment, Like
 from django.contrib import admin
 
 admin.site.register(Post)
-admin.site.register(Attachments)
-admin.site.register(Comments)
+admin.site.register(Attachment)
+admin.site.register(Comment)
 admin.site.register(Like)
