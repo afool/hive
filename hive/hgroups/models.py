@@ -17,10 +17,10 @@ class GroupProfile(models.Model):
 
     members = models.ManyToManyField(User, through='Membership', related_name="group_members")
 
-    class __unicode__(self):
+    class Meta:
         pass
 
-    class Meta:
+    def __unicode__(self):
         pass
 
 class Membership(models.Model):
@@ -28,8 +28,8 @@ class Membership(models.Model):
     group = models.ForeignKey(GroupProfile)
     date_joined = models.DateField()
 
-    class __unicode__(self):
+    class Meta:
         pass
 
-    class Meta:
+    def __unicode__(self):
         pass

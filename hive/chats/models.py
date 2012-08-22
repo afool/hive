@@ -8,8 +8,10 @@ class Message(models.Model):
     message = models.CharField(max_length=500)
     write_time = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['write_time']
+
     def __unicode__(self):
         pass
 
-    def Meta:
-        ordering = ['write_time']
+
