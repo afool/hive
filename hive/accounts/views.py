@@ -1,3 +1,4 @@
 # Create your views here.
-def index(request):
+
+def user_information(request):
     pass
