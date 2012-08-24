@@ -21,20 +21,20 @@ class EmailActivation(models.Model):
 
 class Following(models.Model):
     followee = models.ForeignKey(User, related_name = 'following_followee')
-    followee_str = models.CharField(max_length=20)
+    followee_str = models.CharField(max_length=20, blank=True)
     follower = models.ForeignKey(User, related_name = 'following_follower')
-    follower_str = models.CharField(max_length=20)
+    follower_str = models.CharField(max_length=20, blank=True)
     
     class Meta:
         verbose_name_plural = "Followings"
         ordering = ['followee']
     
     def __unicode__(self):
-        return "% followed by %s" %(self.follower, self.followee)
+        return "%s followed by %s" %(self.followee, self.follower)
     
     def save(self, force_insert=False, force_update=False):
-        self.followee_str = self.followee.user_name
-        self.follower_str = self.follower.user_name
+        self.followee_str = self.followee.username
+        self.follower_str = self.follower.username
         super(Following, self).save(force_insert, force_update)
     
     def get_absolute_url(self):
