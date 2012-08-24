@@ -18,7 +18,7 @@ class ActivitiesInformation(models.Model):
         return "Activities of %s" %(self.date)
     
     def get_absolute_url(self):
-        return "/admins/ActivitiesInformation/%s/" %(self.date.strftime("%Y%b%d").lower())
+        return "/admins/activities/%s/" %(self.date.strftime("%Y%b%d").lower())
 
 
 # daily activities
@@ -38,7 +38,7 @@ class Trend(models.Model):
         return "Trend of %s" %(self.date)
     
     def get_absolute_url(self):
-        return "/admins/Trend/%s/" %(self.date.strftime("%Y%b%d").lower())
+        return "/admins/trend/%s/" %(self.date.strftime("%Y%b%d").lower())
 
 
 
@@ -62,7 +62,7 @@ class CustomizeInformation(models.Model):
         return "CustomizeInformation"
     
     def get_absolute_url(self):
-        return "/admins/CustomizeInformation/"
+        return "/admins/customize/%d/" %(self.id)
 
 # Event - Event Management System
 class Event(models.Model):
