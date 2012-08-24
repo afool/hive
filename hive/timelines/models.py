@@ -1,19 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from posts.models import Post
-
-class FollowerList(models.Model):
-    owner = models.OneToOneField(User)
-    followers = models.ManyToManyField(User, related_name = 'followerlist_followers')
-    
-    def __unicode__(self):
-        return "%s's FollowerList" %(self.owner)
-    
-    def get_absolute_url(self):
-        return "/%s/follower_list/" %(self.owner)
-    
-    def on_new_follower(self, newFollower):
-        self.followers.add(newFollower)
     
 class Timeline(models.Model):
     LIMIT_OF_FRESH_POSTS = 100
