@@ -15,12 +15,6 @@ class FollowerList(models.Model):
     def on_new_follower(self, newFollower):
         self.followers.add(newFollower)
     
-    def on_add_post(self, post):
-        for follower in self.followers:
-            follower_timeline = Timeline.objects.get(owner = follower.owner)
-            follower_timeline.push_post(post)
-
-
 class Timeline(models.Model):
     LIMIT_OF_FRESH_POSTS = 100
     owner = models.ForeignKey(User)     # timeline's owner

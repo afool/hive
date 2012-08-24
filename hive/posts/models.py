@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+#from timelines.models import FollowerList, Timeline
+
 class Post(models.Model):
     contents = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
@@ -24,7 +26,6 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         return "/posts/author/%d/" %(self.id)
-
 
 class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
