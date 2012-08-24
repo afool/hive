@@ -1,5 +1,4 @@
-from timelines.models import Timeline, FollowerList
+from timelines.models import Timeline
 from django.contrib import admin
 
 admin.site.register(Timeline)
-admin.site.register(FollowerList)

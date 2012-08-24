@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 
-urlpatterns = patterns('posts.views',
-    url(r'^$', 'index'),
+from hive.posts.views import one_of_posts_detail
+
+urlpatterns = patterns('',
+    url(r'posts/(\d+)/$', one_of_posts_detail),
 )

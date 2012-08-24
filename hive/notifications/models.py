@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Hannouncment(models.Model):
     ANNOUNCEMENTS_KINDS = (
-
+                           
     )
     notifier = models.ForeignKey(User)
     notifiee = models.ForeignKey(User, related_name='notification_announcement')
@@ -11,17 +11,22 @@ class Hannouncment(models.Model):
     confirmed = models.BooleanField()
     announcement = models.CharField(max_length=120)
     kinds = models.CharField(choices=ANNOUNCEMENTS_KINDS, max_length=30)
-
+    
     class Meta:
+<<<<<<< HEAD
         pass
 
+=======
+        ordering = ['notificated_time']
+    
+>>>>>>> f75853dcf78f1e531124fb2ca428d4a0cde55318
     def __unicode__(self):
         pass
 
 
 class Hmessage(models.Model):
     MESSAGES_KINDS = (
-
+                      
     )
 
     chater = models.ForeignKey(User)
@@ -30,10 +35,15 @@ class Hmessage(models.Model):
     confirmed = models.BooleanField()
     message = models.CharField(max_length=120)
     kinds = models.CharField(choices=MESSAGES_KINDS, max_length=30)
-
+    
     class Meta:
+<<<<<<< HEAD
         pass
 
+=======
+        ordering = ['notificated_time']
+    
+>>>>>>> f75853dcf78f1e531124fb2ca428d4a0cde55318
     def __unicode__(self):
         pass
 
@@ -47,10 +57,15 @@ class HRequest(models.Model):
     notificated_time = models.DateTimeField(auto_now_add=True)
     confirmed = models.IntegerField()
     kinds = models.CharField(choices=REQUESTS_KINDS, max_length=30)
-
+    
     class Meta:
+<<<<<<< HEAD
         pass
 
+=======
+        ordering = ['notificated_time']
+    
+>>>>>>> f75853dcf78f1e531124fb2ca428d4a0cde55318
     def __unicode__(self):
         pass
 
