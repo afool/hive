@@ -7,5 +7,4 @@ class Timeline(models.Model):
     content = models.ForeignKey(Post)
 
     def get_comment_count(self):
-        comments = Comment.objects.filter(post=self.content)
-        return len(comments)
+        return Comment.objects.count()
