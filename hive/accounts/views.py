@@ -18,3 +18,6 @@ def finduser_page(request):
 
 def logout_page(request):
     pass
+
+def register_page(request):
+    pass

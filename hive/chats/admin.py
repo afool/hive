@@ -1,4 +1,4 @@
-from chats.models import Message
+from chats.models import Hmessage
 from django.contrib import admin
 
-admin.site.register(Message)
+admin.site.register(Hmessage)
