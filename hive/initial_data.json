@@ -1,0 +1,30 @@
+[
+  {
+    "model": "chats.hmessage",
+    "pk": 1,
+    "fields": {
+	"message": "hello world!"
+    }
+  },
+  {
+    "model": "chats.hmessage",
+    "pk": 2,
+    "fields": {
+	"message": "hello world!"
+    }
+  },
+  {
+    "model": "chats.hmessage",
+    "pk": 3,
+    "fields": {
+	"message": "hello world!"
+    }
+  },
+  {
+    "model": "chats.hmessage",
+    "pk": 4,
+    "fields": {
+	"message": "hello world!"
+    }
+  }
+]
