@@ -6,7 +6,7 @@ class Hannouncment(models.Model):
 
     )
     notifier = models.ForeignKey(User)
-    notifiee = models.ForeignKey(User, related_name='notification_announcement')
+    notifiee = models.ForeignKey(User, related_name='notifications_announcement')
     notificated_time = models.DateTimeField(auto_now_add=True)
     confirmed = models.BooleanField()
     announcement = models.CharField(max_length=120)
@@ -24,7 +24,7 @@ class Hmessage(models.Model):
     )
 
     chater = models.ForeignKey(User)
-    chatee = models.ForeignKey(User, related_name='notification_message')
+    chatee = models.ForeignKey(User, related_name='notifications_message')
     notificated_time = models.DateTimeField(auto_now_add=True)
     confirmed = models.BooleanField()
     message = models.CharField(max_length=500)
@@ -42,7 +42,7 @@ class HRequest(models.Model):
     )
 
     requester = models.ForeignKey(User)
-    requestee = models.ForeignKey(User, related_name='notification_request')
+    requestee = models.ForeignKey(User, related_name='notifications_request')
     notificated_time = models.DateTimeField(auto_now_add=True)
     confirmed = models.BooleanField()
     kinds = models.CharField(choices=REQUESTS_KINDS, max_length=30)
