@@ -3,23 +3,28 @@
 		<title>admin page</title>
 	</head>
 	<body>
-    	<h2> activities of {{trend.date}} </h2>
+    	<h2> Latest Activities : activities of {{latest_activities.date}} </h2>
     	<p>
     		number of likes : {{latest_activities.num_likes}} </br>
     		number of comments : {{latest_activities.num_comments}}</br>
     		number of web feeds : {{latest_activities.num_web_feeds}}</br>
     		number of messages : {{latest_activities.num_messages}}</br>
     	</p>
-    	
+    	<p>
+    		<a href='/admins/activities/'>View Activities Overview</a>
+    	</p>
+    	<br>
     	{% for trend in trend_list %}
-    	<h2> trend of {{trend.date}} </h2>
-    	<h2> {{trend.post.contents }} </h2>
+    	<h2>
+    	trend of {{trend.date}}</br>
+    	{{trend.post.contents }}
+    	</h2>
     	<p>
     		number of comments : {{trend.num_comments}}</br>
     		number of likes : {{trend.num_likes}} </br>
     		total points : {{trend.total_points }} </br>
     	</p>    	
     	{% endfor %}
-    				
+    	<a href='/admins/trend/'>View Trends Overview</a>
 	</body>
 </html>

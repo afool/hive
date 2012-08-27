@@ -1,8 +1,10 @@
 <html>
 	<head>
-		<title>admin page</title>
+		<title>trend overview</title>
 	</head>
 	<body>
-		
+		{% for trend in trend_list %}
+			<a href='{{ trend.get_absolute_url }}'> trend of {{ trend.date }} </a> 
+		{% endfor %}
 	</body>
 </html>
