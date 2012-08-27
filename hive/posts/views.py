@@ -6,3 +6,6 @@ def index(request):
 
 def one_of_posts_detail(request, posts_id):
     pass
+
+def create_post(request):
+    pass
