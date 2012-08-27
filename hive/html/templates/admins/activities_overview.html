@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<title>activities_overview</title>
+	</head>
+	<body>
+	
+		{% for activities in activities_list %}
+			<a href="{{ activities.get_absolute_url }}">
+				activities of {{ activities.date }} </br>
+			</a>				
+		{% endfor %}
+		
+		{% for trend in trend_list %}
+			<a href="{{trend.get_absolute_url }}">
+				trend of {{trend.date}} : {{ trend.post.contents }} </br>
+			</a>
+		{% endfor %}
+					
+	</body>
+</html>

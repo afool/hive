@@ -3,7 +3,6 @@ from posts.models import Post
 
 # daily activities
 class ActivitiesInformation(models.Model):
-    
     date = models.DateField()
     num_likes = models.IntegerField(default = 0)
     num_comments = models.IntegerField(default = 0)
@@ -23,7 +22,6 @@ class ActivitiesInformation(models.Model):
 
 # daily activities
 class Trend(models.Model):
-    
     date = models.DateField()
     post = models.ForeignKey(Post)
     num_comments = models.IntegerField()
@@ -36,6 +34,14 @@ class Trend(models.Model):
     
     def __unicode__(self):
         return "Trend of %s" %(self.date)
+
+    def calculate_total_points(self):
+        return self.num_comments + self.num_likes
+        
+    def save(self, force_insert=False, force_update=False):
+        self.total_points = self.calculate_total_points() 
+        super(Trend, self).save(force_insert, force_update)
+ 
     
     def get_absolute_url(self):
         return "/admins/trend/%s/" %(self.date.strftime("%Y%b%d").lower())
@@ -43,7 +49,6 @@ class Trend(models.Model):
 
 
 class CustomizeInformation(models.Model):
-    
     THEME_DEFAULT = 0
     THEME_1 = 1
     THEME_2 = 2
