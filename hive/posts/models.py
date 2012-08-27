@@ -12,6 +12,7 @@ class Post(models.Model):
     comments_count = models.IntegerField()
     like_count = models.IntegerField()
     like_string = models.CharField(max_length=100)
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Posts"
