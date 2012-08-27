@@ -103,13 +103,25 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-# Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
+
+if not os.environ.has_key("PRODUCTION"):
+    import os, glob
+    S_PATH = []
+    CURRENT_PARENT_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    for filename in glob.glob(CURRENT_PARENT_PATH + "/*"):
+        if os.path.isdir(filename) and os.path.exists( os.path.join( filename , "static")) \
+                and os.path.isdir(  os.path.join( filename , "static") ):
+            S_PATH.append( os.path.join( filename , "static") )
+    STATICFILES_DIRS = S_PATH
+
+
+# Additional locations of static files
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
