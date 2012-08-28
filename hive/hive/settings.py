@@ -183,7 +183,6 @@ INSTALLED_APPS = (
 
     'admins',
     'accounts',
-    'chats',
     'hgroups',
     'notifications',
     'timelines',
