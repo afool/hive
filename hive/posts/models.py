@@ -16,7 +16,7 @@ class Post(models.Model):
 
     class Meta:
         verbose_name_plural = "Posts"
-        ordering = ['-create_time']
+        ordering = ['-id']
     
     def __unicode__(self):
         return "Post by %s" %(self.author)
@@ -37,7 +37,7 @@ class Attachment(models.Model):
     
     class Meta:
         verbose_name_plural = "Attachments"
-        ordering = ['-create_time']
+        ordering = ['-id']
     
     def __unicode__(self):
         return "Attachment of %s" %(self.post)
@@ -55,7 +55,7 @@ class Comment(models.Model):
     
     class Meta:
         verbose_name_plural = "Comments"
-        ordering = ['-create_time']
+        ordering = ['-id']
     
     def __unicode__(self):
         return "Comment by %s" %(self.author)
@@ -73,9 +73,11 @@ class Like(models.Model):
     liker = models.ForeignKey(User)
     post = models.ForeignKey(Post)
     
+    
     class Meta:
         verbose_name_plural = "Likes"
-        ordering = ['-create_time']
+        ordering = ['-id']
+        unique_together = (("liker", "post"))
     
     def __unicode__(self):
         return "Like by %s" %(self.liker)
