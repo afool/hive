@@ -1,4 +1,5 @@
-# Create your views here.
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
@@ -11,19 +12,19 @@ import md5, time, datetime
 # from accounts.models import *
 
 def email_register_page(request):
-    def _email_key_gen(email):
+    def _keygen(email):
         email_key = md5.md5()
         email_key.update(email + str(time.time()))
         return email_key.hexdigest()
 
-    def _already_registerd_email(email):
+    def _is_registered(email):
         try:
             EmailActivation.objects.get(email_address=eamil)
             return False
-        except:
+        except ObjectDoesNotExist:
             return True
 
-    def _check_email(email):
+    def _is_validated(email):
         try:
             validate_email(email)
             return True
@@ -33,15 +34,17 @@ def email_register_page(request):
     if request.method == 'POST':
         post_email = request.POST['signup_email']
         try:
-            if _already_registerd_email is True and _check_email(post_email) is True:
+            if _is_registered and _is_validated(post_email):
                 to_email = []
                 to_email.append(post_email)
 
-                gen_key = email_key_gen(post_email)
+                keygen = _keygen(post_email)
                 expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
 
-                send_mail('Hive Registration', gen_key, 'astin@iz4u.net', to_email, fail_silently=False)
-                EmailActivation.objects.create(email_address=post_email, expire_date=expire_date, activation_key=gen_key)
+                # TODO: Send url for activation
+
+                send_mail('Hive Registration', keygen, 'astin@iz4u.net', to_email, fail_silently=False)
+                EmailActivation.objects.create(email_address=post_email, expire_date=expire_date, activation_key=keygen)
             else:
                 HttpResponse("Your mail is already enrolled.")
         except BadHeaderError:
@@ -49,18 +52,39 @@ def email_register_page(request):
         except SMTPException:
             pass
     else:
-        pass # raise invaild method.
+        return HttpResponseRedirect('Invalid access method.')
+
 
     return HttpResponseRedirect('../../')
 
+def login_page(request):
+    if request.POST.has_key('login_email') and request.POST.has_key('password'):
+        # try:
+        email = request.POST['login_email']
+        username = User.objects.get(email=email).username
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active and user.is_authenticated:
+                login(request, user)
+                return HttpResponse('Success')
+            elif user.is_active is False:
+                pass # TODO: lead user to activate
+            else:
+                return HttpResponse('Login Fail')
+        #except:
+    else:
+        pass
+
+    return HttpResponse('...')
 
 def userinfo_page(request):
     pass
 
-def settings_page(request):
+def followlist_page(request):
     pass
 
-def followlist_page(request):
+def addfollow_page(request):
     pass
 
 def finduser_page(request):
@@ -68,5 +92,3 @@ def finduser_page(request):
 
 def logout_page(request):
     pass
-
-
