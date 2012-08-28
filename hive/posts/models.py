@@ -26,7 +26,8 @@ class Post(models.Model):
         super(Post, self).save(force_insert, force_update)
     
     def get_absolute_url(self):
-        return "/posts/author/%d/" %(self.id)
+        #posts/(?P<posts_id>\d+)/$
+        return "/posts/%d/" %(self.id)
 
 class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
