@@ -15,10 +15,12 @@ class UserProfile(models.Model):
     phone = models.CharField(null=True, max_length=50)  
 
 class EmailActivation(models.Model):
-    email_address = models.EmailField(unique=True)
+    email = models.EmailField(unique=True)
     expire_date = models.DateTimeField()
     activation_key = models.CharField(max_length=40)
     #activation_user = models.ForeignKey(User)
+
+
 
 class Following(models.Model):
     followee = models.ForeignKey(User, related_name = 'following_followee')

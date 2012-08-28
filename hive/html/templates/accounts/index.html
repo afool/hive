@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to HIVE!</title>
+  </head>
+  <body>
+    <p>
+      <form action="accounts/login/" method="post">{% csrf_token %}
+	{{ login_form }}
+      </form>
+    </p>
+
+    <p>
+      <form action="accounts/register/" method="post">{% csrf_token %}
+        Sign Up <br />
+	{{ reg_form }}
+      </form>
+    </p>
+  </body>
+</html>
