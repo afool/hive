@@ -4,6 +4,7 @@ from posts.models import Post
 from django.http import Http404, HttpResponseRedirect
 from forms import PostForm
 from django.core.urlresolvers import reverse
+from django.template import RequestContext
 
 
 def index(request):
@@ -15,19 +16,21 @@ def one_of_posts_detail(request, posts_id):
     except Post.DoesNotExist:
         raise Http404
     
-    return render_to_response('posts/post_detail.html', post)
+    return render_to_response('posts/post_detail.html', RequestContext(request, {
+                             'post': post
+                            }))
 
 def create_post(request):
     if request.method == "POST":
-        post = PostForm(request.Post)
-        post.save()
-        
-        return HttpResponseRedirect(reverse('posts:one_of_post_detail', args=[post.id]))
+        post_form = PostForm(request.POST)
+        post = post_form.save()
+
+        return HttpResponseRedirect(post.get_absolute_url())
     form = PostForm()
     
-    return render_to_response('posts/post_create.html', 
+    return render_to_response('posts/post_create.html', RequestContext(request,
                               {
                                'form':form,
-                               })
-         
-        
+                               },))
+
+

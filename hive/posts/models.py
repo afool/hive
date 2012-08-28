@@ -6,12 +6,12 @@ from django.contrib.auth.models import User
 class Post(models.Model):
     contents = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
-    writer = models.ForeignKey(User)
-    author = models.CharField(max_length=100)
-    has_attachments = models.BooleanField()
-    comments_count = models.IntegerField()
-    like_count = models.IntegerField()
-    like_string = models.CharField(max_length=100)
+    writer = models.ForeignKey(User, null=True)
+    author = models.CharField(max_length=100, null=True)
+    has_attachments = models.BooleanField(default=False)
+    comments_count = models.IntegerField(default=0)
+    like_count = models.IntegerField(default=0)
+    like_string = models.CharField(max_length=100, default='')
     is_deleted = models.BooleanField(default=False)
 
     class Meta:
@@ -22,7 +22,7 @@ class Post(models.Model):
         return "Post by %s" %(self.author)
     
     def save(self, force_insert=False, force_update=False):
-        self.author = self.writer.username
+        # self.author = self.writer.username
         super(Post, self).save(force_insert, force_update)
     
     def get_absolute_url(self):
