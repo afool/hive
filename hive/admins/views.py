@@ -1,11 +1,22 @@
 from django.shortcuts import render_to_response, get_object_or_404
+from django.http import Http404
 from admins.models import ActivitiesInformation, Trend, CustomizeInformation 
 import datetime, time
 
+from django.forms import ModelForm
+from django.forms.models import modelformset_factory
+
 def index(request):
-    latest_activities = list(ActivitiesInformation.objects.all().order_by('-date')[:1]).pop()
-    trend_list = Trend.objects.all().order_by('date')[:20]
+    try:
+        activities_list = list(ActivitiesInformation.objects.all().order_by('-date')[:1])
+        if len(activities_list) is 0:
+            print "Error, No Activities Information"
+            raise Http404
+    except ActivitiesInformation.DoesNotExist:
+        raise Http404
     
+    latest_activities = activities_list.pop()
+    trend_list = Trend.objects.all().order_by('date')[:20]
     
     return render_to_response('admins/admins_index.html',
                               {
@@ -15,7 +26,14 @@ def index(request):
                               )
 
 def activities_overview(request):
-    activities_list = ActivitiesInformation.objects.all().order_by('-date')[:10]
+    try:
+        activities_list = ActivitiesInformation.objects.all().order_by('-date')[:10]
+        if len(activities_list) is 0:
+            print "Error, No ActivitiesInformation"
+            raise Http404
+                    
+    except ActivitiesInformation.DoesNotExist :
+        raise Http404
     
     return render_to_response('admins/activities_overview.html',
                               {
@@ -36,7 +54,14 @@ def activities_detail(request, year, month, day):
                                 })
 
 def trend_overview(request):
-    trend_list = Trend.objects.all().order_by('-date')[:10]
+    try:
+        trend_list = Trend.objects.all().order_by('-date')[:10]
+        if len(trend_list) is 0:
+            print "Error, No Trend"
+            raise Http404
+    except Trend.DoesNotExist:
+        raise Http404
+    
     return render_to_response('admins/trend_overview.html',
                               {
                                 'trend_list':trend_list
@@ -58,3 +83,7 @@ def trend_detail(request, year, month, day):
 
 def customize_detail(request, customize_id):
     pass
+
+def activities_form_set(request):
+    
+    return HttpResponse()
