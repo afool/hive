@@ -1,4 +1,4 @@
-# Create your views here.
+from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponseRedirect, HttpResponse
@@ -41,6 +41,8 @@ def email_register_page(request):
                 keygen = _keygen(post_email)
                 expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
 
+                # TODO: Send url for activation
+
                 send_mail('Hive Registration', keygen, 'astin@iz4u.net', to_email, fail_silently=False)
                 EmailActivation.objects.create(email_address=post_email, expire_date=expire_date, activation_key=keygen)
             else:
@@ -50,18 +52,39 @@ def email_register_page(request):
         except SMTPException:
             pass
     else:
-        pass # raise invaild method.
+        return HttpResponseRedirect('Invalid access method.')
+
 
     return HttpResponseRedirect('../../')
 
+def login_page(request):
+    if request.POST.has_key('login_email') and request.POST.has_key('password'):
+        # try:
+        email = request.POST['login_email']
+        username = User.objects.get(email=email).username
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active and user.is_authenticated:
+                login(request, user)
+                return HttpResponse('Success')
+            elif user.is_active is False:
+                pass # TODO: lead user to activate
+            else:
+                return HttpResponse('Login Fail')
+        #except:
+    else:
+        pass
+
+    return HttpResponse('...')
 
 def userinfo_page(request):
     pass
 
-def settings_page(request):
+def followlist_page(request):
     pass
 
-def followlist_page(request):
+def addfollow_page(request):
     pass
 
 def finduser_page(request):
@@ -69,5 +92,3 @@ def finduser_page(request):
 
 def logout_page(request):
     pass
-
-
