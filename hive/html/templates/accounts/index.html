@@ -7,6 +7,7 @@
     <p>
       <form action="accounts/login/" method="post">{% csrf_token %}
 	{{ login_form }}
+	<input type="submit" value="login">
       </form>
     </p>
 
@@ -14,6 +15,7 @@
       <form action="accounts/register/" method="post">{% csrf_token %}
         Sign Up <br />
 	{{ reg_form }}
+	<input type="submit" value="signup">
       </form>
     </p>
   </body>

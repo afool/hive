@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     position = models.CharField(null=True, max_length=50)
     emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
     portrait = models.FileField(null=True, upload_to="user_profile/")
-    phone = models.CharField(null=True, max_length=50)  
+    phone = models.CharField(null=True, max_length=50)
 
 class EmailActivation(models.Model):
     email = models.EmailField(unique=True)

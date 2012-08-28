@@ -15,6 +15,7 @@ import md5, time, datetime
 
 def main_page(request):
     if request.method == "POST":
+        # if request.POST.has_key('')
         main_form = MainForm(request.POST)
         main = main_form.save()
         # TODO: add get_absolute_url in model User or reverse?
@@ -28,25 +29,25 @@ def main_page(request):
                                 'reg_form': reg_form
                             } ))
 
-def email_register_page(request):
+def email_register_page(request, email):
     LETTER = '''Hello,\
         \nWelcome to HIVE!!\
         \nYou have to go %s/%s for the activation.\
         \nGood Luck!\n\n- Hive, A fool team-'''
 
-    def _keygen(email):
+    def _keygen():
         email_key = md5.md5()
         email_key.update(email + str(time.time()))
         return email_key.hexdigest()
 
-    def _is_registered(email):
+    def _is_registered():
         try:
-            EmailActivation.objects.get(email_address=eamil)
+            EmailActivation.objects.get(email=eamil)
             return False
         except ObjectDoesNotExist:
             return True
 
-    def _is_validated(email):
+    def _is_validated():
         try:
             validate_email(email)
             return True
@@ -54,19 +55,17 @@ def email_register_page(request):
             return False
 
     if request.method == 'POST':
-        post_email = request.POST['signup_email']
         try:
-            if _is_registered and _is_validated(post_email):
-                to_email = []
-                to_email.append(post_email)
+            if _is_registered() and _is_validated():
+                to_email = [email, ]
 
-                keygen = _keygen(post_email)
+                keygen = _keygen()
                 expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
 
                 # Temp to write http~~ TODO: should change variable.
                 message = LETTER % ('http://localhost:8000/accounts/?activation_key=', keygen)
                 send_mail('Hive Registration', message, 'astin@iz4u.net', to_email, fail_silently=False)
-                EmailActivation.objects.create(email_address=post_email, expire_date=expire_date, activation_key=keygen)
+                EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
             else:
                 HttpResponse("Your mail is already enrolled.")
         except BadHeaderError:
@@ -78,10 +77,14 @@ def email_register_page(request):
 
     return HttpResponseRedirect('../../')
 
+def confirmed_activation_page(request):
+    pass
+
+
 def login_page(request):
-    if request.POST.has_key('login_email') and request.POST.has_key('password'):
+    if request.POST.has_key('email') and request.POST.has_key('password'):
         # try:
-        email = request.POST['login_email']
+        email = request.POST['email']
         username = User.objects.get(email=email).username
         password = request.POST['password']
         user = authenticate(username=username, password=password)
