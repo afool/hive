@@ -4,18 +4,11 @@
 	</head>
 	<body>
 		<h1>Test Timeline</h1>
-		{% for post in post_list.all %}
-			<p>
-			<h2>{{ post.author }} </h2>
-			{{ post.contents }}</br>
-			{% if post.has_attachments %}
-				-Has Attachments. Go Retrieve Attachment Files</br>
-			{% else %}
-				-No Attachments.</br>
-			{% endif %}
-			</p>
-			<p> Comments : {{ post.comments_count }} Likes : {{ posts.like_count }} </p>
-			
-		{% endfor %}
-	</body>
+        {% for timeline_post in contents %}
+            <h2>Author : {{ content.author.username }}</h2>
+            <p>{{ timeline_post.content.contents }}<p>
+            <p>comment : {{ timeline_post.content.comments_count }}, like : {{ timeline_post.content.like_count }}</p>
+            <hr />
+        {% endfor %}
+    </body>
 </html>

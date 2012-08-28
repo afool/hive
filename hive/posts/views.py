@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
 from posts.models import Post
+from timelines.models import Timeline
 from django.http import Http404, HttpResponseRedirect
 from forms import PostForm
 from django.core.urlresolvers import reverse
@@ -24,7 +25,7 @@ def create_post(request):
     if request.method == "POST":
         post_form = PostForm(request.POST)
         post = post_form.save()
-
+        Timeline.objects.create(content=post)
         return HttpResponseRedirect(post.get_absolute_url())
     form = PostForm()
     
