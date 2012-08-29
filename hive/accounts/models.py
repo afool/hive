@@ -21,7 +21,6 @@ class EmailActivation(models.Model):
     #activation_user = models.ForeignKey(User)
 
 
-
 class Following(models.Model):
     followee = models.ForeignKey(User, related_name = 'following_followee')
     followee_str = models.CharField(max_length=20, blank=True)

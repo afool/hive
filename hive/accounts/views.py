@@ -1,27 +1,27 @@
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail, BadHeaderError
+from accounts.models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.validators import validate_email
-from forms import LoginForm, EmailRegistrationForm
+from forms import EmailRegistrationForm
 from smtplib import SMTPException
-from accounts.models import *
+
 import md5, time, datetime
 
 # from django.core.cache import cache
 # from accounts.models import *
 
-def main_page(request):
+def login_page(request):
     if request.method == "POST":
         # if request.POST.has_key('')
-        main_form = MainForm(request.POST)
-        main = main_form.save()
-        # TODO: add get_absolute_url in model User or reverse?
+        reg_form = EmailRegistrationForm(request.POST)
+        reg = reg_form.save()
         return HttpResponseRedirect(main.get_absolute_url())
 
-    login_form = LoginForm()
     reg_form = EmailRegistrationForm()
     return render_to_response('accounts/index.html', \
                             RequestContext(request, {
@@ -103,7 +103,7 @@ def login_page(request):
     return HttpResponse('...')
 
 def userinfo_page(request):
-    pass
+    return HttpResponse(request.user)
 
 def followlist_page(request):
     pass

@@ -8,6 +8,8 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+LOGIN_URL = 'accounts/login/'
+
 MANAGERS = ADMINS
 
 EMAIL_USE_TLS = True

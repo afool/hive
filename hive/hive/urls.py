@@ -5,8 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-#   url(r'^$', direct_to_template, { 'template': 'main/index.html' }),
-    url(r'^$', 'accounts.views.main_page'),
+#   url(r'^$', direct_to_template, { 'template': '' }),
+    url(r'^$', 'timelines.views.main_timeline_contents'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^admins/', include('admins.urls')),
