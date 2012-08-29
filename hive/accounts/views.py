@@ -21,7 +21,7 @@ def login_page(request):
         reg_form = EmailRegistrationForm(request.POST)
         reg = reg_form.save()
         return HttpResponseRedirect(main.get_absolute_url())
-
+    
     reg_form = EmailRegistrationForm()
     return render_to_response('accounts/index.html', \
                             RequestContext(request, {

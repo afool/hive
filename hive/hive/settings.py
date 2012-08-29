@@ -8,7 +8,8 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-LOGIN_URL = 'accounts/login/'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/timelines/'
 
 MANAGERS = ADMINS
 

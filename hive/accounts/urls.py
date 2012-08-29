@@ -11,9 +11,9 @@ urlpatterns = patterns('accounts.views',
     url(r'^followlist/$', 'followlist_page'),
     url(r'^addfollow/$', 'addfollow_page'),
     url(r'^finduser/$', 'finduser_page'),
-    url(r'^logout/$', 'logout_page'),
 )
 
 urlpatterns += patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/accounts/login/'}),
 )
