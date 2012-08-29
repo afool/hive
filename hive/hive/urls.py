@@ -4,6 +4,7 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+
 urlpatterns = patterns('',
 #   url(r'^$', direct_to_template, { 'template': '' }),
     url(r'^$', 'timelines.views.main_timeline_contents'),
