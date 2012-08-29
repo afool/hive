@@ -31,7 +31,7 @@ def create_post(request):
         post.writer = request.user
         post.save()
         
-        Timeline.objects.create(content=post)
+        Timeline.objects.create(post=post, writer=post.writer)
         return HttpResponseRedirect(post.get_absolute_url())
     form = PostForm()
     

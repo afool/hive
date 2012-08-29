@@ -4,10 +4,10 @@
 	</head>
 	<body>
 		<h1>Test Timeline</h1>
-        {% for timeline_post in contents %}
-            <h2>Author : {{ content.author.username }}</h2>
-            <p>{{ timeline_post.content.contents }}<p>
-            <p>comment : {{ timeline_post.content.comments_count }}, like : {{ timeline_post.content.like_count }}</p>
+        {% for timeline in timelines %}
+            <h2>Writer : {{ timeline.writer }}</h2>
+            <p>{{ timeline.post.contents }}<p>
+            <p>comment : {{ timeline.post.comments_count }}, like : {{ timeline.post.like_count }}</p>
             <hr />
         {% endfor %}
         <p>

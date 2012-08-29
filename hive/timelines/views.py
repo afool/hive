@@ -8,7 +8,7 @@ def main_timeline_contents(request):
     if request.is_ajax() is True:
         pass
     else:
-        contents = Timeline.objects.all()
+        timelines = Timeline.objects.all()
         return render_to_response('timelines/timeline_view.html', RequestContext(request,{
-                                                                                        'contents':contents
+                                                                                        'timelines':timelines
                                                                                         }))
