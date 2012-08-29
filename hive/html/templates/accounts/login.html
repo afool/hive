@@ -26,9 +26,9 @@
 
 <!-- Email Registration Form -->
 <p>
-  <form action="." method="post">{% csrf_token %}
+  <form action="/accounts/register/" method="post">{% csrf_token %}
     Sign Up <br />
-    {{ reg_form }}
+    <input type="text" name="email">
     <input type="submit" value="signup">
   </form>
 </p>
