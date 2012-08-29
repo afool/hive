@@ -85,5 +85,4 @@ def customize_detail(request, customize_id):
     pass
 
 def activities_form_set(request):
-    
-    return HttpResponse()
+    pass
