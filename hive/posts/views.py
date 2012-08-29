@@ -24,11 +24,13 @@ def one_of_posts_detail(request, posts_id):
 @login_required(login_url='/accounts/login')
 def create_post(request):
     if request.method == "POST":
-        post_form = PostForm(request.POST)
-        post = post_form.save(commit=False)
         if request.user.is_authenticated() is False:
             return HttpResponseRedirect('/accounts/login')
+        
+        post_form = PostForm(request.POST)
+        post = post_form.save(commit=False)
         post.writer = request.user
+        post.author = post.writer.username
         post.save()
         
         Timeline.objects.create(post=post, writer=post.writer)
@@ -39,5 +41,21 @@ def create_post(request):
                               {
                                'form':form,
                                },))
+    
+def create_post_timeline(request):
+    if request.method != "POST" :
+        HttpResponseRedirect('/')
+        
+    if request.user.is_authenticated() is False:
+            return HttpResponseRedirect('/accounts/login')
+        
+    post_contents = request.POST['post_contents']
+    post = Post.objects.create(contents=post_contents, writer=request.user, author=request.user.username)
+    post.save()
+    
+    Timeline.objects.create(post = post, writer=post.writer)
+    return HttpResponseRedirect('/')
+
+     
 
 

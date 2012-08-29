@@ -1,17 +1,28 @@
-<html>
-	<head>
-		<title>timeline</title>
-	</head>
-	<body>
-		<h1>Test Timeline</h1>
-        {% for timeline in timelines %}
-            <h2>Writer : {{ timeline.writer }}</h2>
-            <p>{{ timeline.post.contents }}<p>
-            <p>comment : {{ timeline.post.comments_count }}, like : {{ timeline.post.like_count }}</p>
-            <hr />
-        {% endfor %}
-        <p>
-        	<a href='/accounts/logout/'> log out </a>
-        </p>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %} timeline {% endblock %}
+
+{% block content %}
+	<!-- Post Form -->
+	<p>
+		<form action="/posts/create_from_timeline/" method="post">{% csrf_token %}
+			say something! : </br> 
+    		<input type="text" name="post_contents">
+    		<input type="submit" value="POST">
+    	</form>
+    </p>
+    
+    <!-- timeline -->				
+	<h1>Test Timeline</h1>
+    {% for timeline in timelines %}
+		<h2>Writer : {{ timeline.writer }}</h2>
+		<p>{{ timeline.post.contents }}<p>
+		<p>comment : {{ timeline.post.comments_count }}, like : {{ timeline.post.like_count }}</p>
+		<hr />
+	{% endfor %}
+	
+	<!-- logout -->
+	<p>
+		<a href='/accounts/logout/'> log out </a>
+	</p>
+{% endblock %}
