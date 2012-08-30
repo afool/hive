@@ -5,6 +5,7 @@ from posts.models import Post
 from timelines.models import Timeline
 from django.http import Http404, HttpResponseRedirect
 from forms import PostForm
+from forms import AttachmentForm
 from django.template import RequestContext
 
 
@@ -56,6 +57,13 @@ def create_post_timeline(request):
     Timeline.objects.create(post = post, writer=post.writer)
     return HttpResponseRedirect('/')
 
-     
-
-
+def test_page(request):
+    if request.method == "POST":
+        test_form = AttachmentForm(request.POST, request.FILES)
+        if test_form.is_valid():
+            handle_uploaded_file(request.FILES['contents_file'])
+            test_form.save()
+        return HttpResponseRedirect('/')
+    else:
+        form = AttachmentForm()
+        return render_to_response('posts/post_create.html', RequestContext(request, {'form':form}))
