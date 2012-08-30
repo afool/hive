@@ -198,7 +198,6 @@ INSTALLED_APPS = (
     'notifications',
     'timelines',
     'posts',
-
 )
 
 # A sample logging configuration. The only tangible logging

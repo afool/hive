@@ -1,5 +1,6 @@
 <h2>Writer : {{ post.writer }}</h2>
 <p>{{ post.contents }}<p>
-<p>comment : {{ post.comments_count }}, like : {{ post.like_count }}</p>
+<p>{{ post.like_string }} <a href="/posts/{{post.id}}/on_liked/">like!</a></p>
+<p>comment : {{ post.comments_count }}</p>
 <hr />
 	

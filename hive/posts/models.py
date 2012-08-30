@@ -1,10 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
+from django.db.models import F
 
 #from timelines.models import FollowerList, Timeline
 
 class Post(models.Model):
+    STR_NOBODY_LIKE = "be the first one likes this post"
+    STR_SOMEONE_LIKE = "%s likes this post"
+    STR_SOMEBODIES_LIKE = "%s and some others like this post"
+    
     contents = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
     writer = models.ForeignKey(User)
@@ -12,7 +17,7 @@ class Post(models.Model):
     has_attachments = models.BooleanField(default=False)
     comments_count = models.IntegerField(default=0)
     like_count = models.IntegerField(default=0)
-    like_string = models.CharField(max_length=100, default='')
+    like_string = models.CharField(max_length=100, default=STR_NOBODY_LIKE)
     is_deleted = models.BooleanField(default=False)
 
     class Meta:
@@ -23,11 +28,30 @@ class Post(models.Model):
         return "Post by %s" %(self.author)
         
     def get_absolute_url(self):
-        #posts/(?P<posts_id>\d+)/$
         return "/posts/%d/" %(self.id)
     
     def get_rendered(self):
         return render_to_string('posts/post_render.html', {'post':self})
+    
+    def on_liked(self, like_user):
+        self.like_count = F('like_count')+1
+        self.update_like_string(like_user.username)
+        self.save()
+    
+    def on_unliked(self):
+        self.like_count = F('like_count')-1
+        like = Like.objects.get(post=self)
+        self.update_like_string(like.liker.username)
+        self.save()
+    
+    def update_like_string(self, author):
+        if self.like_count is 0:
+            self.like_string = self.STR_NOBODY_LIKE
+        elif self.like_count is 1:
+            self.like_string = self.STR_SOMEONE_LIKE %(author)
+        else:
+            self.like_string = self.STR_SOMEBODIES_LIKE %(author)
+       
 
 class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
@@ -73,11 +97,10 @@ class Like(models.Model):
     liker = models.ForeignKey(User)
     post = models.ForeignKey(Post)
     
-    
     class Meta:
         verbose_name_plural = "Likes"
         ordering = ['-id']
-        unique_together = (("liker", "post"))
+        unique_together = ("liker", "post")
     
     def __unicode__(self):
         return "Like by %s" %(self.liker)
