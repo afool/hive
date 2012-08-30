@@ -21,12 +21,13 @@
 </table>
 
 <input type="submit" value="login" />
+<a href="/accounts/forgot_password">Forgot Your Password?</a>
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
 <!-- Email Registration Form -->
 <p>
-  <form action="/accounts/register/" method="post">{% csrf_token %}
+  <form action="/accounts/register_email/" method="post">{% csrf_token %}
     Sign Up <br />
     <input type="text" name="email">
     <input type="submit" value="signup"> {{ status }}
