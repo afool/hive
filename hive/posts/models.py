@@ -52,12 +52,6 @@ class Post(models.Model):
                 likers.remove(liker)
                 self.like_string = ' '.join(likers)
                 break
-        
-        # test
-        print "removed %s" %( unlike_user.username)
-        for liker in likers :
-            print liker
-        print self.like_string
         self.save()
     
     def render_liker_list(self):
