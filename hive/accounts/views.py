@@ -105,8 +105,11 @@ def register_userinfo_page(request):
             userinfo_form.clean_password2()
         except forms.ValidationError:
             return HttpResponseRedirect('/')
-
-        userinfo_form.save()
+        
+        user = userinfo_form.save(commit=False)
+        user.set_password(userinfo_form.clean_password2)
+        user.save()
+        
         return HttpResponseRedirect('/')
         
         
