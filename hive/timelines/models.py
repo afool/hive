@@ -11,7 +11,7 @@ class Timeline(models.Model):
         ordering = ['-id']
     
     def __unicode__(self):
-        return "Timeline #%d by %s" %(id, self.writer)
+        return "Timeline #%d by %s" %(self.id, self.writer)
         
     def get_absolute_url(self):
         #posts/(?P<posts_id>\d+)/$

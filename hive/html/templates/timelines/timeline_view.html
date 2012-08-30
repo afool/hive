@@ -15,7 +15,11 @@
     <!-- timeline -->				
 	<h1>Test Timeline</h1>
     {% for timeline in timelines %}
-		{{ timeline.post.get_rendered }}
+    	{% if timeline.is_liked %}
+			{{ timeline.post.get_rendered_liked }}
+		{% else %}
+			{{ timeline.post.get_rendered }}
+		{% endif %}
 	{% endfor %}
 	
 	<!-- logout -->

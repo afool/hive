@@ -28,7 +28,8 @@ def on_liked(request, post_id):
     except Post.DoesNotExist:
         raise Http404
     
-    Like.objects.create(liker=request.user, post=post)
+    like = Like.objects.create(liker=request.user, post=post)
+    like.save()
     post.on_liked(request.user)
     
     # To Do : just re render only the Liked Post ( not redirect and render whole page)
@@ -48,8 +49,8 @@ def on_unliked(request, post_id):
         print "Can't find Like about %s by %s" %(post, request.user)
         raise Http404
     
+    post.on_unliked(like.liker)
     like.delete()
-    post.on_unliked()
     
     # To Do : just re render only the Liked Post ( not redirect and render whole page)
     return HttpResponseRedirect('/')
