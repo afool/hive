@@ -29,7 +29,7 @@
   <form action="/accounts/register/" method="post">{% csrf_token %}
     Sign Up <br />
     <input type="text" name="email">
-    <input type="submit" value="signup">
+    <input type="submit" value="signup"> {{ status }}
   </form>
 </p>
 

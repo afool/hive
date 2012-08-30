@@ -2,7 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.validators import validate_email
 
@@ -53,13 +53,25 @@ def email_register_page(request):
                                 
                 EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
             else:
-                return HttpResponse("Your mail is already enrolled.")
+                status = 'Correct your email or already registered.'
+                return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
         except BadHeaderError:
-            return HttpResponseRedirect('Invalid header found.')
+            status = 'Invalid access.'
+            return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
     else:
-        return HttpResponseRedirect('Invalid access')
+        status = 'Invalid access.'
+        return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
 
-    return HttpResponseRedirect('../../')
+    return HttpResponseRedirect('/')
     
 
 def activation_page(request, key):
