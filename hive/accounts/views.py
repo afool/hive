@@ -1,27 +1,17 @@
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login, logout
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail, BadHeaderError
-from accounts.models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.validators import validate_email
-from forms import EmailRegistrationForm
-from smtplib import SMTPException
-from django.core.exceptions import ValidationError
 
+from models import EmailActivation
 import md5, time, datetime
+
 
 # from django.core.cache import cache
 # from accounts.models import *
-
-def login_page(request):
-    reg_form = EmailRegistrationForm()
-    return render_to_response('/accounts/login.html',
-                            RequestContext(request, {
-                                'reg_form': reg_form
-                            } ))
 
 def email_register_page(request):
     LETTER = '''Hello,\
@@ -58,24 +48,30 @@ def email_register_page(request):
                 expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
                 
                 # Temp to write http~~ TODO: should change variable.
-                message = LETTER % ('http://localhost:8000/accounts/?activation_key=', keygen)
+                message = LETTER % ('http://localhost:8000/accounts/activation/', keygen)
                 send_mail('Hive Registration', message, 'astin@iz4u.net', to_email, fail_silently=False)
                                 
                 EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
             else:
-                HttpResponse("Your mail is already enrolled.")
+                return HttpResponse("Your mail is already enrolled.")
         except BadHeaderError:
             return HttpResponseRedirect('Invalid header found.')
-        except SMTPException:
-            pass
     else:
-        return HttpResponseRedirect('Invalid access method.')
+        return HttpResponseRedirect('Invalid access')
 
     return HttpResponseRedirect('../../')
     
 
-def confirmed_activation_page(request):
-    pass
+def activation_page(request, key):
+    user = EmailActivation.objects.get(activation_key=key)
+    if user and user.expire_date.date() >= datetime.datetime.today().date():
+        form = UserCreationForm()
+        return render_to_response('accounts/user_registration.html',
+                                   RequestContext(request, {
+                                    'form': form,
+                                    },))
+    else:
+        return HttpResponse('Invalid access')
 
 def userinfo_page(request):
     return HttpResponse(request.user)

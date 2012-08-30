@@ -1,9 +1,8 @@
 from django.conf.urls import patterns, include, url
 
-import django.contrib.auth
-
 urlpatterns = patterns('accounts.views',
     url(r'^register/$', 'email_register_page'),
+    url(r'^activation/(?P<key>\w+)/$', 'activation_page'),
 
     url(r'^info/(\w+)/$', 'userinfo_page'),
     #url(r'login/$', 'login_page'),
