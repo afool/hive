@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 
 #from timelines.models import FollowerList, Timeline
 
@@ -20,15 +21,13 @@ class Post(models.Model):
     
     def __unicode__(self):
         return "Post by %s" %(self.author)
-    
-#    def save(self, force_insert=False, force_update=False):
-#        if self.writer is not None :
-#            self.author = self.writer.username
-#        super(Post, self).save(force_insert, force_update)
-    
+        
     def get_absolute_url(self):
         #posts/(?P<posts_id>\d+)/$
         return "/posts/%d/" %(self.id)
+    
+    def get_rendered(self):
+        return render_to_string('posts/post_render.html', {'post':self})
 
 class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
