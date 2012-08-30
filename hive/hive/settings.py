@@ -11,6 +11,8 @@ ADMINS = (
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/timelines/'
 
+TEST_DOMAIN_NAME = 'http://localhost:8000/'
+
 MANAGERS = ADMINS
 
 EMAIL_USE_TLS = True
