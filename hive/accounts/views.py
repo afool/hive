@@ -83,7 +83,11 @@ def activation_page(request, key):
                                     'form': form,
                                     },))
     else:
-        return HttpResponse('Invalid access')
+        status = 'Invalid access'
+        return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
 
 def userinfo_page(request):
     return HttpResponse(request.user)
