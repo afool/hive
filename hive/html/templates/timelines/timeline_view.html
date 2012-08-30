@@ -15,10 +15,7 @@
     <!-- timeline -->				
 	<h1>Test Timeline</h1>
     {% for timeline in timelines %}
-		<h2>Writer : {{ timeline.writer }}</h2>
-		<p>{{ timeline.post.contents }}<p>
-		<p>comment : {{ timeline.post.comments_count }}, like : {{ timeline.post.like_count }}</p>
-		<hr />
+		{{ timeline.post.get_rendered }}
 	{% endfor %}
 	
 	<!-- logout -->
