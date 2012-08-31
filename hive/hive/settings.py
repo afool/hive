@@ -1,5 +1,6 @@
 # Django settings for hive project.
 import os
+import djcelery
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -173,6 +174,10 @@ TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "html/templates"),
 )
 
+#django celery
+BROKER_URL = 'django://'
+djcelery.setup_loader()
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -184,6 +189,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'djcelery',
+    'djcelery.transport',
 
     'admins',
     'accounts',
@@ -191,7 +198,6 @@ INSTALLED_APPS = (
     'notifications',
     'timelines',
     'posts',
-
 )
 
 # A sample logging configuration. The only tangible logging
@@ -224,5 +230,6 @@ LOGGING = {
 }
 
 #using UserProfile class to store additional information to User
-AUTH_PROFILE_MODULE = 'accounts.UserProfile' 
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
 
