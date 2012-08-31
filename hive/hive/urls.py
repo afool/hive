@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
+import settings
 
 admin.autodiscover()
 
@@ -17,3 +18,13 @@ urlpatterns = patterns('',
     url(r'^timelines/', include('timelines.urls')),
 )
 
+if settings.DEBUG is True:
+    """ for development serving assets """
+    urlpatterns += patterns('',
+        url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.STATIC_ROOT,
+        }),
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    )
