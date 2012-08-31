@@ -11,6 +11,7 @@ from forms import UserRegistrationForm
 
 from models import EmailActivation
 import md5, time, datetime
+from hive import settings 
 
 
 # from django.core.cache import cache
@@ -51,7 +52,7 @@ def email_register_page(request):
                 expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
                 
                 # Temp to write http~~ TODO: should change variable.
-                message = LETTER % ('http://localhost:8000/accounts/activate_email/', keygen)
+                message = LETTER % ( settings.TEST_DOMAIN_NAME + 'accounts/activate_email/', keygen)
                 print message
                 send_mail('Hive Registration', message, 'astin@iz4u.net', to_email, fail_silently=False)
                                 
@@ -100,14 +101,15 @@ def register_userinfo_page(request):
     else:
         userinfo_form = UserRegistrationForm(request.POST)
         
-        try:
-            userinfo_form.is_valid()
-            userinfo_form.clean_password2()
-        except forms.ValidationError:
-            return HttpResponseRedirect('/')
-
-        userinfo_form.save()
-        return HttpResponseRedirect('/')
+        if userinfo_form.is_valid():
+            try:
+                userinfo_form.clean_username()
+                userinfo_form.clean_password2()
+                userinfo_form.save()
+            except userinfo_form.ValidationError:
+                return HttpResponseRedirect('/')    
+                        
+        return HttpResponseRedirect('/')    
         
         
 
