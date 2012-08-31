@@ -109,22 +109,7 @@ def register_userinfo_page(request):
             except userinfo_form.ValidationError:
                 return HttpResponseRedirect('/')    
                         
-        return HttpResponseRedirect('/')    
-
-        try:
-            userinfo_form.is_valid()
-            userinfo_form.clean_password2()
-        except forms.ValidationError:
-            return HttpResponseRedirect('/')
-        
-        user = userinfo_form.save(commit=False)
-        user.set_password(userinfo_form.clean_password2)
-        user.save()
-        
-        return HttpResponseRedirect('/')
-
-        
-        
+        return HttpResponseRedirect('/')            
 
 def renew_password_page(request, key):
     pass
