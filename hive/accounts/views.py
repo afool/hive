@@ -101,7 +101,6 @@ def register_userinfo_page(request):
     else:
         userinfo_form = UserRegistrationForm(request.POST)
         
-<<<<<<< HEAD
         if userinfo_form.is_valid():
             try:
                 userinfo_form.clean_username()
@@ -111,7 +110,7 @@ def register_userinfo_page(request):
                 return HttpResponseRedirect('/')    
                         
         return HttpResponseRedirect('/')    
-=======
+
         try:
             userinfo_form.is_valid()
             userinfo_form.clean_password2()
@@ -123,7 +122,7 @@ def register_userinfo_page(request):
         user.save()
         
         return HttpResponseRedirect('/')
->>>>>>> 8694d6396e2384feeaf1ea5c1cb05930505ccef1
+
         
         
 
