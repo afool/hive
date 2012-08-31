@@ -7,7 +7,6 @@ from django.http import Http404, HttpResponseRedirect
 from forms import PostForm
 from django.template import RequestContext
 
-
 def index(request):
     pass
 
@@ -92,6 +91,19 @@ def create_post_timeline(request):
     Timeline.objects.create(post = post, writer=post.writer)
     return HttpResponseRedirect('/')
 
+<<<<<<< HEAD
+def upload_attachments(request):
+    if request.method == "POST":
+        attachment_form = AttachmentForm(request.POST, request.FILES)
+        print request.POST, request.FILES
+        if attachment_form.is_valid():
+            attachment_form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = AttachmentForm()
+        return render_to_response('posts/upload_attachments.html', RequestContext(request, {'form':form}))
+=======
      
 
 
+>>>>>>> 4eab08723242f71d9a11fb9bdafffd019c788962
