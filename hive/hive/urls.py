@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^notifications/', include('notifications.urls')),
     url(r'^posts/', include('posts.urls')),
     url(r'^timelines/', include('timelines.urls')),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) 
 
 if settings.DEBUG is True:
     """ for development serving assets """

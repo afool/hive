@@ -130,6 +130,7 @@ def profile_page(request, username):
                                                                })
 
 def people_list_page(request):
+    people_profile_list = UserProfile.objects.all()[0:20]
     observer = request.user
     return render_to_response('accounts/people_list_page.html',{
                                                                 'people_profile_list':people_profile_list,
@@ -142,5 +143,5 @@ def add_follow_page(request, followee_id, follower_id):
     following = Following.objects.create(followee=followee, follower=follower)
     return HttpResponse("OK")
 
-ef finduser_page(request):
-   pass
+def finduser_page(request):
+    pass
