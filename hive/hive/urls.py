@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^timelines/', include('timelines.urls')),
 )
 
-if settings.DEBUG:
+if settings.DEBUG is True:
     """ for development serving assets """
     urlpatterns += patterns('',
         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
@@ -27,4 +27,4 @@ if settings.DEBUG:
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT,
         }),
-   )
+    )
