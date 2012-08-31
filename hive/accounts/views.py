@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, SetPasswordForm, UserCreationForm
 from django.contrib.auth.models import User
-from accounts.models import UserProfile
+from accounts.models import UserProfile, Following
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponseRedirect, HttpResponse
@@ -133,13 +133,17 @@ def profile_page(request, username):
 
 def people_list_page(request):
     people_profile_list = UserProfile.objects.all()[0:20]
-    
+    observer = request.user
     return render_to_response('accounts/people_list_page.html',{
                                                                 'people_profile_list':people_profile_list,
+                                                                'observer':observer
                                                                 })
 
-def addfollow_page(request):
-    pass
+def add_follow_page(request, followee_id, follower_id):
+    followee = User.objects.get(id=followee_id)
+    follower = User.objects.get(id=follower_id)
+    following = Following.objects.create(followee=followee, follower=follower)
+    return HttpResponse("OK")
 
 def finduser_page(request):
     pass
