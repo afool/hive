@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 admin.autodiscover()
 
@@ -15,5 +17,4 @@ urlpatterns = patterns('',
     url(r'^notifications/', include('notifications.urls')),
     url(r'^posts/', include('posts.urls')),
     url(r'^timelines/', include('timelines.urls')),
-)
-
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

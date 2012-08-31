@@ -33,7 +33,7 @@ class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
     create_time = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=100)
-    contents_file = models.FileField(upload_to='attachments/')
+    contents_file = models.FileField(upload_to='attachments/%Y/%m/%d')
     post = models.ForeignKey(Post)
     class Meta:
         verbose_name_plural = "Attachments"

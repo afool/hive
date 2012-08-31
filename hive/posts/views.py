@@ -8,7 +8,6 @@ from forms import PostForm
 from forms import AttachmentForm
 from django.template import RequestContext
 
-
 def index(request):
     pass
 
@@ -57,13 +56,13 @@ def create_post_timeline(request):
     Timeline.objects.create(post = post, writer=post.writer)
     return HttpResponseRedirect('/')
 
-def test_page(request):
+def upload_attachments(request):
     if request.method == "POST":
-        test_form = AttachmentForm(request.POST, request.FILES)
-        if test_form.is_valid():
-            handle_uploaded_file(request.FILES['contents_file'])
-            test_form.save()
-        return HttpResponseRedirect('/')
+        attachment_form = AttachmentForm(request.POST, request.FILES)
+        print request.POST, request.FILES
+        if attachment_form.is_valid():
+            attachment_form.save()
+            return HttpResponseRedirect('/')
     else:
         form = AttachmentForm()
-        return render_to_response('posts/post_create.html', RequestContext(request, {'form':form}))
+        return render_to_response('posts/upload_attachments.html', RequestContext(request, {'form':form}))
