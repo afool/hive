@@ -16,7 +16,7 @@ urlpatterns = patterns('accounts.views',
     #url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^people_list/$', 'people_list_page'),
     url(r'^profile/(?P<username>\w+)/$', 'profile_page'),
-    url(r'^addfollow/$', 'addfollow_page'),
+    url(r'^addfollow/(?P<followee_id>\d+)/(?P<follower_id>\d+)/$', 'add_follow_page'),
     url(r'^finduser/$', 'finduser_page'),
 )
 

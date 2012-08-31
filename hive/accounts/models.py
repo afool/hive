@@ -48,11 +48,6 @@ class Following(models.Model):
     
     def __unicode__(self):
         return "%s followed by %s" %(self.followee, self.follower)
-    
-    def save(self, force_insert=False, force_update=False):
-        self.followee_str = self.followee.username
-        self.follower_str = self.follower.username
-        super(Following, self).save(force_insert, force_update)
-    
+        
     def get_absolute_url(self):
         return "/accounts/%s/followings/%d" %(self.followee, self.id)
