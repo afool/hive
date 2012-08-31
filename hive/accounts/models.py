@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 
 class UserProfile(models.Model):
     EMOTION_CHOICES = (
@@ -13,6 +14,20 @@ class UserProfile(models.Model):
     emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
     portrait = models.FileField(null=True, upload_to="user_profile/")
     phone = models.CharField(null=True, max_length=50)
+    
+    class Meta:
+        ordering = ['user__username']
+        
+    def __unicode__(self):
+        return "%s's profile" %(self.user.username)
+    
+    def get_absolute_url(self):
+        return '/accounts/profile/%s' %(self.user.username)
+    
+    def get_rendered(self):
+        return render_to_string('accounts/people_profile_render.html',{
+                                                                       'people_profile':self
+                                                                       })
 
 class EmailActivation(models.Model):
     email = models.EmailField(unique=True)
@@ -33,11 +48,6 @@ class Following(models.Model):
     
     def __unicode__(self):
         return "%s followed by %s" %(self.followee, self.follower)
-    
-    def save(self, force_insert=False, force_update=False):
-        self.followee_str = self.followee.username
-        self.follower_str = self.follower.username
-        super(Following, self).save(force_insert, force_update)
-    
+        
     def get_absolute_url(self):
         return "/accounts/%s/followings/%d" %(self.followee, self.id)

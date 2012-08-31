@@ -1,5 +1,13 @@
 <h2>Writer : {{ post.writer }}</h2>
-<p>{{ post.contents }}<p>
-<p>comment : {{ post.comments_count }}, like : {{ post.like_count }}</p>
+<p>{{ post.contents }}</p>
+<p>
+	{{ post.render_liker_list }}  
+	{% if is_liked %}
+		<a href='/posts/{{post.id}}/on_unliked/'><button>unlike!</button></a>
+	{% else %}
+		<a href='/posts/{{post.id}}/on_liked/'><button>like</button></a>
+	{% endif %}
+</p>
+<p>comment : {{ post.comments_count }}</p>
 <hr />
 	

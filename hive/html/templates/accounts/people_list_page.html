@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% for people_profile in people_profile_list %}
+		{{ people_profile.get_rendered }} 
+		<a href="/accounts/addfollow/{{people_profile.user.id}}/{{observer.id}}">follow!</a>
+		</br>
+		</hr>
+	{% endfor %}
+{% endblock %}

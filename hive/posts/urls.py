@@ -1,8 +1,13 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('posts.views',
-    url(r'(?P<posts_id>\d+)/$', 'one_of_posts_detail'),
+    url(r'(?P<post_id>\d+)/$', 'one_of_post_detail'),
+    url(r'(?P<post_id>\d+)/on_liked/$', 'on_liked'),
+    url(r'(?P<post_id>\d+)/on_unliked/$', 'on_unliked'),
     url(r'create/$', 'create_post'),
     url(r'create_from_timeline/$', 'create_post_timeline'),
+<<<<<<< HEAD
     url(r'file_upload/','upload_attachments')
+=======
+>>>>>>> 4eab08723242f71d9a11fb9bdafffd019c788962
 )

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, SetPasswordForm, UserCreationForm
 from django.contrib.auth.models import User
+from accounts.models import UserProfile, Following
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponseRedirect, HttpResponse
@@ -11,6 +12,7 @@ from forms import UserRegistrationForm
 
 from models import EmailActivation
 import md5, time, datetime
+from hive import settings 
 
 
 # from django.core.cache import cache
@@ -51,7 +53,7 @@ def email_register_page(request):
                 expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
                 
                 # Temp to write http~~ TODO: should change variable.
-                message = LETTER % ('http://localhost:8000/accounts/activate_email/', keygen)
+                message = LETTER % ( settings.TEST_DOMAIN_NAME + 'accounts/activate_email/', keygen)
                 print message
                 send_mail('Hive Registration', message, 'astin@iz4u.net', to_email, fail_silently=False)
                                 
@@ -100,19 +102,17 @@ def register_userinfo_page(request):
     else:
         userinfo_form = UserRegistrationForm(request.POST)
         
-        try:
-            userinfo_form.is_valid()
-            userinfo_form.clean_password2()
-        except forms.ValidationError:
-            return HttpResponseRedirect('/')
-        
-        user = userinfo_form.save(commit=False)
-        user.set_password(userinfo_form.clean_password2)
-        user.save()
-        
-        return HttpResponseRedirect('/')
-        
-        
+        if userinfo_form.is_valid():
+            try:
+                userinfo_form.clean_username()
+                userinfo_form.clean_password2()
+                new_user = userinfo_form.save()
+                user_profile = UserProfile.objects.create(user=new_user)
+                #user_profile.save()
+            except userinfo_form.ValidationError:
+                return HttpResponseRedirect('/')    
+                        
+        return HttpResponseRedirect('/')            
 
 def renew_password_page(request, key):
     pass
@@ -123,14 +123,27 @@ def reset_password_page(request):
                                            RequestContext(request,
                                                           {'form': form}))
 
-def userinfo_page(request):
-    return HttpResponse(request.user)
+def profile_page(request, username):
+    user = User.objects.get(username=username)
+    user_profile = UserProfile.objects.get(user = user)
+    return render_to_response('accounts/detail_profile.html', {
+                                                               'user' : user,
+                                                               'user_profile':user_profile,
+                                                               })
 
-def followlist_page(request):
-    pass
+def people_list_page(request):
+    people_profile_list = UserProfile.objects.all()[0:20]
+    observer = request.user
+    return render_to_response('accounts/people_list_page.html',{
+                                                                'people_profile_list':people_profile_list,
+                                                                'observer':observer
+                                                                })
 
-def addfollow_page(request):
-    pass
+def add_follow_page(request, followee_id, follower_id):
+    followee = User.objects.get(id=followee_id)
+    follower = User.objects.get(id=follower_id)
+    following = Following.objects.create(followee=followee, follower=follower)
+    return HttpResponse("OK")
 
 def finduser_page(request):
     pass

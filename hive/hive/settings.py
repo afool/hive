@@ -1,5 +1,9 @@
 # Django settings for hive project.
 import os
+import djcelery
+
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname( os.path.realpath(__file__)))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -76,7 +80,7 @@ CACHE_MIDDLEWARE_KEY_PREFIX = "hive_"
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Seoul'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -97,7 +101,11 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
+<<<<<<< HEAD
 MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "media/")
+=======
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media/")
+>>>>>>> 4eab08723242f71d9a11fb9bdafffd019c788962
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -108,7 +116,11 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
+<<<<<<< HEAD
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+'/static/'
+=======
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static/")
+>>>>>>> 4eab08723242f71d9a11fb9bdafffd019c788962
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -175,17 +187,23 @@ TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "html/templates"),
 )
 
+#django celery
+BROKER_URL = 'django://'
+djcelery.setup_loader()
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'djcelery',
+    'djcelery.transport',
 
     'admins',
     'accounts',
@@ -193,7 +211,6 @@ INSTALLED_APPS = (
     'notifications',
     'timelines',
     'posts',
-
 )
 
 # A sample logging configuration. The only tangible logging
@@ -226,5 +243,6 @@ LOGGING = {
 }
 
 #using UserProfile class to store additional information to User
-AUTH_PROFILE_MODULE = 'accounts.UserProfile' 
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
 
