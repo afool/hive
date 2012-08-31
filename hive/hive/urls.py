@@ -1,18 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
-<<<<<<< HEAD
-from django.conf import settings
-from django.conf.urls.static import static
-=======
 import settings
->>>>>>> 4eab08723242f71d9a11fb9bdafffd019c788962
 
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
-#   url(r'^$', direct_to_template, { 'template': '' }),
     url(r'^$', 'timelines.views.main_timeline_contents'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('accounts.urls')),
@@ -21,9 +15,6 @@ urlpatterns = patterns('',
     url(r'^notifications/', include('notifications.urls')),
     url(r'^posts/', include('posts.urls')),
     url(r'^timelines/', include('timelines.urls')),
-<<<<<<< HEAD
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-=======
 )
 
 if settings.DEBUG is True:
@@ -36,4 +27,3 @@ if settings.DEBUG is True:
             'document_root': settings.MEDIA_ROOT,
         }),
     )
->>>>>>> 4eab08723242f71d9a11fb9bdafffd019c788962
