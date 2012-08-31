@@ -29,6 +29,7 @@ def email_register_page(request):
     def _is_registered(email):
         try:
             EmailActivation.objects.get(email=email)
+            User.objects.get(email=email)
             return False
         except ObjectDoesNotExist:
             return True
@@ -50,9 +51,8 @@ def email_register_page(request):
                 keygen = _keygen(email)
                 expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
                 
-                # Temp to write http~~ TODO: should change variable.
                 message = LETTER % ( settings.TEST_DOMAIN_NAME + 'accounts/activate_email/', keygen)
-                print message
+                
                 send_mail('Hive Registration', message, 'astin@iz4u.net', to_email, fail_silently=False)
                                 
                 EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
@@ -85,6 +85,7 @@ def activation_page(request, key):
         return render_to_response('accounts/user_registration.html',
                                    RequestContext(request, {
                                     'form': form,
+                                    'key': key,
                                     },))
     else:
         status = 'Invalid access'
@@ -94,7 +95,7 @@ def activation_page(request, key):
                                                            'status': status}))
 
 
-def register_userinfo_page(request):
+def register_userinfo_page(request, key):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
     else:
@@ -106,8 +107,14 @@ def register_userinfo_page(request):
                 userinfo_form.clean_password2()
                 new_user = userinfo_form.save()
                 user_profile = UserProfile.objects.create(user=new_user)
+
+                # Delete Activation Key and Enroll E-mail
+                user = EmailActivation.objects.get(activation_key=key)
+                # TODO: Email Enroll
+                
+                user.delete()
                 #user_profile.save()
-            except userinfo_form.ValidationError:
+            except:
                 return HttpResponseRedirect('/')    
                         
         return HttpResponseRedirect('/')            
