@@ -3,9 +3,9 @@
 <p>
 	{{ post.render_liker_list }}  
 	{% if is_liked %}
-		<a href='/posts/{{post.id}}/on_unliked/'>unlike!</a>
+		<a href='/posts/{{post.id}}/on_unliked/'><button>unlike!</button></a>
 	{% else %}
-		<a href='/posts/{{post.id}}/on_liked/'>like</a>
+		<a href='/posts/{{post.id}}/on_liked/'><button>like</button></a>
 	{% endif %}
 </p>
 <p>comment : {{ post.comments_count }}</p>
