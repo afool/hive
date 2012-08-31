@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, SetPasswordForm, UserCreationForm
 from django.contrib.auth.models import User
+from accounts.models import UserProfile
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponseRedirect, HttpResponse
@@ -105,7 +106,9 @@ def register_userinfo_page(request):
             try:
                 userinfo_form.clean_username()
                 userinfo_form.clean_password2()
-                userinfo_form.save()
+                new_user = userinfo_form.save()
+                user_profile = UserProfile.objects.create(user=new_user)
+                #user_profile.save()
             except userinfo_form.ValidationError:
                 return HttpResponseRedirect('/')    
                         
@@ -120,11 +123,20 @@ def reset_password_page(request):
                                            RequestContext(request,
                                                           {'form': form}))
 
-def userinfo_page(request):
-    return HttpResponse(request.user)
+def profile_page(request, username):
+    user = User.objects.get(username=username)
+    user_profile = UserProfile.objects.get(user = user)
+    return render_to_response('accounts/detail_profile.html', {
+                                                               'user' : user,
+                                                               'user_profile':user_profile,
+                                                               })
 
-def followlist_page(request):
-    pass
+def people_list_page(request):
+    people_profile_list = UserProfile.objects.all()[0:20]
+    
+    return render_to_response('accounts/people_list_page.html',{
+                                                                'people_profile_list':people_profile_list,
+                                                                })
 
 def addfollow_page(request):
     pass
