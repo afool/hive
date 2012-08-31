@@ -10,8 +10,9 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <link type="text/css" href="{{ STATIC_URL }}css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
-    <link href="{{ STATIC_URL }}bootstrap/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
+    <link href="{{ STATIC_URL }}bootstrap/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}third-party/wijmo/jquery.wijmo-open.1.5.0.css" rel="stylesheet" type="text/css" />
 
     <title>{% block title %}{% endblock %}</title>
   </head>
@@ -21,17 +22,20 @@
   <![endif]-->
 
             <!--begin wijmo menu-->
-              <link href="{{ STATIC_URL }}third-party/wijmo/jquery.wijmo-open.1.5.0.css" rel="stylesheet" type="text/css" />
               <style>
                   .wijmo-container
                   {
                       display: block;
                       clear: both;
-                      width: 100%;
+                      width: 600px;
+			margin-left : auto;
+			margin-right : auto;
                   }
               </style>
+    <div class="topbar">
+      <div class="fill">
               <div class="wijmo-container" >
-                  <ul id="menu1">
+                  <ul id="topmenu">
                       <li>
                           <h3>
                               <a href="">Project Name</a></h3>
@@ -54,6 +58,8 @@
                   <!-- End demo markup -->
               </div>
             <!--end wijmo menu-->
+	</div>
+    </div>
 
 
     {% block content %}{% endblock %}
@@ -68,7 +74,7 @@
 	<script type="text/javascript">
 	$(function () {
 		$('button').button();
-		$("#menu1").wijmenu({ trigger: ".wijmo-wijmenu-item", triggerEvent: "click" });
+		$("#topmenu").wijmenu({ trigger: ".wijmo-wijmenu-item", triggerEvent: "click" });
 	})
 	</script>
 	<!--start custom script block -->
