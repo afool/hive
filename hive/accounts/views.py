@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, SetPasswordForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
 from accounts.models import UserProfile, Following
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
@@ -27,12 +27,22 @@ def email_register_page(request):
         return email_key.hexdigest()
 
     def _is_registered(email):
+        # Before registering user, we have to check both -
+        # EmailActivation and User in sequence
+        flag = True
         try:
             EmailActivation.objects.get(email=email)
+        except ObjectDoesNotExist:
+            flag = False
+        
+        if flag: return False
+        
+        try:
             User.objects.get(email=email)
             return False
         except ObjectDoesNotExist:
             return True
+        
 
     def _is_validated(email):
         try:
@@ -45,7 +55,7 @@ def email_register_page(request):
         try:
             email = request.POST['email']
                         
-            if _is_registered(email) and _is_validated(email):
+            if email and _is_registered(email) and _is_validated(email):
                 to_email = [email, ]
 
                 keygen = _keygen(email)
@@ -79,7 +89,14 @@ def email_register_page(request):
     
 
 def activation_page(request, key):
-    user = EmailActivation.objects.get(activation_key=key)
+    try:
+        user = EmailActivation.objects.get(activation_key=key)
+    except ObjectDoesNotExist:
+        status = 'Invalid access'
+        return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
     if user and user.expire_date.date() >= datetime.datetime.today().date():
         form = UserRegistrationForm()
         return render_to_response('accounts/user_registration.html',
@@ -93,8 +110,7 @@ def activation_page(request, key):
                                            RequestContext(request,
                                                           {'form': AuthenticationForm(),
                                                            'status': status}))
-
-
+# 340a1de9a00b30b5003f7057f167bf61
 def register_userinfo_page(request, key):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
@@ -106,14 +122,13 @@ def register_userinfo_page(request, key):
                 userinfo_form.clean_username()
                 userinfo_form.clean_password2()
                 new_user = userinfo_form.save()
-                user_profile = UserProfile.objects.create(user=new_user)
-
-                # Delete Activation Key and Enroll E-mail
-                user = EmailActivation.objects.get(activation_key=key)
-                # TODO: Email Enroll
                 
-                user.delete()
-                #user_profile.save()
+                user = EmailActivation.objects.get(activation_key=key)
+                new_user.email = user.email
+                new_user.save() # Enroll Email
+                user.delete() # Delete Activation Key
+                
+                UserProfile.objects.create(user=new_user)
             except:
                 return HttpResponseRedirect('/')    
                         
@@ -147,7 +162,7 @@ def people_list_page(request):
 def add_follow_page(request, followee_id, follower_id):
     followee = User.objects.get(id=followee_id)
     follower = User.objects.get(id=follower_id)
-    following = Following.objects.create(followee=followee, follower=follower)
+    Following.objects.create(followee=followee, follower=follower)
     return HttpResponse("OK")
 
 def finduser_page(request):
