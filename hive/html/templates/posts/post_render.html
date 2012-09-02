@@ -9,5 +9,9 @@
 	{% endif %}
 </p>
 <p>comment : {{ post.comments_count }}</p>
-<hr />
+<p>
+	{% for comment in comment_list %}
+		<li>{{ comment.get_rendered }}</li>
+	{% endfor %}
+</p>
 	

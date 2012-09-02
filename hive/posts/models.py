@@ -31,11 +31,13 @@ class Post(models.Model):
         return self._get_rendered(is_liked=False)
     
     def get_rendered_liked(self):
-        return self._get_rendered(True)
+        return self._get_rendered(is_liked=True)
     
     def _get_rendered(self, is_liked):
+        comment_list = Comment.objects.filter(post=self)
         return render_to_string('posts/post_render.html', {'post':self,
-                                                           'is_liked':is_liked,})
+                                                           'is_liked':is_liked,
+                                                           'comment_list':comment_list})
     
     def on_liked(self, like_user):
         self.like_count = F('like_count')+1
@@ -108,6 +110,9 @@ class Comment(models.Model):
         
     def get_absolute_url(self):
         return "/posts/comments/%d/" %(self.id)
+    
+    def get_rendered(self):
+        return render_to_string('posts/comment_render.html',{'comment':self})
 
 
 class Like(models.Model):

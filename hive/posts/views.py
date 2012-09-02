@@ -6,6 +6,7 @@ from timelines.models import Timeline
 from django.http import Http404, HttpResponseRedirect
 from forms import PostForm, AttachmentForm
 from django.template import RequestContext
+from django.db.models import F
 
 def index(request):
     pass
@@ -110,17 +111,18 @@ def create_comment(request, post_id):
         return HttpResponseRedirect('/')
     try:
         post = Post.objects.get(id=post_id)
-        print post
     except Post.DoesNotExist :
         print "Can't find Post <id:%d>" %(post_id)
         return HttpResponseRedirect('/')
     
     comment_text = request.POST['comment_text']
+    post.comments_count = F('comments_count')+1
+    post.save()
     Comment.objects.create(text=comment_text,
                                          writer=request.user,
                                          author=request.user.username,
                                          post=post)
-           
+    
     return HttpResponseRedirect('/')
 
 
