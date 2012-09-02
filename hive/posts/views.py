@@ -1,10 +1,10 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, Like
+from posts.models import Post, Like, Comment
 from timelines.models import Timeline
 from django.http import Http404, HttpResponseRedirect
-from forms import PostForm
+from forms import PostForm, AttachmentForm
 from django.template import RequestContext
 
 def index(request):
@@ -91,6 +91,7 @@ def create_post_timeline(request):
     Timeline.objects.create(post = post, writer=post.writer)
     return HttpResponseRedirect('/')
 
+@login_required(login_url='/accounts/login')
 def upload_attachments(request):
     if request.method == "POST":
         attachment_form = AttachmentForm(request.POST, request.FILES)
@@ -101,3 +102,27 @@ def upload_attachments(request):
     else:
         form = AttachmentForm()
         return render_to_response('posts/upload_attachments.html', RequestContext(request, {'form':form}))
+
+@login_required(login_url='/accounts/login')
+def create_comment(request, post_id):
+    if request.method != "POST" :
+        print "Error, Invalid access. <%s>" %(request.method)
+        return HttpResponseRedirect('/')
+    try:
+        post = Post.objects.get(id=post_id)
+        print post
+    except Post.DoesNotExist :
+        print "Can't find Post <id:%d>" %(post_id)
+        return HttpResponseRedirect('/')
+    
+    comment_text = request.POST['comment_text']
+    Comment.objects.create(text=comment_text,
+                                         writer=request.user,
+                                         author=request.user.username,
+                                         post=post)
+           
+    return HttpResponseRedirect('/')
+
+
+
+

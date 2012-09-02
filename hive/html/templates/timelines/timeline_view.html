@@ -3,6 +3,10 @@
 {% block title %} timeline {% endblock %}
 
 {% block content %}
+	<!-- logout -->
+	<p>
+		<a href='/accounts/logout/'> log out </a>
+	</p>
 	<!-- Post Form -->
 	<p>
 		<form action="/posts/create_from_timeline/" method="post">{% csrf_token %}
@@ -20,10 +24,11 @@
 		{% else %}
 			{{ timeline.post.get_rendered }}
 		{% endif %}
+		<!-- Comment Form -->
+		</br>
+		<form action="/posts/create_comment/{{ timeline.post.id }}/" method="post">{% csrf_token %}
+			</t>comment : <input type="text" name="comment_text"><input type="submit" value="COMMENT">
+		</form>
 	{% endfor %}
-	
-	<!-- logout -->
-	<p>
-		<a href='/accounts/logout/'> log out </a>
-	</p>
+
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('posts.views',
+    url(r'create_comment/(?P<post_id>\d+)/$', 'create_comment'),
     url(r'(?P<post_id>\d+)/$', 'one_of_post_detail'),
     url(r'(?P<post_id>\d+)/on_liked/$', 'on_liked'),
     url(r'(?P<post_id>\d+)/on_unliked/$', 'on_unliked'),

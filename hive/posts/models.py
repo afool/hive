@@ -93,7 +93,7 @@ class Attachment(models.Model):
 
 
 class Comment(models.Model):
-    comments = models.TextField()
+    text = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
     writer = models.ForeignKey(User)
     author = models.CharField(max_length=100)
@@ -105,11 +105,7 @@ class Comment(models.Model):
     
     def __unicode__(self):
         return "Comment by %s" %(self.author)
-    
-    def save(self, force_insert=False, force_update=False):
-        self.author = self.writer.username
-        super(Comment, self).save(force_insert, force_update)
-    
+        
     def get_absolute_url(self):
         return "/posts/comments/%d/" %(self.id)
 
