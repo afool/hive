@@ -14,7 +14,7 @@ def main_timeline_contents(request):
     #following_list = Following.objects.filter(follower=request.user)
  
         
-    timelines = Timeline.objects.select_related().filter(
+    timelines = Timeline.objects.select_related(depth=1).filter(
                                         writer__in = Following.objects.filter(follower=request.user).values("followee")
                                         ).all()
         
