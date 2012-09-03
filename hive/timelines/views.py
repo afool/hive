@@ -19,10 +19,10 @@ def main_timeline_contents(request):
                                         ).all()
         
     # leave a flag whether current user liked this post
-#    for timeline in timelines:
-#        timeline.is_liked = False
-#        if timeline.post.is_liked_by_observer(request.user):
-#           timeline.is_liked = True
+    for timeline in timelines:
+        timeline.is_liked = False
+        if timeline.post.is_liked_by_observer(request.user):
+            timeline.is_liked = True
     return render_to_response('timelines/timeline_view.html', RequestContext(request,{
                                                                                         'timelines':timelines
                                                                                         }))

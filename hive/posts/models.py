@@ -9,7 +9,7 @@ from django.http import Http404
 class Post(models.Model):    
     contents = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
-    writer = models.ForeignKey(User)
+    writer = models.ForeignKey(User, db_index=True)
     author = models.CharField(max_length=100, null=True)
     has_attachments = models.BooleanField(default=False)
     comments_count = models.IntegerField(default=0)
@@ -34,7 +34,9 @@ class Post(models.Model):
         return self._get_rendered(is_liked=True)
     
     def _get_rendered(self, is_liked):
-        comment_list = Comment.objects.filter(post=self)
+        comment_list = []
+        if self.comments_count is not 0:
+            comment_list = Comment.objects.filter(post=self)
         return render_to_string('posts/post_render.html', {'post':self,
                                                            'is_liked':is_liked,
                                                            'comment_list':comment_list})
