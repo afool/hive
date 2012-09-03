@@ -129,6 +129,10 @@ def register_userinfo_page(request, key):
                 user.delete() # Delete Activation Key
                 
                 UserProfile.objects.create(user=new_user)
+                Following.objects.create(followee=new_user,
+                                         followee_str = new_user.username,
+                                         follower=new_user,
+                                         follower_str = new_user.username)
             except:
                 return HttpResponseRedirect('/')    
                         
