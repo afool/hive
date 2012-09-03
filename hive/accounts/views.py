@@ -166,7 +166,7 @@ def people_list_page(request):
     except PageNotAnInteger:
         peoples = paginator.page(1)
     except EmptyPage:
-        peoples = paginator.page(num_pages)
+        peoples = paginator.page(paginator.num_pages)
 
     observer = request.user
     return render_to_response('accounts/people_list_page.html',{
