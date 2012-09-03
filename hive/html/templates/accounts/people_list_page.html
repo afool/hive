@@ -1,10 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-	{% for people_profile in people_profile_list %}
-		{{ people_profile.get_rendered }} 
-		<a href="/accounts/addfollow/{{people_profile.user.id}}/{{observer.id}}">follow!</a>
+	{% for people in peoples %}
+    	{{ people.user.username }} 
+		<a href="/accounts/addfollow/{{people.user.id}}/{{observer.id}}">follow!</a>
 		</br>
 		</hr>
-	{% endfor %}
+    {% endfor %}
+   <div class="pagination">
+    <span class="step-links">
+        {% if peoples.has_previous %}
+            <a href="?page={{ peoples.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            {% for i in peoples.paginator.page_range %}
+                {% ifequal i peoples.number %}
+                    <p>{{ i }}</p>
+                {% else %}
+                    <a href="http://localhost:8000/accounts/people_list/?page={{ i }}">{{ i }}</a>
+                {% endifequal %}
+            {% endfor %}
+        </span>
+
+        {% if peoples.has_next %}
+            <a href="?page={{ peoples.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+   </div> 
 {% endblock %}

@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.validators import validate_email
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from forms import UserRegistrationForm
 
 from models import EmailActivation
@@ -156,10 +157,20 @@ def profile_page(request, username):
                                                                })
 
 def people_list_page(request):
-    people_profile_list = UserProfile.objects.all()[0:20]
+    PAGE_SIZE = 20
+    people_profile_list = UserProfile.objects.all()
+    paginator = Paginator(people_profile_list, PAGE_SIZE)
+    page = request.GET.get('page',1)
+    try:
+        peoples = paginator.page(page)
+    except PageNotAnInteger:
+        peoples = paginator.page(1)
+    except EmptyPage:
+        peoples = paginator.page(num_pages)
+
     observer = request.user
     return render_to_response('accounts/people_list_page.html',{
-                                                                'people_profile_list':people_profile_list,
+                                                                'peoples':peoples,
                                                                 'observer':observer
                                                                 })
 
