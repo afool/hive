@@ -3,7 +3,11 @@
 {% block content %}
 	{% for people in peoples %}
     	{{ people.user.username }} 
+		{% if people.user.id not in followers_id_list %}
 		<button followid="{{ people.user.id }}" class="followbutton" >follow!</button>
+		{% else %}
+		<button followid="{{ people.user.id }}" class="unfollowbutton" >alreay followed!</button>
+		{% endif %}
 		</br>
 		</hr>
     {% endfor %}
@@ -50,6 +54,16 @@
 			});
 
 		});
+		$('.unfollowbutton').click(function(){
+			var unfollow_user_id = $(this).attr("followid")
+			var unfollow_btn = $(this)
+			$.get('/accounts/removefollow/' + unfollow_user_id + "/" , function(data) {
+				unfollow_btn.text("follow!")
+				unfollow_btn.unbind('click')
+			});
+
+		});
+
 
 	});
 {% endautoescape %}

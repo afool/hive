@@ -11,6 +11,7 @@ urlpatterns = patterns('accounts.views',
     url(r'^people_list/$', 'people_list_page'),
     url(r'^profile/(?P<username>\w+)/$', 'profile_page'),
     url(r'^addfollow/(?P<followee_id>\d+)/$', 'add_follow_page'),
+    url(r'^removefollow/(?P<followee_id>\d+)/$', 'remove_follow_page'),
 )
 
 urlpatterns += patterns('',

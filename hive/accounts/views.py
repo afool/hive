@@ -159,6 +159,8 @@ def profile_page(request, username):
 def people_list_page(request):
     PAGE_SIZE = 20
     
+    followers_id_list = Following.objects.filter(
+         follower =request.user ).values_list('followee',flat=True)
     search_var = request.GET.get('search_var', None)
     url_search_param=""
     if search_var is None:
@@ -179,11 +181,18 @@ def people_list_page(request):
     observer = request.user
     return render_to_response('accounts/people_list_page.html',RequestContext(request,
                                           {
+                                            'followers_id_list':followers_id_list,
                                            'peoples':peoples,
                                            'observer':observer,
                                            'url_search_param':url_search_param, }))
 
 def add_follow_page(request, followee_id):
     followee = User.objects.get(id=followee_id )
-    Following.objects.create(followee=followee, follower =request.user )
+    if not Following.objects.filter(followee=followee, follower =request.user ).count():
+        Following.objects.create(followee=followee, follower =request.user )
+    return HttpResponse("OK")
+
+def remove_follow_page(request, followee_id):
+    followee = User.objects.get(id=followee_id )
+    Following.objects.filter(followee=followee, follower =request.user ).all().delete()
     return HttpResponse("OK")
