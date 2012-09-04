@@ -50,6 +50,7 @@
 			$.get('/accounts/addfollow/' + follow_user_id + "/" , function(data) {
 				follow_btn.text("alreay followed")
 				follow_btn.unbind('click')
+				follow_btn.addClass("unfollowbutton")
 
 			});
 
@@ -60,6 +61,7 @@
 			$.get('/accounts/removefollow/' + unfollow_user_id + "/" , function(data) {
 				unfollow_btn.text("follow!")
 				unfollow_btn.unbind('click')
+				unfollow_btn.addClass("followbutton")
 			});
 
 		});
