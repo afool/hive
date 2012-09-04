@@ -12,6 +12,7 @@
 
     <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
     <style type="text/css">
 /* Tweak navbar brand link to be super sleek
 -------------------------------------------------- */
@@ -45,6 +46,7 @@ body > .navbar .brand:hover {
   <body>
     <!-- Navbar
     ================================================== -->
+	<!--
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -82,7 +84,9 @@ body > .navbar .brand:hover {
         </div>
       </div>
     </div>
-    <div class="row-fluid container">
+	-->
+   <div class="container-fluid"
+    <div class="row-fluid">
     	<div class="span2">
     	 {% block menu %}{% endblock %}
 	</div>
@@ -90,9 +94,11 @@ body > .navbar .brand:hover {
     	 {% block content %}{% endblock %}
     	</div>
     </div>
+   </div>
 	<!--scripts-->
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+	<script src="{{ STATIC_URL }}js/redactor.min.js"></script>
 	<script type="text/javascript">
 	$(function () {
 		$('button').button();
