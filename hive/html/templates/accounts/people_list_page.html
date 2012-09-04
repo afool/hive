@@ -10,7 +10,7 @@
    <div class="pagination">
     <span class="step-links">
         {% if peoples.has_previous %}
-            <a href="?page={{ peoples.previous_page_number }}">previous</a>
+            <a href="?page={{ peoples.previous_page_number }}{{url_search_param}}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -18,21 +18,21 @@
                 {% ifequal i peoples.number %}
                     <p>{{ i }}</p>
                 {% else %}
-                    <a href="http://localhost:8000/accounts/people_list/?page={{ i }}">{{ i }}</a>
+                    <a href="/accounts/people_list/?page={{ i }}{{url_search_param}}">{{ i }}</a>
                 {% endifequal %}
             {% endfor %}
         </span>
 
         {% if peoples.has_next %}
-            <a href="?page={{ peoples.next_page_number }}">next</a>
+            <a href="?page={{ peoples.next_page_number }}{{url_search_param}}">next</a>
         {% endif %}
     </span> 
    </div> 
    
    <!-- search people text form--> 
-    <form action="/accounts/search_people_list/" method="GET">
+   <form action="/accounts/people_list/" method="GET">
     	<input type="text" name="search_var">
     	<input type="submit" value="search">
-  	</form>
+   </form>
       
 {% endblock %}

@@ -5,6 +5,7 @@ import datetime, time
 
 from django.forms import ModelForm
 from django.forms.models import modelformset_factory
+from django.template import RequestContext
 
 def index(request):
     try:
@@ -18,12 +19,10 @@ def index(request):
     latest_activities = activities_list.pop()
     trend_list = Trend.objects.all().order_by('date')[:20]
     
-    return render_to_response('admins/admins_index.html',
-                              {
+    return render_to_response('admins/admins_index.html',RequestContext(request,{
                                 'latest_activities':latest_activities,
                                 'trend_list':trend_list
-                               }
-                              )
+                               }))
 
 def activities_overview(request):
     try:
@@ -35,10 +34,9 @@ def activities_overview(request):
     except ActivitiesInformation.DoesNotExist :
         raise Http404
     
-    return render_to_response('admins/activities_overview.html',
-                              {
+    return render_to_response('admins/activities_overview.html',RequestContext(request,{
                                 'activities_list':activities_list,
-                               })
+                               }))
 
 def activities_detail(request, year, month, day):
     date_stamp = time.strptime(year+month+day, "%Y%b%d")
@@ -48,10 +46,10 @@ def activities_detail(request, year, month, day):
                                                    date__month=pub_date.month,
                                                    date__day=pub_date.day)
     
-    return render_to_response('admins/activities_detail.html',
+    return render_to_response('admins/activities_detail.html',RequestContext(request,
                               {
                                 'activities':activities
-                                })
+                                }))
 
 def trend_overview(request):
     try:
@@ -62,10 +60,9 @@ def trend_overview(request):
     except Trend.DoesNotExist:
         raise Http404
     
-    return render_to_response('admins/trend_overview.html',
-                              {
-                                'trend_list':trend_list
-                               })
+    return render_to_response('admins/trend_overview.html',RequestContext(request,{
+                                                                         'trend_list':trend_list
+                                                                        }))
 
 def trend_detail(request, year, month, day):
     date_stamp = time.strptime(year+month+day, "%Y%b%d")
@@ -76,10 +73,9 @@ def trend_detail(request, year, month, day):
                               date__month=pub_date.month,
                               date__day=pub_date.day)
     
-    return render_to_response('admins/trend_detail.html',
-                              { 
+    return render_to_response('admins/trend_detail.html',RequestContext(request,{
                                'trend':trend
-                               })
+                               }))
 
 def customize_detail(request, customize_id):
     pass
