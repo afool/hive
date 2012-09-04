@@ -9,11 +9,7 @@ from accounts.models import Following
 def main_timeline_contents(request):
     if request.is_ajax() is True:
         pass
-        
-    # timeline.writer
-    #following_list = Following.objects.filter(follower=request.user)
- 
-        
+    
     timelines = Timeline.objects.select_related(depth=1).filter(
                                         writer__in = Following.objects.filter(follower=request.user).values("followee")
                                         ).all()

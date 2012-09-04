@@ -3,7 +3,7 @@
 {% block content %}
 	{% for people in peoples %}
     	{{ people.user.username }} 
-		<a href="/accounts/addfollow/{{people.user.id}}/{{observer.id}}">follow!</a>
+		<a href="/accounts/addfollow/{{people.user.id}}/{{observer.id}}"><button>follow!</button></a>
 		</br>
 		</hr>
     {% endfor %}
@@ -26,6 +26,13 @@
         {% if peoples.has_next %}
             <a href="?page={{ peoples.next_page_number }}">next</a>
         {% endif %}
-    </span>
+    </span> 
    </div> 
+   
+   <!-- search people text form--> 
+    <form action="/accounts/search_people_list/" method="GET">
+    	<input type="text" name="search_var">
+    	<input type="submit" value="search">
+  	</form>
+      
 {% endblock %}

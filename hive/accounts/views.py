@@ -158,8 +158,10 @@ def profile_page(request, username):
 
 def people_list_page(request):
     PAGE_SIZE = 20
-    people_profile_list = UserProfile.objects.all()
+    
+    people_profile_list=UserProfile.objects.select_related(depth=1).all()
     paginator = Paginator(people_profile_list, PAGE_SIZE)
+    
     page = request.GET.get('page',1)
     try:
         peoples = paginator.page(page)
@@ -174,11 +176,37 @@ def people_list_page(request):
                                                                 'observer':observer
                                                                 })
 
+def search_people_list_page(request):
+    PAGE_SIZE = 20
+    try:
+        user_name = request.GET.get('search_var','not_a_value')
+        if user_name is 'not_a_value':
+            print "Error, invalid user name : %s", user_name
+            return HttpResponseRedirect('/accounts/people_list/')            
+        people_profile_list = UserProfile.objects.select_related().all().filter(user__in=User.objects.all().filter(username=user_name))
+    except User.DoesNotExist :
+        print "Error, can't find the User"
+        return HttpResponseRedirect('/accounts/people_list/')
+    except UserProfile.DoesNotExist:
+        print "Error, can't find any matched UserProfile"
+        return HttpResponseRedirect('/accounts/people_list/')
+    
+    paginator = Paginator(people_profile_list, PAGE_SIZE)
+    page = request.GET.get('page',1)
+    try:
+        people_to_display = paginator.page(page)
+    except PageNotAnInteger:
+        people_to_display = paginator.page(1)
+    except EmptyPage:
+        people_to_display = paginator.page(paginator.num_pages)
+    
+    return render_to_response('accounts/people_list_page.html',{
+                                                                'peoples':people_to_display,
+                                                                'observer':request.user,
+                                                                })
+
 def add_follow_page(request, followee_id, follower_id):
     followee = User.objects.get(id=followee_id)
     follower = User.objects.get(id=follower_id)
     Following.objects.create(followee=followee, follower=follower)
     return HttpResponse("OK")
-
-def finduser_page(request):
-    pass
