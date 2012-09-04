@@ -149,7 +149,11 @@ def reset_password_page(request):
                                                           {'form': form}))
 
 def profile_page(request, username):
-    user = User.objects.get(username=username)
+    user = None
+    if username is None:
+        user = request.user
+    else :
+        user = User.objects.get(username=username)
     user_profile = UserProfile.objects.get(user = user)
     return render_to_response('accounts/detail_profile.html', RequestContext(request,{
                                                                'user' : user,

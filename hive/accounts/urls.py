@@ -9,6 +9,7 @@ urlpatterns = patterns('accounts.views',
     url(r'^renew_password_email/(?P<key>\w+)/$', 'renew_password_page'),
     url(r'^reset_password/$', 'reset_password_page'),
     url(r'^people_list/$', 'people_list_page'),
+    url(r'^profile/$', 'profile_page'), #just display current user's profile
     url(r'^profile/(?P<username>\w+)/$', 'profile_page'),
     url(r'^addfollow/(?P<followee_id>\d+)/$', 'add_follow_page'),
     url(r'^removefollow/(?P<followee_id>\d+)/$', 'remove_follow_page'),
