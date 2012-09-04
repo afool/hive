@@ -3,7 +3,7 @@
 {% block content %}
 	{% for people in peoples %}
     	{{ people.user.username }} 
-		<a href="/accounts/addfollow/{{people.user.id}}/{{observer.id}}"><button>follow!</button></a>
+		<button followid="{{ people.user.id }}" class="followbutton" >follow!</button>
 		</br>
 		</hr>
     {% endfor %}
@@ -35,4 +35,23 @@
     	<input type="submit" value="search">
    </form>
       
+{% endblock %}
+{% block scripts %}
+<script>
+{% autoescape off %}
+	$(function(){
+		$('.followbutton').click(function(){
+			var follow_user_id = $(this).attr("followid")
+			var follow_btn = $(this)
+			$.get('/accounts/addfollow/' + follow_user_id + "/" , function(data) {
+				follow_btn.text("alreay followed")
+				follow_btn.unbind('click')
+
+			});
+
+		});
+
+	});
+{% endautoescape %}
+</script>
 {% endblock %}
