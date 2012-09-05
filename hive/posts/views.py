@@ -143,7 +143,7 @@ def upload_photos(request):
 def recent_photos(request):
     images = [
         {"thumb": obj.upload.url, "image": obj.upload.url}
-        for obj in Attachment.objects.filter(is_image=True).order_by("-date_created")[:20]
+        for obj in Attachment.objects.filter(is_image=True).order_by("-create_time")[:20]
     ]
     return HttpResponse(json.dumps(images), mimetype="application/json")
 
