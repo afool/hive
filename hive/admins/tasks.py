@@ -1,6 +1,7 @@
+from admins.models import ActivitiesInformation
 from celery import task
 from posts.models import Post, Like, Comment
-from admins.models import ActivitiesInformation
+
 import datetime
 
 @task(name='execute_analyze_activities')

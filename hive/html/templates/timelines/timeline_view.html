@@ -24,6 +24,7 @@ Hive Hive
 {% endblock %} <!-- /.menu -->
 
 {% block content %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
 	<!-- logout -->
 	<p>
 		<a href='/accounts/logout/'> log out </a>
@@ -32,7 +33,7 @@ Hive Hive
 	<p>
 		<form action="/posts/create_from_timeline/" method="post">{% csrf_token %}
 			say something! : </br> 
-    		<input type="text" name="post_contents">
+    		<textarea id="redactor_content" name="post_contents"></textarea>
     		<input type="submit" value="POST">
     	</form>
     </p>
@@ -51,5 +52,18 @@ Hive Hive
 		</form>
 		</hr>
 	{% endfor %}
-
+	
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.0.min.js"></script>
+	<script src="{{ STATIC_URL }}js/redactor.js"></script>
+	<script>
+		$(document).ready(
+			function()
+			{
+				$("form textarea").redactor({
+				    imageUpload: '{% url posts.views.upload_photos %}',
+				    imageGetJson: '{% url posts.views.recent_photos %}'
+				});
+			}
+		);
+	</script>
 {% endblock %}

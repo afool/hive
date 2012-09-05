@@ -1,10 +1,13 @@
-from django.db import models
+#from timelines.models import FollowerList, Timeline
+
 from django.contrib.auth.models import User
-from django.template.loader import render_to_string
+from django.db import models
 from django.db.models import F
 from django.http import Http404
+from django.template.loader import render_to_string
 
-#from timelines.models import FollowerList, Timeline
+import datetime
+
 
 class Post(models.Model):    
     contents = models.TextField()
@@ -81,10 +84,11 @@ class Post(models.Model):
 
 class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
-    create_time = models.DateTimeField(auto_now_add=True)
+    create_time = models.DateTimeField(default=datetime.datetime.now)
     description = models.CharField(max_length=100)
-    contents_file = models.FileField(upload_to='attachments/%Y/%m/%d')
+    upload = models.FileField(upload_to="uploads/%Y/%m/%d/")
     post = models.ForeignKey(Post)
+    is_image = models.BooleanField(default=True)
     class Meta:
         verbose_name_plural = "Attachments"
         ordering = ['-id']

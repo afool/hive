@@ -24,6 +24,33 @@ class ActivitiesInformation(models.Model):
         pass
 
 
+class CustomizeInformation(models.Model):
+    THEME_DEFAULT = 0
+    THEME_1 = 1
+    THEME_2 = 2
+    THEME_CHOICES = (
+                     (THEME_DEFAULT, "DEFAULT_THEME"),
+                     (THEME_1, "THEME_1"),
+                     (THEME_2, "THEME_2")
+                     )
+    
+    logo_file_name = models.CharField(max_length=100)
+    logo_file = models.FileField(upload_to="customize_info/")
+    theme = models.IntegerField(choices = THEME_CHOICES, default = THEME_DEFAULT)
+    default_profile_picture = models.FileField(upload_to="customize_info/")
+    
+    def __unicode__(self):
+        return "CustomizeInformation"
+    
+    def get_absolute_url(self):
+        return "/admins/customize/%d/" %(self.id)
+
+
+# Event - Event Management System
+class Event(models.Model):
+    pass
+
+
 # daily activities
 class Trend(models.Model):
     date = models.DateField()
@@ -49,30 +76,3 @@ class Trend(models.Model):
     
     def get_absolute_url(self):
         return "/admins/trend/%s/" %(self.date.strftime("%Y%b%d").lower())
-
-
-
-class CustomizeInformation(models.Model):
-    THEME_DEFAULT = 0
-    THEME_1 = 1
-    THEME_2 = 2
-    THEME_CHOICES = (
-                     (THEME_DEFAULT, "DEFAULT_THEME"),
-                     (THEME_1, "THEME_1"),
-                     (THEME_2, "THEME_2")
-                     )
-    
-    logo_file_name = models.CharField(max_length=100)
-    logo_file = models.FileField(upload_to="customize_info/")
-    theme = models.IntegerField(choices = THEME_CHOICES, default = THEME_DEFAULT)
-    default_profile_picture = models.FileField(upload_to="customize_info/")
-    
-    def __unicode__(self):
-        return "CustomizeInformation"
-    
-    def get_absolute_url(self):
-        return "/admins/customize/%d/" %(self.id)
-
-# Event - Event Management System
-class Event(models.Model):
-    pass
