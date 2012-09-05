@@ -18,13 +18,6 @@ from django.template import RequestContext
 import md5, time, datetime
 
 
-def add_follow_page(request, followee_id):
-    followee = User.objects.get(id=followee_id )
-    if not Following.objects.filter(followee=followee, follower =request.user ).count():
-        Following.objects.create(followee=followee, follower =request.user )
-    return HttpResponse("OK")
-
-
 def activation_page(request, key):
     try:
         user = EmailActivation.objects.get(activation_key=key)
@@ -47,6 +40,13 @@ def activation_page(request, key):
                                            RequestContext(request,
                                                           {'form': AuthenticationForm(),
                                                            'status': status}))
+
+
+def add_follow_page(request, followee_id):
+    followee = User.objects.get(id=followee_id )
+    if not Following.objects.filter(followee=followee, follower =request.user ).count():
+        Following.objects.create(followee=followee, follower =request.user )
+    return HttpResponse("OK")
 
 
 def email_register_page(request):
@@ -259,7 +259,6 @@ def register_userinfo_page(request, key):
                 return HttpResponseRedirect('/')    
                         
         return HttpResponseRedirect('/')            
-
 
 def remove_follow_page(request, followee_id):
     followee = User.objects.get(id=followee_id )
