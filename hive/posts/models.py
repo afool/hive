@@ -83,8 +83,9 @@ class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
     create_time = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=100)
-    contents_file = models.FileField(upload_to='attachments/%Y/%m/%d')
+    upload = models.FileField(upload_to="uploads/%Y/%m/%d/")
     post = models.ForeignKey(Post)
+    is_image = models.BooleanField(default=True)
     class Meta:
         verbose_name_plural = "Attachments"
         ordering = ['-id']
@@ -94,7 +95,6 @@ class Attachment(models.Model):
         
     def get_absolute_url(self):
         return "/posts/attachments/%d" %(self.id)
-
 
 class Comment(models.Model):
     text = models.TextField()
@@ -133,7 +133,4 @@ class Like(models.Model):
     def get_absolute_url(self):
         return "/posts/likes/%d/" %(self.id)
 
-class File(models.Model):
-    upload = models.FileField(upload_to="uploads/%Y/%m/%d/")
-    date_created = models.DateTimeField(default=datetime.datetime.now)
-    is_image = models.BooleanField(default=True)
+

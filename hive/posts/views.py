@@ -1,12 +1,15 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, Like, Comment
+from posts.models import Post, Like, Comment, Attachment
 from timelines.models import Timeline
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect,HttpResponse
 from forms import PostForm, AttachmentForm
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.db.models import F
+import json
 
 def index(request):
     pass
@@ -125,25 +128,13 @@ def create_comment(request, post_id):
     
     return HttpResponseRedirect('/')
 
-
-
-
-
-
-
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from posts.models import File
-import json
-
 @csrf_exempt
 @require_POST
 @login_required(login_url='/accounts/login')
 def upload_photos(request):
     images = []
     for f in request.FILES.getlist("file"):
-        obj = File.objects.create(upload=f, is_image=True)
+        obj = Attachment.objects.create(upload=f, is_image=True)
         images.append({"filelink": obj.upload.url})
     return HttpResponse(json.dumps(images), mimetype="application/json")
 
@@ -152,7 +143,7 @@ def upload_photos(request):
 def recent_photos(request):
     images = [
         {"thumb": obj.upload.url, "image": obj.upload.url}
-        for obj in File.objects.filter(is_image=True).order_by("-date_created")[:20]
+        for obj in Attachment.objects.filter(is_image=True).order_by("-date_created")[:20]
     ]
     return HttpResponse(json.dumps(images), mimetype="application/json")
 
