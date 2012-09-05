@@ -1,5 +1,11 @@
 <h2>Writer : {{ post.author }}</h2>
-<p>{{ post.contents }}</p>
+<p>
+	<!-- TO DO : using autoescape off is not safe,
+	 check whether post.contents is safe when User posts post-->
+	{% autoescape off %}
+	{{ post.contents }}
+	{% endautoescape %}
+</p>
 <p>
 	{{ post.render_liker_list }}  
 	{% if is_liked %}
