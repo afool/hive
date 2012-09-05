@@ -81,7 +81,7 @@ class Post(models.Model):
 
 class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
-    create_time = models.DateTimeField(auto_now_add=True)
+    create_time = models.DateTimeField(default=datetime.datetime.now)
     description = models.CharField(max_length=100)
     upload = models.FileField(upload_to="uploads/%Y/%m/%d/")
     post = models.ForeignKey(Post)
