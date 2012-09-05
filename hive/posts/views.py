@@ -1,12 +1,16 @@
 # Create your views here.
+import json
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, Like, Comment
+from posts.models import Post, Like, Comment, Attachment
 from timelines.models import Timeline
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from forms import PostForm, AttachmentForm
 from django.template import RequestContext
 from django.db.models import F
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
 
 def index(request):
     pass
@@ -89,6 +93,16 @@ def create_post_timeline(request):
     post = Post.objects.create(contents=post_contents, writer=request.user, author=request.user.username)
     post.save()
     
+    # fix uploaded data
+    if request.session.has_key("temporary_post_id"):
+        if request.session.has_key("upload_images"):
+            p = Post.objects.get(id=1)
+            upload_images = request.session["upload_images"]
+            Attachment.objects.filter(post=p).filter( 
+                id__in = upload_images ).update(post = post)
+            del request.session["upload_images"]            
+        del request.session["temporary_post_id"]
+    
     Timeline.objects.create(post = post, writer=post.writer)
     return HttpResponseRedirect('/')
 
@@ -125,6 +139,40 @@ def create_comment(request, post_id):
     
     return HttpResponseRedirect('/')
 
+@csrf_exempt
+@require_POST
+@login_required(login_url='/accounts/login')
+def upload_photos(request):
+    if request.session.has_key("upload_images"):
+        del request.session["upload_images"]
+    if not request.session.has_key("upload_images"):
+        request.session["upload_images"] = []
+        upload_images = []
+    
+    if request.session.has_key("temporary_post_id"):
+        del request.session["temporary_post_id"] 
+    if not request.session.has_key("temporary_post_id"):
+        request.session["temporary_post_id"] = 1
+    # TODO fix temporary post id    
+   
+    images = []
+    post = Post.objects.get(id=1)
+    for f in request.FILES.getlist("file"):
+        obj = Attachment.objects.create(post = post , upload=f, is_image=True)
+        images.append({"filelink": obj.upload.url})
+        upload_images.append(obj.id)
+        print obj.id
+    request.session["upload_images"] = upload_images
+    print request.session["upload_images"]
+    request.session.modified = True
+    return HttpResponse(json.dumps(images), mimetype="application/json")
 
 
-
+@login_required(login_url='/accounts/login')
+def recent_photos(request):
+    
+    images = [
+        {"thumb": obj.upload.url, "image": obj.upload.url}
+        for obj in Attachment.objects.filter(is_image=True).order_by("-create_time")[:20]
+    ]
+    return HttpResponse(json.dumps(images), mimetype="application/json")
