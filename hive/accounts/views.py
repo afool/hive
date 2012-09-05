@@ -120,11 +120,12 @@ def register_userinfo_page(request, key):
         
         if userinfo_form.is_valid():
             try:
+                user = EmailActivation.objects.get(activation_key=key)
+                
                 userinfo_form.clean_username()
                 userinfo_form.clean_password2()
                 new_user = userinfo_form.save()
                 
-                user = EmailActivation.objects.get(activation_key=key)
                 new_user.email = user.email
                 new_user.save() # Enroll Email
                 user.delete() # Delete Activation Key
@@ -134,20 +135,102 @@ def register_userinfo_page(request, key):
                                          followee_str = new_user.username,
                                          follower=new_user,
                                          follower_str = new_user.username)
-            except:
+            except ObjectDoesNotExist:
                 return HttpResponseRedirect('/')    
                         
         return HttpResponseRedirect('/')            
 
-def renew_password_page(request, key):
-    pass
+def forgot_password_page(request):
+    LETTER = '''Hello,\
+        \nYou've forgot the password!!\
+        \nYou have to go %s%s for the renew.\
+        \nGood Luck!\n\n- Hive, A fool team-'''
+    def _keygen(email):
+        email_key = md5.md5()
+        email_key.update(email + str(time.time()))
+        return email_key.hexdigest()
 
-def reset_password_page(request):
-    form = PasswordChangeForm(SetPasswordForm(forms.Form))
-    return render_to_response('accounts/reset_password.html',
+    def _is_registered(email):
+        try:
+            User.objects.get(email=email)
+            return True
+        except ObjectDoesNotExist:
+            return False
+        
+    def _is_validated(email):
+        try:
+            validate_email(email)
+            return True
+        except ValidationError:
+            return False
+        
+    if request.method == 'POST':
+        try:
+            email = request.POST['email']
+                        
+            if email and _is_registered(email) and _is_validated(email):
+                to_email = [email, ]
+
+                keygen = _keygen(email)
+                expire_date = str(datetime.datetime.today()+datetime.timedelta(days=15))
+                
+                message = LETTER % ( settings.TEST_DOMAIN_NAME + 'accounts/renew_password_email/', keygen)
+                
+                send_mail('Hive Password Renew', message, 'astin@iz4u.net', to_email, fail_silently=False)
+                                
+                EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
+            else:
+                status = 'Correct your email or No user.'
+                return render_to_response('accounts/login.html',
                                            RequestContext(request,
-                                                          {'form': form}))
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
+        except BadHeaderError:
+            status = 'Invalid access.'
+            return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
+    else:
+        status = 'Invalid access.'
+        return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
 
+    return HttpResponseRedirect('/')
+
+def renew_password_email_page(request, key):
+    try:
+        user_act = EmailActivation.objects.get(activation_key=key)
+        user = User.objects.get(email=user_act.email)
+        form = SetPasswordForm(forms.Form)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/')
+    
+    return render_to_response('accounts/renew_password.html',
+                                       RequestContext(request,
+                                                      {'form': form,
+                                                       'key': key}))
+
+def renew_password_page(request, key):
+    if request.method != "POST" :
+        return HttpResponseRedirect('/')
+    else:
+        user_act = EmailActivation.objects.get(activation_key=key)
+        user = User.objects.get(email=user_act.email) 
+        user_form = SetPasswordForm(request.POST)
+        if user_form.is_valid():
+            user_form.clean_new_password2()
+            user_form.save()
+            try:
+                user_act = EmailActivation.objects.get(activation_key=key)
+                user_act.delete() # Delete Activation Key
+            except ObjectDoesNotExist:
+                return HttpResponseRedirect('/')    
+                        
+        return HttpResponseRedirect('/')
+    
 def profile_page(request, username):
     user = None
     if username is None:
