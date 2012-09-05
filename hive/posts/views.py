@@ -1,12 +1,13 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, Like, Comment
+from django.views.decorators.http import require_POST
 from timelines.models import Timeline
 from django.http import Http404, HttpResponseRedirect
 from forms import PostForm, AttachmentForm
 from django.template import RequestContext
 from django.db.models import F
+from posts.models import Post, Like, Comment
 
 def index(request):
     pass
@@ -124,7 +125,4 @@ def create_comment(request, post_id):
                                          post=post)
     
     return HttpResponseRedirect('/')
-
-
-
 

@@ -5,6 +5,7 @@ from timelines.models import Timeline
 from posts.models import Like
 from accounts.models import Following
 
+
 @login_required(login_url='/accounts/login')
 def main_timeline_contents(request):
     if request.is_ajax() is True:
