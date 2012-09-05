@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.db.models import F
 from django.http import Http404
-
+import datetime
 #from timelines.models import FollowerList, Timeline
 
 class Post(models.Model):    
@@ -132,3 +132,8 @@ class Like(models.Model):
         
     def get_absolute_url(self):
         return "/posts/likes/%d/" %(self.id)
+
+class File(models.Model):
+    upload = models.FileField(upload_to="uploads/%Y/%m/%d/")
+    date_created = models.DateTimeField(default=datetime.datetime.now)
+    is_image = models.BooleanField(default=True)

@@ -7,5 +7,8 @@ urlpatterns = patterns('posts.views',
     url(r'(?P<post_id>\d+)/on_unliked/$', 'on_unliked'),
     url(r'create/$', 'create_post'),
     url(r'create_from_timeline/$', 'create_post_timeline'),
-    url(r'file_upload/','upload_attachments')
+    url(r'file_upload/','upload_attachments'),
+    
+    url(r"ajax/photos/upload/$", "upload_photos", name="upload_photos"),
+    url(r"ajax/photos/recent/$", "recent_photos", name="recent_photos")
 )
