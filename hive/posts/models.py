@@ -1,11 +1,13 @@
-from django.db import models
+#from timelines.models import FollowerList, Timeline
+
 from django.contrib.auth.models import User
-from django.template.loader import render_to_string
+from django.db import models
 from django.db.models import F
 from django.http import Http404
+from django.template.loader import render_to_string
+
 import datetime
 
-#from timelines.models import FollowerList, Timeline
 
 class Post(models.Model):    
     contents = models.TextField()

@@ -1,64 +1,39 @@
-# Create your views here.
-import json
-from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from forms import PostForm, AttachmentForm
 from posts.models import Post, Like, Comment, Attachment
 from timelines.models import Timeline
-from django.http import Http404, HttpResponseRedirect, HttpResponse
-from forms import PostForm, AttachmentForm
-from django.template import RequestContext
+
+from django.contrib.auth.decorators import login_required
 from django.db.models import F
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+import json
 
-def index(request):
-    pass
-
-def one_of_post_detail(request, post_id):
-    try:
-        post = Post.objects.get(id = post_id)
-    except Post.DoesNotExist:
-        raise Http404
-    
-    return render_to_response('posts/post_detail.html', RequestContext(request, {
-                             'post': post
-                            }))
 
 @login_required(login_url='/accounts/login')
-def on_liked(request, post_id):
-    try :
-        post = Post.objects.get(id = post_id)
-    except Post.DoesNotExist:
-        raise Http404
+def create_comment(request, post_id):
+    if request.method != "POST" :
+        print "Error, Invalid access. <%s>" %(request.method)
+        return HttpResponseRedirect('/')
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist :
+        print "Can't find Post <id:%d>" %(post_id)
+        return HttpResponseRedirect('/')
     
-    like = Like.objects.create(liker=request.user, post=post)
-    like.save()
-    post.on_liked(request.user)
+    comment_text = request.POST['comment_text']
+    post.comments_count = F('comments_count')+1
+    post.save()
+    Comment.objects.create(text=comment_text,
+                                         writer=request.user,
+                                         author=request.user.username,
+                                         post=post)
     
-    # To Do : just re render only the Liked Post ( not redirect and render whole page)
     return HttpResponseRedirect('/')
 
-@login_required(login_url='/accounts/login')
-def on_unliked(request, post_id):
-    try:
-        post = Post.objects.get(id = post_id)
-    except Post.DoesNotExist:
-        print "Can't find Post id:%d" %(post_id)
-        raise Http404
-    
-    try:
-        like = Like.objects.get(post=post, liker=request.user)
-    except Like.DoesNotExist:
-        print "Can't find Like about %s by %s" %(post, request.user)
-        raise Http404
-    
-    post.on_unliked(like.liker)
-    like.delete()
-    
-    # To Do : just re render only the Liked Post ( not redirect and render whole page)
-    return HttpResponseRedirect('/')
-    
 
 @login_required(login_url='/accounts/login')
 def create_post(request):
@@ -106,6 +81,67 @@ def create_post_timeline(request):
     Timeline.objects.create(post = post, writer=post.writer)
     return HttpResponseRedirect('/')
 
+
+def index(request):
+    pass
+
+
+@login_required(login_url='/accounts/login')
+def on_liked(request, post_id):
+    try :
+        post = Post.objects.get(id = post_id)
+    except Post.DoesNotExist:
+        raise Http404
+    
+    like = Like.objects.create(liker=request.user, post=post)
+    like.save()
+    post.on_liked(request.user)
+    
+    # To Do : just re render only the Liked Post ( not redirect and render whole page)
+    return HttpResponseRedirect('/')
+
+@login_required(login_url='/accounts/login')
+def on_unliked(request, post_id):
+    try:
+        post = Post.objects.get(id = post_id)
+    except Post.DoesNotExist:
+        print "Can't find Post id:%d" %(post_id)
+        raise Http404
+    
+    try:
+        like = Like.objects.get(post=post, liker=request.user)
+    except Like.DoesNotExist:
+        print "Can't find Like about %s by %s" %(post, request.user)
+        raise Http404
+    
+    post.on_unliked(like.liker)
+    like.delete()
+    
+    # To Do : just re render only the Liked Post ( not redirect and render whole page)
+    return HttpResponseRedirect('/')
+
+
+def one_of_post_detail(request, post_id):
+    try:
+        post = Post.objects.get(id = post_id)
+    except Post.DoesNotExist:
+        raise Http404
+    
+    return render_to_response('posts/post_detail.html', RequestContext(request, {
+                             'post': post
+                            }))    
+
+
+@login_required(login_url='/accounts/login')
+def recent_photos(request):
+    
+    images = [
+        {"thumb": obj.upload.url, "image": obj.upload.url}
+        for obj in Attachment.objects.filter(is_image=True).order_by("-create_time")[:20]
+    ]
+    return HttpResponse(json.dumps(images), mimetype="application/json")
+
+
 @login_required(login_url='/accounts/login')
 def upload_attachments(request):
     if request.method == "POST":
@@ -118,26 +154,6 @@ def upload_attachments(request):
         form = AttachmentForm()
         return render_to_response('posts/upload_attachments.html', RequestContext(request, {'form':form}))
 
-@login_required(login_url='/accounts/login')
-def create_comment(request, post_id):
-    if request.method != "POST" :
-        print "Error, Invalid access. <%s>" %(request.method)
-        return HttpResponseRedirect('/')
-    try:
-        post = Post.objects.get(id=post_id)
-    except Post.DoesNotExist :
-        print "Can't find Post <id:%d>" %(post_id)
-        return HttpResponseRedirect('/')
-    
-    comment_text = request.POST['comment_text']
-    post.comments_count = F('comments_count')+1
-    post.save()
-    Comment.objects.create(text=comment_text,
-                                         writer=request.user,
-                                         author=request.user.username,
-                                         post=post)
-    
-    return HttpResponseRedirect('/')
 
 @csrf_exempt
 @require_POST
@@ -165,14 +181,4 @@ def upload_photos(request):
     request.session["upload_images"] = upload_images
     print request.session["upload_images"]
     request.session.modified = True
-    return HttpResponse(json.dumps(images), mimetype="application/json")
-
-
-@login_required(login_url='/accounts/login')
-def recent_photos(request):
-    
-    images = [
-        {"thumb": obj.upload.url, "image": obj.upload.url}
-        for obj in Attachment.objects.filter(is_image=True).order_by("-create_time")[:20]
-    ]
     return HttpResponse(json.dumps(images), mimetype="application/json")
