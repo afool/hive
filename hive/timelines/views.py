@@ -1,9 +1,11 @@
-from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from timelines.models import Timeline
-from posts.models import Like
 from accounts.models import Following
+from posts.models import Like
+from timelines.models import Timeline
+
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
+
 
 @login_required(login_url='/accounts/login')
 def main_timeline_contents(request):
