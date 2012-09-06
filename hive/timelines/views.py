@@ -13,6 +13,7 @@ def main_timeline_contents(request):
         pass
     
     user = request.user
+    user_profile = UserProfile.objects.get(user = user)
     timelines = Timeline.objects.select_related(depth=1).filter(
                                         writer__in = Following.objects.filter(follower=user).values("followee")
                                         ).all()
@@ -24,7 +25,8 @@ def main_timeline_contents(request):
             timeline.is_liked = True
     return render_to_response('timelines/timeline_view.html', RequestContext(request,{
                                                                                         'timelines':timelines,
-                                                                                        'user': user
+                                                                                        'user': user,
+                                                                                        'user_profile': user_profile
                                                                                         }))
 @login_required(login_url='/accounts/login')
 def my_timeline_contents(request):
