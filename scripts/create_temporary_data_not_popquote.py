@@ -18,3 +18,5 @@ for x in range(10):
         now = now + datetime.timedelta(minutes=1)
         post = Post.objects.create( contents = post_content , create_time = now , writer = user , author = user.username)
         Timeline.objects.create( writer = user , post = post )
+
+

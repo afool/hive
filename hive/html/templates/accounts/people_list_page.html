@@ -4,9 +4,9 @@
 	{% for people in peoples %}
     	{{ people.user.username }} 
 		{% if people.user.id not in followers_id_list %}
-		<button followid="{{ people.user.id }}" class="followbutton" >follow!</button>
+		<button followid="{{ people.user.id }}" class="followbutton btn-followbutton" >follow!</button>
 		{% else %}
-		<button followid="{{ people.user.id }}" class="unfollowbutton" >alreay followed!</button>
+		<button followid="{{ people.user.id }}" class="unfollowbutton btn-followbutton" >alreay followed!</button>
 		{% endif %}
 		</br>
 		</hr>
@@ -48,22 +48,21 @@
 			var follow_user_id = $(this).attr("followid")
 			var follow_btn = $(this)
 			$.get('/accounts/addfollow/' + follow_user_id + "/" , function(data) {
-				follow_btn.text("alreay followed")
-				follow_btn.unbind('click')
-				follow_btn.addClass("unfollowbutton")
-
+				follow_btn.text("alreay followed!");
+				follow_btn.unbind('click');
+				follow_btn.parent().addClass("unfollowbutton btn-followbutton");
+				follow_btn.parent().removeClass("followbutton btn-followbutton");
 			});
-
 		});
 		$('.unfollowbutton').click(function(){
 			var unfollow_user_id = $(this).attr("followid")
 			var unfollow_btn = $(this)
 			$.get('/accounts/removefollow/' + unfollow_user_id + "/" , function(data) {
-				unfollow_btn.text("follow!")
-				unfollow_btn.unbind('click')
-				unfollow_btn.addClass("followbutton")
+				unfollow_btn.text("follow!");
+				unfollow_btn.unbind('click');
+				unfollow_btn.parent().addClass("followbutton btn-followbutton");
+				unfollow_btn.parent().removeClass("unfollowbutton btn-followbutton");
 			});
-
 		});
 
 
