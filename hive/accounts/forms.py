@@ -5,44 +5,6 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 
 
-class SetPasswordForm(ModelForm):
-    """
-    A form that lets a user change set his/her password without entering the
-    old password
-    """
-    error_messages = {
-        'password_mismatch': ("The two password fields didn't match."),
-    }
-    new_password1 = forms.CharField(label=("New password"),
-                                    widget=forms.PasswordInput)
-    new_password2 = forms.CharField(label=("New password confirmation"),
-                                    widget=forms.PasswordInput)
-    
-    class Meta:
-        model = User
-        fields = ()
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(SetPasswordForm, self).__init__(*args, **kwargs)
-
-    def clean_new_password2(self):
-        password1 = self.cleaned_data.get('new_password1')
-        password2 = self.cleaned_data.get('new_password2')
-        if password1 and password2:
-            if password1 != password2:
-                raise forms.ValidationError(
-                    self.error_messages['password_mismatch'])
-        return password2
-
-    def save(self, user, commit=True):
-        user = super(SetPasswordForm(user), self).save(commit=False)
-        user.set_password(self.cleaned_data['new_password1'])
-        if commit:
-            user.save()
-        return user
-
-
 class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
