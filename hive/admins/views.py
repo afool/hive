@@ -90,3 +90,6 @@ def trend_overview(request):
     return render_to_response('admins/trend_overview.html',RequestContext(request,{
                                                                          'trend_list':trend_list
                                                                         }))
+
+def test_page(request):
+    return render_to_response('admins/test.html')
