@@ -5,8 +5,15 @@
 {% block menu %}
 Hive Hive
 <div class="well sidebar-nav">
- <ul class="nav nav-list">
-  <li><a href="/timelines/my_timeline/">{{ user }}</a></li>
+ <ul class="nav nav-list"> 
+  <li>
+		{% if user_profile.portrait %}
+			<img src="{{ MEDIA_URL }}">
+		{% else %}
+			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
+		{% endif %}
+		<a href="/timelines/my_timeline/">{{ user.username }}</a>
+  </li>
   <li class="nav-header">Timeline</li>
   <li class="active"><a href="/">Main Timeline</a></li>
   <li><a href="#">Humor Timeline</a></li>
