@@ -2,28 +2,6 @@
 
 {% block title %} timeline {% endblock %}
 
-{% block menu %}
-Hive Hive
-<div class="well sidebar-nav">
- <ul class="nav nav-list">
-  <li><a href="/timelines/my_timeline/">{{ user }}</a></li>
-  <li class="nav-header">Timeline</li>
-  <li class="active"><a href="/">Main Timeline</a></li>
-  <li><a href="#">Humor Timeline</a></li>
-  <li><a href="#">Notice Timeline</a></li>
-  <li><a href="#">Custom Timeline</a></li>
-  <li class="nav-header">People</li>
-  <li><a href="/accounts/people_list/">People List</a></li>
-  <li><a href="#">Who I Followed</a></li>
-  <li><a href="#">Who Followed me</a></li>
-  <li class="nav-header">Mention</li>
-  <li><a href="#">Link</a></li>
-  <li><a href="#">Link</a></li>
-  <li><a href="#">Link</a></li>
- </ul>
-</div><!--/.well -->
-{% endblock %} <!-- /.menu -->
-
 {% block content %}
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
 	<!-- logout -->
