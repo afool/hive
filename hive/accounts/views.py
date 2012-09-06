@@ -1,5 +1,5 @@
 from accounts.models import UserProfile, Following
-from forms import UserRegistrationForm
+from forms import UserProfileForm, UserRegistrationForm
 from hive import settings 
 from models import EmailActivation
 
@@ -232,6 +232,7 @@ def profile_page(request, username):
                                                                }))
 
 
+
 def register_userinfo_page(request, key):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
@@ -273,10 +274,10 @@ def renew_password_email_page(request, key):
         
         # TODO: Send user instance into SetPassword Form
         # I try to insert it through __init__, forms.py and other ways, but T.T
-        
-        form = SetPasswordForm(forms.Form)
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/')
+    
+    form = SetPasswordForm(forms.Form)
     
     return render_to_response('accounts/renew_password.html',
                                        RequestContext(request,
@@ -299,3 +300,26 @@ def renew_password_page(request, key):
                 return HttpResponseRedirect('/')    
                         
         return HttpResponseRedirect('/')
+    
+
+def update_profile_page(request):
+    if request.user is None:
+        return HttpResponseRedirect('/')
+    
+    profile_form = UserProfileForm()
+    
+    return render_to_response('accounts/update_profile.html',
+                                    RequestContext(request,
+                                                   { 'profile_form' : profile_form }))
+
+def update_profile_save_page(request):
+    if request.method != "POST" :
+        return HttpResponseRedirect('/')
+    else: 
+        profile_form = UserProfileForm(request.POST)
+        if profile_form.is_valid():
+            profile_form.save()
+        else:
+            return HttpResponseRedirect('/')
+                                
+        return HttpResponseRedirect('/timelines/my_timeline/')
