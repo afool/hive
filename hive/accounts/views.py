@@ -4,7 +4,7 @@ from hive import settings
 from models import EmailActivation
 
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, SetPasswordForm
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
 #from django.core.cache import cache
 from django.core.mail import BadHeaderError, send_mail
@@ -262,7 +262,7 @@ def register_userinfo_page(request, key):
 
 def remove_follow_page(request, followee_id):
     followee = User.objects.get(id=followee_id )
-    Following.objects.filter(followee=followee, follower =request.user ).all().delete()
+    Following.objects.filter(followee=followee, follower=request.user ).all().delete()
     return HttpResponse("OK")
 
 
@@ -270,8 +270,11 @@ def renew_password_email_page(request, key):
     try:
         user_act = EmailActivation.objects.get(activation_key=key)
         user = User.objects.get(email=user_act.email)
+        
+        # TODO: Send user instance into SetPassword Form
+        # I try to insert it through __init__, forms.py and other ways, but T.T
+        
         form = SetPasswordForm(forms.Form)
-        form.__init__(user=user)
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/')
     
@@ -284,9 +287,7 @@ def renew_password_email_page(request, key):
 def renew_password_page(request, key):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
-    else:
-        user_act = EmailActivation.objects.get(activation_key=key)
-        user = User.objects.get(email=user_act.email) 
+    else: 
         user_form = SetPasswordForm(request.POST)
         if user_form.is_valid():
             user_form.clean_new_password2()
