@@ -1,9 +1,11 @@
-<html>
-	<head>
-		<title>admin page</title>
-	</head>
-	<body>
-    	<h2> Latest Activities : activities of {{latest_activities.date}} </h2>
+{% extends "base.html" %}
+
+{% block title %}
+<title>admin page</title>
+{% endblock %}
+
+{% block content %}
+	<h2> Latest Activities : activities of {{latest_activities.date}} </h2>
     	<p>
     		number of posts : {{latest_activities.num_posts}} </br>
     		number of likes : {{latest_activities.num_likes}} </br>
@@ -26,6 +28,5 @@
     		total points : {{trend.total_points }} </br>
     	</p>    	
     	{% endfor %}
-    	<a href='/admins/trend/'>View Trends Overview</a>
-	</body>
-</html>
+    	<a href='/admins/trend/'>View Trends Overview</a>      
+{% endblock %}
