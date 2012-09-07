@@ -47,20 +47,15 @@ Hive Hive
     </p>
     
     <!-- timeline -->				
-	<h1>Test Timeline</h1>
-    {% for timeline in timelines %}
-    	{% with post=timeline.post %}
-		{% if post.comments_count > 0 %}
-			{% include "posts/post_render.html" with post=post comment_list=post.comment_set.all %}
-		{% else %}
-			{% include "posts/post_render.html" with post=post %}
-		{% endif %}
-        {% endwith %}
-    {% endfor %}
+    <div id="timeline_container">
+	{% include "timelines/timeline_timeline.html" %}
+    </div>
+	<button id="loadmore" class="btn-large btn-block btn"> LoadMore </button>
 	
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.0.min.js"></script>
 	<script src="{{ STATIC_URL }}js/redactor.js"></script>
 	<script> 
+		var last_timeline_id = {{ last_timeline_id }} ;
 		$(document).ready(
 			function()
 			{
@@ -68,6 +63,14 @@ Hive Hive
 				    imageUpload: '{% url posts.views.upload_photos %}',
 				    imageGetJson: '{% url posts.views.recent_photos %}'
 				});
+				$("#loadmore").click(function(){
+					// http://127.0.0.1:8000/timelines/get_more_timeline/100/
+					// timeline_container
+				var req_url='/timelines/get_more_timeline/'+last_timeline_id + '/'
+				$.get(req_url,function(data){
+					$("#timeline_container").append(data)
+				})
+				})
 			}
 		);
 	</script>
