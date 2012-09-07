@@ -3,7 +3,6 @@ from forms import UserProfileForm, UserRegistrationForm
 from hive import settings 
 from models import EmailActivation
 
-from django import forms
 from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
 #from django.core.cache import cache
@@ -295,7 +294,9 @@ def renew_password_page(request, key):
 
         if user_form.is_valid():
             user_form.clean_new_password2()
-            user_form.save()        
+            user_form.save() 
+            
+            # Delete Activation Key       
             user_act.delete()
                  
         return HttpResponseRedirect('/')
@@ -304,7 +305,6 @@ def renew_password_page(request, key):
 def update_profile_page(request):
     if request.user is None:
         return HttpResponseRedirect('/')
-    
     
     profile_form = UserProfileForm()
     
@@ -317,8 +317,8 @@ def update_profile_save_page(request):
         return HttpResponseRedirect('/')
     else:
         user = UserProfile.objects.get(user=request.user) 
-        profile_form = UserProfileForm(request.POST, instance=user)
-        
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=user)
+
         if profile_form.is_valid():
             profile_form.save()
         else:

@@ -8,9 +8,9 @@ Hive Hive
  <ul class="nav nav-list"> 
   <li>
 		{% if user_profile.portrait %}
-			<img src="{{ MEDIA_URL }}">
+			<img src="{{ STATIC_URL }}">
 		{% else %}
-			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
+			<img src="{{ STATIC_URL }}img/user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
 		{% endif %}
 		<a href="/timelines/my_timeline/">{{ user.username }}</a>
   </li>
@@ -54,16 +54,11 @@ Hive Hive
 		{% else %}
 			{{ timeline.post.get_rendered }}
 		{% endif %}
-		<!-- Comment Form -->
-		<form action="/posts/create_comment/{{ timeline.post.id }}/" method="post">{% csrf_token %}
-			</t>comment : <input type="text" name="comment_text"><input type="submit" value="COMMENT">
-		</form>
-		</hr>
 	{% endfor %}
 	
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.0.min.js"></script>
 	<script src="{{ STATIC_URL }}js/redactor.js"></script>
-	<script>
+	<script> 
 		$(document).ready(
 			function()
 			{
