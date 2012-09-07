@@ -1,17 +1,15 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.loader import render_to_string
-from django.core.files.storage import FileSystemStorage
+
 import uuid
-import hive.settings
-import os
 
 
 class EmailActivation(models.Model):
     activation_key = models.CharField(max_length=40)
     email = models.EmailField(unique=True)
     expire_date = models.DateTimeField()
-    #activation_user = models.ForeignKey(User)
+
 
 class Following(models.Model):
     followee = models.ForeignKey(User, related_name = 'following_followee')
