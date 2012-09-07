@@ -33,20 +33,35 @@
 			{{ post.render_liker_list }}  
 		</div>
 		<div class="comment_container">
+			<table class="table ">
 			{% if post.comments_count > 0 %}
 			<p>comment : {{ post.comments_count }}</p>
-			<ul>
 				{% for comment in comment_list %}
-					<li>{{ comment.get_rendered }}</li>
+					<tr>
+					<td width="60px" >
+					<img src="{{ STATIC_URL }}img/user_profile/default.png" class="img-polaroid" >
+					</td>
+					<td> 
+						<strong>{{ post.author }}</strong>
+						{{ comment.text }} <br/>
+						<small>{{ comment.create_time|timesince}} ago</small>
+					</td>
+					</tr>
 				{% endfor %}
-			</ul>
 			{% endif %}
-		</div>
-		<div class="comment_form_container">
-			<!-- Comment Form -->
+					<tr>
+					<td width="60px" >
+					<img src="{{ STATIC_URL }}img/user_profile/default.png" class="img-polaroid" >
+					</td>
+					<td> 
+			<!-- comment form -->
 			<form action="/posts/create_comment/{{ post.id }}/" method="post">{% csrf_token %}
-				</t>comment : <input type="text" name="comment_text"><input type="submit" value="COMMENT">
+			<input type="text" name="comment_text" >
 			</form>
+					</td>
+					</tr>
+
+			</table>
 		</div>
 	</div>
 </div>
