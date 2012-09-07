@@ -8,6 +8,24 @@ from django.template import RequestContext
  
 import datetime, time
 
+def index(request):
+    try:
+        latest_activities = ActivitiesInformation.objects.all().order_by('-date')[:1].get()        
+#        
+#        activities_list = list(ActivitiesInformation.objects.all().order_by('-date')[:1])
+#        if len(activities_list) is 0:
+#            print "Error, No Activities Information"
+#            raise Http404
+    except ActivitiesInformation.DoesNotExist:
+        raise Http404
+    
+    trend_list = Trend.objects.all().order_by('date')[:20]
+    
+    return render_to_response('admins/admins_index.html',RequestContext(request,{
+                                'latest_activities':latest_activities,
+                                'trend_list':trend_list
+                               }))
+
 
 def activities_detail(request, year, month, day):
     date_stamp = time.strptime(year+month+day, "%Y%b%d")
@@ -30,38 +48,16 @@ def activities_form_set(request):
 def activities_overview(request):
     try:
         activities_list = ActivitiesInformation.objects.all().order_by('-date')[:10]
-        if len(activities_list) is 0:
-            print "Error, No ActivitiesInformation"
-            raise Http404
-                    
     except ActivitiesInformation.DoesNotExist :
+        print "Error, No ActivitiesInformation"
         raise Http404
     
     return render_to_response('admins/activities_overview.html',RequestContext(request,{
                                 'activities_list':activities_list,
                                }))
 
-
 def customize_detail(request, customize_id):
     pass
-
-
-def index(request):
-    try:
-        activities_list = list(ActivitiesInformation.objects.all().order_by('-date')[:1])
-        if len(activities_list) is 0:
-            print "Error, No Activities Information"
-            raise Http404
-    except ActivitiesInformation.DoesNotExist:
-        raise Http404
-    
-    latest_activities = activities_list.pop()
-    trend_list = Trend.objects.all().order_by('date')[:20]
-    
-    return render_to_response('admins/admins_index.html',RequestContext(request,{
-                                'latest_activities':latest_activities,
-                                'trend_list':trend_list
-                               }))
 
 
 def trend_detail(request, year, month, day):
@@ -81,10 +77,8 @@ def trend_detail(request, year, month, day):
 def trend_overview(request):
     try:
         trend_list = Trend.objects.all().order_by('-date')[:10]
-        if len(trend_list) is 0:
-            print "Error, No Trend"
-            raise Http404
     except Trend.DoesNotExist:
+        print "Error, No Trend"
         raise Http404
     
     return render_to_response('admins/trend_overview.html',RequestContext(request,{
