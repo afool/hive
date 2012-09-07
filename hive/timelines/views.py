@@ -42,8 +42,9 @@ def main_timeline_contents(request,request_timeline_id=None):
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
 
+
 @login_required(login_url='/accounts/login')
-def my_timeline_contents(request):
+def my_timeline_contents(request, username):
     if request.is_ajax() is True:
         pass
     
