@@ -59,7 +59,7 @@ class UserProfile(models.Model):
         return "%s's profile" %(self.user.username)
     
     def get_absolute_url(self):
-        return '/accounts/profile/%s' %(self.user.username)
+        return '/timelines/my_timeline/%s' % (self.user.username)
     
     def get_image(self):
         if self.portrait == "":

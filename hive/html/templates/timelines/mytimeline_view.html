@@ -6,7 +6,7 @@
 	<ul>
 		<li>
 			<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
-			<a href="/timelines/my_timeline/">{{ user.username }}</a>
+			<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
 		</li>
 		{% if user.get_profile.department %}<li>{{ user.get_profile.department }}</li>{% endif %}
 		{% if user.get_profile.position %}<li>{{ user.get_profile.position }}</li>{% endif %}
