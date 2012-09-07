@@ -8,8 +8,8 @@
 			<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
 			<a href="/timelines/my_timeline/">{{ user.username }}</a>
 		</li>
-		{% if user_profile.department %}<li>{{ user_profile.department }}</li>{% endif %}
-		{% if user_profile.position %}<li>{{ user_profile.position }}</li>{% endif %}
+		{% if user.get_profile.department %}<li>{{ user.get_profile.department }}</li>{% endif %}
+		{% if user.get_profile.position %}<li>{{ user.get_profile.position }}</li>{% endif %}
 		<li><a href="/accounts/update_profile/">profile update</a></li>
 	</ul>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
