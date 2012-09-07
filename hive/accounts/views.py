@@ -312,16 +312,19 @@ def update_profile_page(request):
                                     RequestContext(request,
                                                    { 'profile_form' : profile_form }))
 
+
 def update_profile_save_page(request):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
     else:
-        user = UserProfile.objects.get(user=request.user) 
+        user = UserProfile.objects.get(user=request.user)
+         
         profile_form = UserProfileForm(request.POST, request.FILES, instance=user)
-
+        
         if profile_form.is_valid():
             profile_form.save()
         else:
+            #print profile_form.errors
             return HttpResponseRedirect('/')
                                 
         return HttpResponseRedirect('/timelines/my_timeline/')

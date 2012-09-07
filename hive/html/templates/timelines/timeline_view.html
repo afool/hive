@@ -7,11 +7,7 @@ Hive Hive
 <div class="well sidebar-nav">
  <ul class="nav nav-list"> 
   <li>
-		{% if user_profile.portrait %}
-			<img src="{{ STATIC_URL }}">
-		{% else %}
-			<img src="{{ STATIC_URL }}img/user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
-		{% endif %}
+		<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
 		<a href="/timelines/my_timeline/">{{ user.username }}</a>
   </li>
   <li class="nav-header">Timeline</li>
@@ -47,25 +43,38 @@ Hive Hive
     </p>
     
     <!-- timeline -->				
-	<h1>Test Timeline</h1>
-    {% for timeline in timelines %}
-    	{% if timeline.is_liked %}
-			{{ timeline.post.get_rendered_liked }}
-		{% else %}
-			{{ timeline.post.get_rendered }}
-		{% endif %}
-	{% endfor %}
+    <div id="timeline_container">
+	{% include "timelines/timeline_timeline.html" %}
+    </div>
+	<button id="loadmore" class="btn-large btn-block btn"> LoadMore </button>
 	
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.0.min.js"></script>
 	<script src="{{ STATIC_URL }}js/redactor.js"></script>
 	<script> 
+		var last_timeline_id = {{ last_timeline_id }} ;
 		$(document).ready(
 			function()
 			{
+
 				$("form textarea").redactor({
 				    imageUpload: '{% url posts.views.upload_photos %}',
 				    imageGetJson: '{% url posts.views.recent_photos %}'
 				});
+				$("#loadmore").click(function(){
+					// http://127.0.0.1:8000/timelines/get_more_timeline/100/
+					// timeline_container
+				var req_url='/timelines/get_more_timeline/'+last_timeline_id + '/'
+				$.get(req_url,function(data){
+					$("#timeline_container").append(data)
+				})
+				})
+
+				// anchor detect and scroll to
+				var hash = window.location.hash;
+				if( hash != ""){
+				var new_position = $(hash).offset()
+				window.scrollTo(new_position.left, new_position.top);
+				}
 			}
 		);
 	</script>

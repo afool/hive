@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+admin page
+{% endblock %}
+
+{% block menu %}
+<div class="well sidebar-nav">
+ <ul class="nav nav-list"> 
+  <li class="nav-header">Control</li>
+  <li><a href="../">Main</a></li>
+  <li class="nav-header">Analytics</li>
+  <li><a href="../posts/">Posts</a></li>
+  <li><a href="../likes/">Likes</a></li>
+  <li><a href="../comments/">Comments</a></li>
+  <li><a href="../feeds/">Web Feeds</a></li>
+  <li class="active"><a href="#">Messages</a></li>
+ </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <table id="data">
+        <h2>Last 3 Days Messages</h2>
+        <tfoot>
+            <tr>
+	        {% for activity in latest_activities %}
+                <th>{{ activity.date|date:"Y-m-d" }}</th>
+            {% endfor %}
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+            {% for activity in latest_activities %}
+                <td>{{ activity.num_messages }}</td>
+            {% endfor %}
+            </tr>
+       </tbody>
+    </table>
+
+	<div id="holder"></div>
+	<script type="text/javascript" src="/static/js/raphael.js"></script>
+	<script type="text/javascript" src="/static/js/popup.js"></script>
+	<script type="text/javascript" src="/static/js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="/static/js/analytics2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $('.nav li').eq(0).attr('class','')
+            $('.nav li').eq(2).attr('class','active')
+        });
+    </script>
+{% endblock %}

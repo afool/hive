@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+admin page
+{% endblock %}
+
+{% block menu %}
+<div class="well sidebar-nav">
+ <ul class="nav nav-list"> 
+  <li class="nav-header">Control</li>
+  <li class="active"><a href="#">Main</a></li>
+  <li class="nav-header">Analytics</li>
+  <li><a href="posts/">Posts</a></li>
+  <li><a href="likes/">Likes</a></li>
+  <li><a href="comments/">Comments</a></li>
+  <li><a href="feeds/">Web Feeds</a></li>
+  <li><a href="messages/">Messages</a></li>
+ </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <h2>Last 3 Days Summary</h2>
+        {% for activity in last_activites %}
+        <p><b>{{ activity.date }}</b></p>
+        <ul>
+            <li><b>Post</b> - {{ activity.num_posts }}</li>
+            <li><b>Like</b> - {{ activity.num_likes }}</li>
+            <li><b>Comment</b> - {{ activity.num_comments }}</li>
+            <li><b>Web Feed</b> - {{ activity.num_web_feeds }}</li>
+            <li><b>Messages</b> - {{ activity.num_messages }}</li>
+        </ul>
+        {% endfor %}
+    <script type="text/javascript" src="/static/js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $('.nav li').eq(0).attr('class','')
+            $('.nav li').eq(2).attr('class','active')
+        });
+    </script>
+{% endblock %}

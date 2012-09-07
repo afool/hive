@@ -5,26 +5,18 @@ from django.forms.models import modelformset_factory
 from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
- 
-import datetime, time
+import datetime
+from datetime import time, timedelta
 
-def index(request):
-    try:
-        latest_activities = ActivitiesInformation.objects.all().order_by('-date')[:1].get()        
-#        
-#        activities_list = list(ActivitiesInformation.objects.all().order_by('-date')[:1])
-#        if len(activities_list) is 0:
-#            print "Error, No Activities Information"
-#            raise Http404
-    except ActivitiesInformation.DoesNotExist:
-        raise Http404
-    
-    trend_list = Trend.objects.all().order_by('date')[:20]
-    
-    return render_to_response('admins/admins_index.html',RequestContext(request,{
-                                'latest_activities':latest_activities,
-                                'trend_list':trend_list
-                               }))
+def get_last_activities():
+    #under code is too long, must be refact code
+    test_data = [ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=2)).isoformat()),
+                 ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=1)).isoformat()),
+                 ActivitiesInformation.objects.get(date=datetime.date.today().isoformat())]
+    return test_data
+
+def main(request):
+    return render_to_response('admins/admins_main.html',RequestContext(request,{'last_activites':get_last_activities()}))
 
 
 def activities_detail(request, year, month, day):
@@ -84,8 +76,5 @@ def trend_overview(request):
     return render_to_response('admins/trend_overview.html',RequestContext(request,{
                                                                          'trend_list':trend_list
                                                                         }))
-
-def test_page(request):
-    test_data = {'x':{'a', 'b', 'c', 'd', 'e', 'f'}, 
-                 'y':{1, 2, 3, 4, 10, 1, 30}}
-    return render_to_response('admins/test.html',{'datas':test_data})
+def analytics_detail(request, category):
+    return render_to_response('admins/admins_'+category+'.html',RequestContext(request,{'latest_activities':get_last_activities()}))

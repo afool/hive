@@ -33,7 +33,7 @@ def create_comment(request, post_id):
                                          author=request.user.username,
                                          post=post)
     
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/#post_' + post_id)
 
 
 @login_required(login_url='/accounts/login')

@@ -3,7 +3,7 @@ from posts.models import Post
 
 # daily activities
 class ActivitiesInformation(models.Model):
-    date = models.DateField()
+    date = models.DateField(unique=True)
     num_posts = models.IntegerField(default =0)
     num_likes = models.IntegerField(default = 0)
     num_comments = models.IntegerField(default = 0)
@@ -12,7 +12,7 @@ class ActivitiesInformation(models.Model):
     
     class Meta:
         verbose_name_plural = "ActivitiesInformations"
-        ordering = ['-date']    # like a query option ORDER BY date DESC
+        ordering = ['date']    # like a query option ORDER BY date DESC
     
     def __unicode__(self):
         return "Activities of %s" %(self.date)
