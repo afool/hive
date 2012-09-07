@@ -8,7 +8,7 @@ Hive Hive
  <ul class="nav nav-list"> 
   <li>
 		{% if user_profile.portrait %}
-			<img src="{{ MEDIA_URL }}">
+			<img src="{{ user_profile.portrait }}" alt="{{ user.username }}" width="60" height="60">
 		{% else %}
 			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
 		{% endif %}

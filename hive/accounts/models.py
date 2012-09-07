@@ -21,7 +21,7 @@ class Following(models.Model):
         ordering = ['followee']
     
     def __unicode__(self):
-        return "%s followed by %s" %(self.followee, self.follower)
+        return "%s followed by %s" % (self.followee, self.follower)
         
     def get_absolute_url(self):
         return "/accounts/%s/followings/%d" %(self.followee, self.id)
@@ -32,8 +32,9 @@ class RandomFileStorage(FileSystemStorage):
         ext = "jpg"
         if "." in name:
             ext = name.split(".")[-1]
-        newfilename = str(uuid.uuid1()) + "." + ext  
-        return self.base_location  + "/user_profile/" + newfilename # simply returns the name passed
+        newfilename = str(uuid.uuid1()) + "." + ext
+        
+        return self.base_location + "user_profile/" + newfilename # simply returns the name passed
     
 rfs = RandomFileStorage()
 
@@ -46,7 +47,7 @@ class UserProfile(models.Model):
     department = models.CharField(null=True, max_length=50)
     emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
     phone = models.CharField(null=True, max_length=50)
-    portrait = models.FileField(null=True, upload_to="user_profile", storage=rfs)
+    portrait = models.FileField(null=True, storage=rfs, upload_to='user_profile')
     position = models.CharField(null=True, max_length=50)
     user = models.OneToOneField(User) # User Profile have to contain this field.
     
