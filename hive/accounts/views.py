@@ -322,10 +322,9 @@ def update_profile_save_page(request):
         profile_form = UserProfileForm(request.POST, request.FILES, instance=user)
         
         if profile_form.is_valid():
-            print request.FILES['portrait']
             profile_form.save()
         else:
-            print profile_form.errors
+            #print profile_form.errors
             return HttpResponseRedirect('/')
                                 
         return HttpResponseRedirect('/timelines/my_timeline/')
