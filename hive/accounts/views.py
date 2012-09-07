@@ -247,10 +247,13 @@ def register_userinfo_page(request, key):
                 userinfo_form.clean_password2()
                 new_user = userinfo_form.save()
                 
+                # Enroll Email
                 new_user.email = user.email
-                new_user.save() # Enroll Email
-                user.delete() # Delete Activation Key
+                new_user.save()
+                # Delete Activation Key 
+                user.delete() 
                 
+                # Self-Following
                 UserProfile.objects.create(user=new_user)
                 Following.objects.create(followee=new_user,
                                          followee_str = new_user.username,
@@ -274,9 +277,7 @@ def renew_password_email_page(request, key):
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/')
     
-    # TODO: Send user instance into SetPassword Form
-    # I try to insert it through __init__, forms.py and other ways, but T.T
-    form = SetPasswordForm(forms.Form)
+    form = SetPasswordForm(user)
     
     return render_to_response('accounts/renew_password.html',
                                        RequestContext(request,
@@ -287,25 +288,30 @@ def renew_password_email_page(request, key):
 def renew_password_page(request, key):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
-    else: 
-        user_form = SetPasswordForm(request.POST)
+    else:
+        try:
+            user_act = EmailActivation.objects.get(activation_key=key)
+            user = User.objects.get(email=user_act.email)
+        except ObjectDoesNotExist:
+                return HttpResponseRedirect('/')
+        
+        user_form = SetPasswordForm(user, request.POST)
+
         if user_form.is_valid():
             user_form.clean_new_password2()
-            user_form.save()
-            try:
-                user_act = EmailActivation.objects.get(activation_key=key)
-                user_act.delete() # Delete Activation Key
-            except ObjectDoesNotExist:
-                return HttpResponseRedirect('/')    
-                        
+            user_form.save()        
+            user_act.delete()
+                
+                    
         return HttpResponseRedirect('/')
     
 
 def update_profile_page(request):
     if request.user is None:
         return HttpResponseRedirect('/')
-
-    profile_form = UserProfileForm(instance=request.user)
+    
+    
+    profile_form = UserProfileForm()
     
     return render_to_response('accounts/update_profile.html',
                                     RequestContext(request,
@@ -314,13 +320,13 @@ def update_profile_page(request):
 def update_profile_save_page(request):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
-    else: 
-        profile_form = UserProfileForm(request.POST)
+    else:
+        user = UserProfile.objects.get(user=request.user) 
+        profile_form = UserProfileForm(request.POST, instance=user)
         
         if profile_form.is_valid():
             profile_form.save()
         else:
-            print request.user
             return HttpResponseRedirect('/')
                                 
         return HttpResponseRedirect('/timelines/my_timeline/')
