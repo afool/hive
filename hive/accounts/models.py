@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.loader import render_to_string
+from django.core.files.storage import FileSystemStorage
+import uuid
 
 class EmailActivation(models.Model):
     activation_key = models.CharField(max_length=40)
@@ -23,6 +25,17 @@ class Following(models.Model):
         
     def get_absolute_url(self):
         return "/accounts/%s/followings/%d" %(self.followee, self.id)
+    
+
+class RandomFileStorage(FileSystemStorage):
+    def get_available_name(self, name):
+        ext = "jpg"
+        if "." in name:
+            ext = name.split(".")[-1]
+        newfilename = str(uuid.uuid1()) + "." + ext  
+        return self.base_location  + "/user_profile/" + newfilename # simply returns the name passed
+    
+rfs = RandomFileStorage()
 
 class UserProfile(models.Model):
     EMOTION_CHOICES = (
@@ -33,7 +46,7 @@ class UserProfile(models.Model):
     department = models.CharField(null=True, max_length=50)
     emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
     phone = models.CharField(null=True, max_length=50)
-    portrait = models.FileField(null=True, upload_to="user_profile/")
+    portrait = models.FileField(null=True, upload_to="user_profile", storage=rfs)
     position = models.CharField(null=True, max_length=50)
     user = models.OneToOneField(User) # User Profile have to contain this field.
     
