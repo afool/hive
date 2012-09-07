@@ -32,7 +32,13 @@ def create_comment(request, post_id):
                                          writer=request.user,
                                          author=request.user.username,
                                          post=post)
-    
+    if request.is_ajax():
+        post = Post.objects.get(id=post_id)
+        comment_list = post.comment_set.all()
+        return render_to_response('posts/post_render.html',
+                    RequestContext(request,
+                     {"post":post,
+                      "comment_list" : comment_list }))
     return HttpResponseRedirect('/#post_' + post_id)
 
 
@@ -127,7 +133,9 @@ def one_of_post_detail(request, post_id):
         post = Post.objects.get(id = post_id)
     except Post.DoesNotExist:
         raise Http404
-    
+    if request.is_ajax():
+        return render_to_response('posts/post_render.html',
+                    RequestContext(request, {"post":post}))
     return render_to_response('posts/post_detail.html', RequestContext(request, {
                              'post': post
                             }))    

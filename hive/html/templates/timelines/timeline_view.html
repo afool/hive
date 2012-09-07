@@ -69,12 +69,29 @@ Hive Hive
 				})
 				})
 
-				// anchor detect and scroll to
-				var hash = window.location.hash;
-				if( hash != ""){
-				var new_position = $(hash).offset()
-				window.scrollTo(new_position.left, new_position.top);
+			function ajax_comment(event){
+				  var post_id_regex =  /posts\/create_comment\/(\d+)\//;
+				  var post_id = this.action.match(post_id_regex)[1]
+				  var action = this.action;
+				  var container_id = "div#post_container_" + post_id;
+				  // get all variable
+				  var a = $(this);
+				  var comment = $(a[0][1]).val();
+				  var csrf = $(a[0][0]).val();
+			 	$.post(action, {
+			       	"csrfmiddlewaretoken": csrf,
+			       	"comment_text": comment },
+			       function(data){
+			        $(container_id).html(data)
+			        var new_csrf = $(data).children("input[name=csrfmiddlewaretoken]")[0].value;
+			         $("input[name=csrfmiddlewaretoken").val(new_csrf);
+				
+			       });
+					event.preventDefault();
 				}
+
+				// attach comment submit event to form.comment
+				$("body").on("submit","form.comment", ajax_comment)
 			}
 		);
 	</script>
