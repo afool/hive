@@ -49,12 +49,14 @@ Hive Hive
     <!-- timeline -->				
 	<h1>Test Timeline</h1>
     {% for timeline in timelines %}
-    	{% if timeline.is_liked %}
-			{{ timeline.post.get_rendered_liked }}
+    	{% with post=timeline.post %}
+		{% if post.comments_count > 0 %}
+			{% include "posts/post_render.html" with post=post comment_list=post.comment_set.all %}
 		{% else %}
-			{{ timeline.post.get_rendered }}
+			{% include "posts/post_render.html" with post=post %}
 		{% endif %}
-	{% endfor %}
+        {% endwith %}
+    {% endfor %}
 	
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.0.min.js"></script>
 	<script src="{{ STATIC_URL }}js/redactor.js"></script>
