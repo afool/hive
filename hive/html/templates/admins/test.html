@@ -5,20 +5,21 @@
     <link rel="stylesheet" href="/static/css/demo.css" type="text/css" media="screen">
 </head>
 <body>
+    <h2>
 	<table id="data">
-		<tfoot>
+        <tfoot>
 	        <tr>
-	            <th>100</th>
-	            <th>2</th>
-	            <th>3</th>
+	        {% for x in datas.x %}
+                <th>{{ x }}</th>
+            {% endfor %}
             </tr>
         </tfoot>
         <tbody>
+            {% for y in datas.y %}
             <tr>
-                <td>8</td>
-                <td>25</td>
-                <td>27</td>
+                <td>{{ y }}</td>
             </tr>
+            {% endfor %}
        </tbody>
     </table>
 

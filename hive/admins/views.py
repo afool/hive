@@ -92,4 +92,6 @@ def trend_overview(request):
                                                                         }))
 
 def test_page(request):
-    return render_to_response('admins/test.html')
+    test_data = {'x':{'a', 'b', 'c', 'd', 'e', 'f'}, 
+                 'y':{1, 2, 3, 4, 10, 1, 30}}
+    return render_to_response('admins/test.html',{'datas':test_data})
