@@ -35,11 +35,20 @@
 		<div class="comment_container">
 			{% if post.comments_count > 0 %}
 			<p>comment : {{ post.comments_count }}</p>
-			<ul>
+			<table class="table ">
 				{% for comment in comment_list %}
-					<li>{{ comment.get_rendered }}</li>
+					<tr>
+					<td width="60px" >
+					<img src="{{ STATIC_URL }}img/user_profile/default.png" class="img-polaroid" >
+					</td>
+					<td> 
+						<strong>{{ post.author }}</strong>
+						{{ comment.text }} <br/>
+						<small>{{ comment.create_time|timesince}} ago</small>
+					</td>
+					</tr>
 				{% endfor %}
-			</ul>
+			</table>
 			{% endif %}
 		</div>
 		<div class="comment_form_container">
