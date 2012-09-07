@@ -8,11 +8,11 @@ Hive Hive
  <ul class="nav nav-list"> 
   <li>
 		<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
-		<a href="/timelines/my_timeline/">{{ user.username }}</a>
+		<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
   </li>
   <li class="nav-header">Timeline</li>
   <li class="active"><a href="/">Main Timeline</a></li>
-  <li><a href="#">Humor Timeline</a></li>
+  <li><a href="/timelines/humor_timeline/">Humor Timeline</a></li>
   <li><a href="#">Notice Timeline</a></li>
   <li><a href="#">Custom Timeline</a></li>
   <li class="nav-header">People</li>
