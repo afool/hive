@@ -29,7 +29,7 @@ class UserProfile(models.Model):
         ('H', 'Happy'),
         ('S', 'Sad')
     )
-
+    
     department = models.CharField(null=True, max_length=50)
     emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
     phone = models.CharField(null=True, max_length=50)

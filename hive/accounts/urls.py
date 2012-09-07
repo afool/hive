@@ -15,8 +15,11 @@ urlpatterns = patterns('accounts.views',
     url(r'^renew_password/(?P<key>\w+)$', 'renew_password_page'),
     
     url(r'^people_list/$', 'people_list_page'),
-    url(r'^profile/$', 'profile_page'), #just display current user's profile
+    url(r'^profile/$', 'profile_page'), # just display current user's profile
     url(r'^profile/(?P<username>\w+)/$', 'profile_page'),
+    
+    url(r'^update_profile/$', 'update_profile_page'),
+    url(r'^update_profile_save/$', 'update_profile_save_page'),
 )
 
 urlpatterns += patterns('',

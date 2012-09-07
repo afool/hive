@@ -3,6 +3,19 @@
 {% block title %} timeline {% endblock %}
 
 {% block content %}
+	<ul>
+		<li>
+		{% if user_profile.portrait %}
+			<img src="{{ MEDIA_URL }}">
+		{% else %}
+			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="100" height="100">
+		{% endif %}
+		{{ user.username }}
+		</li>
+		{% if user_profile.department %}<li>{{ user_profile.department }}</li>{% endif %}
+		{% if user_profile.position %}<li>{{ user_profile.position }}</li>{% endif %}
+		<li><a href="/accounts/update_profile/">profile update</a></li>
+	</ul>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
 	<!-- logout -->
 	<p>
