@@ -6,7 +6,7 @@
 	<ul>
 		<li>
 		{% if user_profile.portrait %}
-			<img src="{{ user_profile.portrait }}" alt="{{ user.username }}" width="100" height="100">
+			<img src="{{ MEDIA_URL }}{{ user_profile.portrait.name }}" alt="{{ user.username }}" width="100" height="100">
 		{% else %}
 			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="100" height="100">
 		{% endif %}
