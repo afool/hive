@@ -166,20 +166,17 @@ def forgot_password_page(request):
                 status = 'Correct your email or No user.'
                 return render_to_response('accounts/forgot_password.html',
                                            RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
+                                                          {'status': status}))
         except BadHeaderError:
             status = 'Invalid access.'
             return render_to_response('accounts/forgot_password.html',
                                            RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
+                                                          {'status': status}))
     else:
         status = 'Invalid access.'
         return render_to_response('accounts/forgot_password.html',
                                            RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
+                                                          {'status': status}))
 
     return HttpResponseRedirect('/')
 
