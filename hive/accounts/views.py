@@ -164,19 +164,19 @@ def forgot_password_page(request):
                 EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
             else:
                 status = 'Correct your email or No user.'
-                return render_to_response('accounts/login.html',
+                return render_to_response('accounts/forgot_password.html',
                                            RequestContext(request,
                                                           {'form': AuthenticationForm(),
                                                            'status': status}))
         except BadHeaderError:
             status = 'Invalid access.'
-            return render_to_response('accounts/login.html',
+            return render_to_response('accounts/forgot_password.html',
                                            RequestContext(request,
                                                           {'form': AuthenticationForm(),
                                                            'status': status}))
     else:
         status = 'Invalid access.'
-        return render_to_response('accounts/login.html',
+        return render_to_response('accounts/forgot_password.html',
                                            RequestContext(request,
                                                           {'form': AuthenticationForm(),
                                                            'status': status}))
