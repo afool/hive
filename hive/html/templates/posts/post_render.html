@@ -6,11 +6,18 @@
 	</div>
 	<div class="span10">
 		<div class="post">
+			<div class="name_container" style="padding-top:10px;padding-bottom:10px">
+			<strong>{{ post.author }}</strong>
+			</div>
+			<div>
+				<blockquote>
 		<!-- TO DO : using autoescape off is not safe,
 		 check whether post.contents is safe when User posts post-->
 				{% autoescape off %}
 				{{ post.contents }}
 				{% endautoescape %}
+				</blockquote>
+			</div>
 		</div>
 		<div class="like_button_comment_button_container">
 			{% if is_liked %}
