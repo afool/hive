@@ -48,7 +48,6 @@ def my_timeline_contents(request):
         pass
     
     user = request.user
-    user_profile = UserProfile.objects.get(user = user)
     timelines = Timeline.objects.select_related(depth=1).filter(
                                         writer = user
                                         ).all()   
@@ -60,5 +59,4 @@ def my_timeline_contents(request):
     return render_to_response('timelines/mytimeline_view.html', RequestContext(request,{
                                                                                         'timelines':timelines,
                                                                                         'user': user,
-                                                                                        'user_profile': user_profile
                                                                                         }))
