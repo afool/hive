@@ -5,32 +5,37 @@
 	{{ post.author }}
 	</div>
 	<div class="span10">
-		<p>
-			<!-- TO DO : using autoescape off is not safe,
-			 check whether post.contents is safe when User posts post-->
-			{% autoescape off %}
-			{{ post.contents }}
-			{% endautoescape %}
-		</p>
-		<p>
+		<div class="post">
+		<!-- TO DO : using autoescape off is not safe,
+		 check whether post.contents is safe when User posts post-->
+				{% autoescape off %}
+				{{ post.contents }}
+				{% endautoescape %}
+		</div>
+		<div class="like_button_comment_button_container">
 			{{ post.render_liker_list }}  
 			{% if is_liked %}
 				<a href='/posts/{{post.id}}/on_unliked/'><button>unlike!</button></a>
 			{% else %}
 				<a href='/posts/{{post.id}}/on_liked/'><button>like</button></a>
 			{% endif %}
-		</p>
-		<p>comment : {{ post.comments_count }}</p>
-		<p>
-			{% for comment in comment_list %}
-				<li>{{ comment.get_rendered }}</li>
-			{% endfor %}
-		</p>
-			
-		<!-- Comment Form -->
-		<form action="/posts/create_comment/{{ timeline.post.id }}/" method="post">{% csrf_token %}
-			</t>comment : <input type="text" name="comment_text"><input type="submit" value="COMMENT">
-		</form>
-		</hr>
+			{{ post.create_time|timesince }} ago
+		</div>
+		<div class="comment_container">
+			{% if post.comments_count > 0 %}
+			<p>comment : {{ post.comments_count }}</p>
+			<ul>
+				{% for comment in comment_list %}
+					<li>{{ comment.get_rendered }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+		<div class="comment_form_container">
+			<!-- Comment Form -->
+			<form action="/posts/create_comment/{{ post.id }}/" method="post">{% csrf_token %}
+				</t>comment : <input type="text" name="comment_text"><input type="submit" value="COMMENT">
+			</form>
+		</div>
 	</div>
 </div>
