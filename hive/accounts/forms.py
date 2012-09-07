@@ -8,7 +8,7 @@ from django.forms import ModelForm
 class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        fields = ("department", "position", "phone", )
+        fields = ("portrait", "department", "position", "phone", )
 
 
 class UserRegistrationForm(ModelForm):
