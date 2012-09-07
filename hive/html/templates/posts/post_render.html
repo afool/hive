@@ -1,35 +1,52 @@
 <div class="page-header"></div>
 <div class="row-fluid">
-	<div class="span2" id="writer_information{{ post.id }}">
-	Writer : {{ post.author }}
+	<div class="span2" id="writer_information{{ post.id }}" align="center">
+	<img src="{{ STATIC_URL }}img/user_profile/default.png" class="img-polaroid" >
+	{{ post.author }}
 	</div>
 	<div class="span10">
-		<p>
-			<!-- TO DO : using autoescape off is not safe,
-			 check whether post.contents is safe when User posts post-->
-			{% autoescape off %}
-			{{ post.contents }}
-			{% endautoescape %}
-		</p>
-		<p>
-			{{ post.render_liker_list }}  
+		<div class="post">
+			<div class="name_container" style="padding-top:10px;padding-bottom:10px">
+			<strong>{{ post.author }}</strong>
+			</div>
+			<div>
+				<blockquote>
+		<!-- TO DO : using autoescape off is not safe,
+		 check whether post.contents is safe when User posts post-->
+				{% autoescape off %}
+				{{ post.contents }}
+				{% endautoescape %}
+				</blockquote>
+			</div>
+		</div>
+		<div class="like_button_comment_button_container">
 			{% if is_liked %}
-				<a href='/posts/{{post.id}}/on_unliked/'><button>unlike!</button></a>
+		<a href='/posts/{{post.id}}/on_unliked/'><button class="btn btn-link">Unlike!</button></a>
 			{% else %}
-				<a href='/posts/{{post.id}}/on_liked/'><button>like</button></a>
+		<a href='/posts/{{post.id}}/on_liked/'><button class="btn btn-link">Like</button></a>
 			{% endif %}
-		</p>
-		<p>comment : {{ post.comments_count }}</p>
-		<p>
-			{% for comment in comment_list %}
-				<li>{{ comment.get_rendered }}</li>
-			{% endfor %}
-		</p>
-			
-		<!-- Comment Form -->
-		<form action="/posts/create_comment/{{ timeline.post.id }}/" method="post">{% csrf_token %}
-			</t>comment : <input type="text" name="comment_text"><input type="submit" value="COMMENT">
-		</form>
-		</hr>
+			<button class="btn btn-link btn-comment"> Comment </button>
+			<i class="icon-time"></i>	
+			{{ post.create_time|timesince }} ago
+		</div>
+		<div class="liker_list_container round-container" style="background-color:#eee">
+			{{ post.render_liker_list }}  
+		</div>
+		<div class="comment_container">
+			{% if post.comments_count > 0 %}
+			<p>comment : {{ post.comments_count }}</p>
+			<ul>
+				{% for comment in comment_list %}
+					<li>{{ comment.get_rendered }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+		<div class="comment_form_container">
+			<!-- Comment Form -->
+			<form action="/posts/create_comment/{{ post.id }}/" method="post">{% csrf_token %}
+				</t>comment : <input type="text" name="comment_text"><input type="submit" value="COMMENT">
+			</form>
+		</div>
 	</div>
 </div>
