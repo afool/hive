@@ -8,8 +8,15 @@ from django.template import RequestContext
 import datetime
 from datetime import time, timedelta
 
+def get_last_activities():
+    #under code is too long, must be refact code
+    test_data = [ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=2)).isoformat()),
+                 ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=1)).isoformat()),
+                 ActivitiesInformation.objects.get(date=datetime.date.today().isoformat())]
+    return test_data
+
 def main(request):
-    return render_to_response('admins/admins_main.html',RequestContext(request,{}))
+    return render_to_response('admins/admins_main.html',RequestContext(request,{'last_activites':get_last_activities()}))
 
 
 def activities_detail(request, year, month, day):
@@ -70,12 +77,4 @@ def trend_overview(request):
                                                                          'trend_list':trend_list
                                                                         }))
 def analytics_detail(request, category):
-    #under code is too long, must be refact code
-    test_data = [ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=2)).isoformat()),
-                 ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=1)).isoformat()),
-                 ActivitiesInformation.objects.get(date=datetime.date.today().isoformat())]
-    """
-    test_data = {'x':{'a', 'b', 'c', 'd', 'e', 'f'}, 
-                 'y':{1, 2, 3, 4, 10, 1, 30}}
-    """
-    return render_to_response('admins/admins_'+category+'.html',RequestContext(request,{'latest_activities':test_data}))
+    return render_to_response('admins/admins_'+category+'.html',RequestContext(request,{'latest_activities':get_last_activities()}))

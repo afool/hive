@@ -20,7 +20,17 @@ admin page
 {% endblock %}
 
 {% block content %}
-    <h1>Hello World</h1>
+    <h2>Last 3 Days Summary</h2>
+        {% for activity in last_activites %}
+        <p><b>{{ activity.date }}</b></p>
+        <ul>
+            <li><b>Post</b> - {{ activity.num_posts }}</li>
+            <li><b>Like</b> - {{ activity.num_likes }}</li>
+            <li><b>Comment</b> - {{ activity.num_comments }}</li>
+            <li><b>Web Feed</b> - {{ activity.num_web_feeds }}</li>
+            <li><b>Messages</b> - {{ activity.num_messages }}</li>
+        </ul>
+        {% endfor %}
     <script type="text/javascript" src="/static/js/jquery-1.8.0.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function (){
