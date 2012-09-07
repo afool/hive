@@ -1,3 +1,4 @@
+#!/usr/bin/python -i
 from BeautifulSoup import BeautifulSoup
 import html5lib
 from html5lib import sanitizer
@@ -47,9 +48,3 @@ def get_post_list(host_url=SEARCH_HOST, board_url=DOGDRIP_BEST_URL):
 #for url in get_post_list():
 #    print "==================================="
 #    print get_contents_from_post(post_url=url)
-
-
-
-
-
-
