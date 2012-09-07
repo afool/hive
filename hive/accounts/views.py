@@ -271,13 +271,9 @@ def remove_follow_page(request, followee_id):
 
 
 def renew_password_email_page(request, key):
-    try:
-        user_act = EmailActivation.objects.get(activation_key=key)
-        user = User.objects.get(email=user_act.email)
-    except ObjectDoesNotExist:
-        return HttpResponseRedirect('/')
-    
-    form = SetPasswordForm(user)
+    # None Because Just Form. User will be searched
+    # in renew_password_page()
+    form = SetPasswordForm(None)
     
     return render_to_response('accounts/renew_password.html',
                                        RequestContext(request,
@@ -301,8 +297,7 @@ def renew_password_page(request, key):
             user_form.clean_new_password2()
             user_form.save()        
             user_act.delete()
-                
-                    
+                 
         return HttpResponseRedirect('/')
     
 
