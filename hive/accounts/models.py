@@ -30,17 +30,15 @@ class Following(models.Model):
         return "/accounts/%s/followings/%d" %(self.followee, self.id)
     
 
-
-
 def get_user_profile_upload_path(instance,filename):
     ext = "jpg"
     if "." in filename:
         ext = filename.split(".")[-1]
     newfilename = str(uuid.uuid1()) + "." + ext
     newfilepath = "user_profile/" + newfilename
-    print newfilepath
-    print "uploaded!!"
+    
     return newfilepath
+
 
 class UserProfile(models.Model):
     EMOTION_CHOICES = (
