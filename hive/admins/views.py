@@ -70,7 +70,10 @@ def trend_overview(request):
                                                                          'trend_list':trend_list
                                                                         }))
 def analytics_detail(request, category):
-    test_data = [ActivitiesInformation.objects.get(date=datetime.date.today().isoformat()),ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=1)).isoformat()),ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=2)).isoformat())]
+    #under code is too long, must be refact code
+    test_data = [ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=2)).isoformat()),
+                 ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=1)).isoformat()),
+                 ActivitiesInformation.objects.get(date=datetime.date.today().isoformat())]
     """
     test_data = {'x':{'a', 'b', 'c', 'd', 'e', 'f'}, 
                  'y':{1, 2, 3, 4, 10, 1, 30}}
