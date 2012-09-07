@@ -13,13 +13,17 @@
 				{% endautoescape %}
 		</div>
 		<div class="like_button_comment_button_container">
-			{{ post.render_liker_list }}  
 			{% if is_liked %}
-				<a href='/posts/{{post.id}}/on_unliked/'><button>unlike!</button></a>
+		<a href='/posts/{{post.id}}/on_unliked/'><button class="btn btn-link">unlike!</button></a>
 			{% else %}
-				<a href='/posts/{{post.id}}/on_liked/'><button>like</button></a>
+		<a href='/posts/{{post.id}}/on_liked/'><button class="btn btn-link">like</button></a>
 			{% endif %}
+			<button class="btn btn-link btn-comment"> Comment </button>
+			<i class="icon-time"></i>	
 			{{ post.create_time|timesince }} ago
+		</div>
+		<div class="liker_list_container">
+			{{ post.render_liker_list }}  
 		</div>
 		<div class="comment_container">
 			{% if post.comments_count > 0 %}
