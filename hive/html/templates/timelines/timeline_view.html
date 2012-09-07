@@ -7,11 +7,8 @@ Hive Hive
 <div class="well sidebar-nav">
  <ul class="nav nav-list"> 
   <li>
-		{% if user_profile.portrait %}
-			<img src="{{ MEDIA_URL }}{{ user_profile.portrait.name }}" alt="{{ user.username }}" width="60" height="60">
-		{% else %}
-			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
-		{% endif %}
+
+		<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
 		<a href="/timelines/my_timeline/">{{ user.username }}</a>
   </li>
   <li class="nav-header">Timeline</li>

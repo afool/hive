@@ -65,6 +65,11 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return '/accounts/profile/%s' %(self.user.username)
     
+    def get_image(self):
+        if self.portrait.name is not "":
+            return hive.settings.STATIC_URL + "img/user_profile/default.png"
+        return hive.settings.MEDIA_URL + self.portrait.name
+
     def get_rendered(self):
         return render_to_string('accounts/people_profile_render.html',{
                                                                        'people_profile':self
