@@ -255,10 +255,18 @@ def register_userinfo_page(request, key):
                                          followee_str = new_user.username,
                                          follower=new_user,
                                          follower_str = new_user.username)
-            except ObjectDoesNotExist:
-                return HttpResponseRedirect('/')    
-                        
-        return HttpResponseRedirect('/')            
+                
+                return HttpResponseRedirect('/')
+            except:
+                return render_to_response('accounts/user_registration.html',
+                                           RequestContext(request,
+                                                          {'form': userinfo_form,
+                                                           'key': key }))
+            
+        return render_to_response('accounts/user_registration.html',
+                                           RequestContext(request,
+                                                          {'form': userinfo_form,
+                                                           'key': key }))            
 
 def remove_follow_page(request, followee_id):
     followee = User.objects.get(id=followee_id )
