@@ -8,9 +8,9 @@ Hive Hive
  <ul class="nav nav-list"> 
   <li>
 		{% if user_profile.portrait %}
-			<img src="{{ STATIC_URL }}">
+			<img src="{{ MEDIA_URL }}">
 		{% else %}
-			<img src="{{ STATIC_URL }}img/user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
+			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="60" height="60">
 		{% endif %}
 		<a href="/timelines/my_timeline/">{{ user.username }}</a>
   </li>
