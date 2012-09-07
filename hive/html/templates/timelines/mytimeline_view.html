@@ -5,12 +5,8 @@
 {% block content %}
 	<ul>
 		<li>
-		{% if user_profile.portrait %}
-			<img src="{{ MEDIA_URL }}{{ user_profile.portrait.name }}" alt="{{ user.username }}" width="100" height="100">
-		{% else %}
-			<img src="{{ MEDIA_URL }}user_profile/default.png" alt="{{ user.username }}" width="100" height="100">
-		{% endif %}
-		{{ user.username }}
+			<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
+			<a href="/timelines/my_timeline/">{{ user.username }}</a>
 		</li>
 		{% if user_profile.department %}<li>{{ user_profile.department }}</li>{% endif %}
 		{% if user_profile.position %}<li>{{ user_profile.position }}</li>{% endif %}
