@@ -56,6 +56,7 @@ Hive Hive
 		$(document).ready(
 			function()
 			{
+
 				$("form textarea").redactor({
 				    imageUpload: '{% url posts.views.upload_photos %}',
 				    imageGetJson: '{% url posts.views.recent_photos %}'
@@ -68,6 +69,13 @@ Hive Hive
 					$("#timeline_container").append(data)
 				})
 				})
+
+				// anchor detect and scroll to
+				var hash = window.location.hash;
+				if( hash != ""){
+				var new_position = $(hash).offset()
+				window.scrollTo(new_position.left, new_position.top);
+				}
 			}
 		);
 	</script>
