@@ -21,12 +21,11 @@ def main(request):
 
 
 def activities_detail(request, year, month, day):
-    date_stamp = time.strptime(year+month+day, "%Y%b%d")
-    pub_date = datetime.date(*date_stamp[:3])
+    date_stamp = datetime.datetime.strptime(year+month+day, "%Y%b%d")
     
-    activities = ActivitiesInformation.objects.get(date__year=pub_date.year,
-                                                   date__month=pub_date.month,
-                                                   date__day=pub_date.day)
+    activities = ActivitiesInformation.objects.get(date__year=date_stamp.year,
+                                                   date__month=date_stamp.month,
+                                                   date__day=date_stamp.day)
     
     return render_to_response('admins/activities_detail.html',RequestContext(request,
                               {
@@ -54,13 +53,12 @@ def customize_detail(request, customize_id):
 
 
 def trend_detail(request, year, month, day):
-    date_stamp = time.strptime(year+month+day, "%Y%b%d")
-    pub_date = datetime.date(*date_stamp[:3])
+    date_stamp = datetime.datetime.strptime(year+month+day, "%Y%b%d")
     
     trend = get_object_or_404(Trend,
-                              date__year=pub_date.year,
-                              date__month=pub_date.month,
-                              date__day=pub_date.day)
+                              date__year=date_stamp.year,
+                              date__month=date_stamp.month,
+                              date__day=date_stamp.day)
     
     return render_to_response('admins/trend_detail.html',RequestContext(request,{
                                'trend':trend
