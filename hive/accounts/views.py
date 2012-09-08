@@ -332,4 +332,4 @@ def update_profile_save_page(request):
             #print profile_form.errors
             return HttpResponseRedirect('/')
                                 
-        return HttpResponseRedirect('/timelines/my_timeline/' + request.user.username)
+        return HttpResponseRedirect(user.get_absolute_url())
