@@ -10,9 +10,13 @@ from datetime import time, timedelta
 
 def get_last_activities():
     #under code is too long, must be refact code
-    test_data = [ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=2)).isoformat()),
-                 ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=1)).isoformat()),
-                 ActivitiesInformation.objects.get(date=datetime.date.today().isoformat())]
+    try:
+        test_data = [ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=2)).isoformat()),
+                     ActivitiesInformation.objects.get(date=(datetime.date.today() - timedelta(days=1)).isoformat()),
+                     ActivitiesInformation.objects.get(date=datetime.date.today().isoformat())]
+    except:
+        ActivitiesInformation.objects.create(date=datetime.date.today().isoformat())
+        test_data = get_last_activities()
     return test_data
 
 def main(request):
