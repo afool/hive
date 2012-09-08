@@ -21,7 +21,9 @@ admin page
 
 {% block content %}
     <h2>Last 3 Days Summary</h2>
-        {% for activity in last_activites %}
+    {% for activities in last_activites %}
+        {% for activity in activities %}
+        {% if activity.date %}
         <p><b>{{ activity.date }}</b></p>
         <ul>
             <li><b>Post</b> - {{ activity.num_posts }}</li>
@@ -30,7 +32,9 @@ admin page
             <li><b>Web Feed</b> - {{ activity.num_web_feeds }}</li>
             <li><b>Messages</b> - {{ activity.num_messages }}</li>
         </ul>
+        {% endif %}
         {% endfor %}
+    {% endfor %}
     <script type="text/javascript" src="/static/js/jquery-1.8.0.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function (){

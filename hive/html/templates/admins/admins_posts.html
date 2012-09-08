@@ -24,15 +24,23 @@ admin page
         <h2>Last 3 Days Posts</h2>
         <tfoot>
             <tr>
-	        {% for activity in latest_activities %}
-                <th>{{ activity.date|date:"Y-m-d" }}</th>
+          {% for activities in latest_activities %}
+                {% for activity in activities %}
+                    {% if activity.date %}
+                    <th>{{ activity.date|date:"Y-m-d" }}</th>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
             </tr>
         </tfoot>
         <tbody>
             <tr>
-            {% for activity in latest_activities %}
-                <td>{{ activity.num_posts }}</td>
+            {% for activities in latest_activities %}
+                {% for activity in activities %}
+                    {% if activity.date %}
+                         <td>{{ activity.num_posts }}</td>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
             </tr>
        </tbody>
