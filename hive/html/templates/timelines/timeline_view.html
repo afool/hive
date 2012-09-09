@@ -35,10 +35,17 @@
 				$("#loadmore").click(function(){
 					// http://127.0.0.1:8000/timelines/get_more_timeline/100/
 					// timeline_container
-				var req_url='/timelines/get_more_timeline/'+last_timeline_id + '/'
-				$.get(req_url,function(data){
-					$("#timeline_container").append(data)
-				})
+					{% if is_maintimeline_active %}
+					var req_url='/timelines/get_more_timeline/'+last_timeline_id + '/'
+					{% elif is_humortimeline_active %}
+					var req_url='/timelines/humor_timeline/'+last_timeline_id + '/'
+					{% elif is_noticetimeline_active %}
+					var req_url='/timelines/notice_timeline/'+last_timeline_id + '/'
+					{% endif %}
+					
+						$.get(req_url,function(data){
+							$("#timeline_container").append(data)
+						})
 				})
 
 			function ajax_comment(event){
