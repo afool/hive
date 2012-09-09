@@ -3,12 +3,13 @@
 {% block title %} timeline {% endblock %}
 
 {% block menu %}
-Hive Hive
 <div class="well sidebar-nav">
  <ul class="nav nav-list"> 
   <li>
+		<center>
 		<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
 		<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
+		</center>
   </li>
   <li class="nav-header">Timeline</li>
   <li class="active"><a href="/">Main Timeline</a></li>
@@ -28,11 +29,8 @@ Hive Hive
 {% endblock %} <!-- /.menu -->
 
 {% block content %}
+	<p><p><p><p>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
-	<!-- logout -->
-	<p>
-		<a href='/accounts/logout/'> log out </a>
-	</p>
 	<!-- Post Form -->
 	<p>
 		<form action="/posts/create_from_timeline/" method="post">{% csrf_token %}
