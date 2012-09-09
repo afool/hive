@@ -164,19 +164,22 @@ def forgot_password_page(request):
                 EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
             else:
                 status = 'Correct your email or No user.'
-                return render_to_response('accounts/forgot_password.html',
+                return render_to_response('accounts/login.html',
                                            RequestContext(request,
-                                                          {'status': status}))
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
         except BadHeaderError:
             status = 'Invalid access.'
-            return render_to_response('accounts/forgot_password.html',
+            return render_to_response('accounts/login.html',
                                            RequestContext(request,
-                                                          {'status': status}))
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
     else:
         status = 'Invalid access.'
-        return render_to_response('accounts/forgot_password.html',
+        return render_to_response('accounts/login.html',
                                            RequestContext(request,
-                                                          {'status': status}))
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
 
     return HttpResponseRedirect('/')
 
@@ -208,6 +211,7 @@ def people_list_page(request):
     observer = request.user
     return render_to_response('accounts/people_list_page.html',RequestContext(request,
                                           {
+                                            'is_peoplelist_active' : True,
                                             'followers_id_list':followers_id_list,
                                            'peoples':peoples,
                                            'observer':observer,
@@ -255,18 +259,10 @@ def register_userinfo_page(request, key):
                                          followee_str = new_user.username,
                                          follower=new_user,
                                          follower_str = new_user.username)
-                
-                return HttpResponseRedirect('/')
-            except:
-                return render_to_response('accounts/user_registration.html',
-                                           RequestContext(request,
-                                                          {'form': userinfo_form,
-                                                           'key': key }))
-            
-        return render_to_response('accounts/user_registration.html',
-                                           RequestContext(request,
-                                                          {'form': userinfo_form,
-                                                           'key': key }))            
+            except ObjectDoesNotExist:
+                return HttpResponseRedirect('/')    
+                        
+        return HttpResponseRedirect('/')            
 
 def remove_follow_page(request, followee_id):
     followee = User.objects.get(id=followee_id )
@@ -317,19 +313,16 @@ def update_profile_page(request):
                                     RequestContext(request,
                                                    { 'profile_form' : profile_form }))
 
-
 def update_profile_save_page(request):
     if request.method != "POST" :
         return HttpResponseRedirect('/')
     else:
-        user = UserProfile.objects.get(user=request.user)
-         
+        user = UserProfile.objects.get(user=request.user) 
         profile_form = UserProfileForm(request.POST, request.FILES, instance=user)
-        
+
         if profile_form.is_valid():
             profile_form.save()
         else:
-            #print profile_form.errors
             return HttpResponseRedirect('/')
                                 
-        return HttpResponseRedirect(user.get_absolute_url())
+        return HttpResponseRedirect('/timelines/my_timeline/')

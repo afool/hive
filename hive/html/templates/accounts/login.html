@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load url from future %}
 
+{% block menu %} <!-- empty menu --> {% endblock %}
+
 {% block content %}
 
 {% if form.errors %}
@@ -24,7 +26,7 @@
 <a href="/accounts/forgot_password">Forgot Your Password?</a>
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
+<img src="{{ STATIC_URL }}img/about/4.png" width="400" height="400">
 <!-- Email Registration Form -->
 <p>
   <form action="/accounts/register_email/" method="post">{% csrf_token %}

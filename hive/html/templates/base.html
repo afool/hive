@@ -93,10 +93,18 @@
 		{% endif %}
             </p>
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="/timelines/my_timeline/{{user.username}}/">Profile</a></li>
-              <li><a href="/admins/">Admin</a></li>
-              <li><a href="/admin/">django Admin</a></li>
+              {% if is_menu_home %}<li class="active">{% else %}<li>{% endif %}
+              	<a href="/">Home</a>
+              	</li>
+              {% if is_menu_profile %}<li class="active">{% else %}<li>{% endif %}
+              	<a href="/timelines/my_timeline/{{user.username}}/">Profile</a>
+              	</li>
+              {% if is_menu_admins %}<li class="active">{% else %}<li>{% endif %}
+              	<li><a href="/admins/">Admin</a>
+              	</li>
+              {% if is_menu_admin %}<li class="active">{% else %}<li>{% endif %}
+              	<li><a href="/admin/">django Admin</a>
+              	</li>
               <li><a href="/accounts/logout/">Sign Out</a></li>
             </ul>
               
