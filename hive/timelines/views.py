@@ -95,5 +95,41 @@ def humor_timeline_contents(request,request_timeline_id=None):
                                       'is_humortimeline_active':True,
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
+    
+    
+# To Do : humor_timeline_contents , main_timeline_contents, notice_timeline_contents is duplicated code set
+#         we can eliminate duplicated code, just merge into one method with parameter (timeline_user)
 
-
+@login_required(login_url='/accounts/login')
+def notice_timeline_contents(request,request_timeline_id=None):
+    user = request.user
+    notice_bot = User.objects.get(username="notice_bot")
+    
+    if request_timeline_id:
+        timelines = Timeline.objects.select_related(depth=1).filter(
+            id__lt = request_timeline_id).filter(writer=notice_bot).all()[:10]
+    else:
+        timelines = Timeline.objects.select_related(depth=1).filter(writer=notice_bot).all()[:10]
+        # at first load 10
+    
+    # leave a flag whether current user liked this post
+    last_timeline_id = 0
+    for timeline in timelines:
+        timeline.is_liked = False
+        if timeline.post.is_liked_by_observer(user):
+            timeline.is_liked = True
+        last_timeline_id = timeline.id
+    if request_timeline_id:
+        # render partial
+        html = render_to_string('timelines/timeline_timeline.html', RequestContext(request,{
+                                      'is_noticetimeline_active': True,
+                                      'timelines':timelines,
+                                      'last_timeline_id' : last_timeline_id }))
+        html = html + """<script> var last_timeline_id = %s </script>""" % ( last_timeline_id )
+        return HttpResponse(html)
+    
+    return render_to_response('timelines/timeline_view.html', RequestContext(request,{
+                                      'is_noticetimeline_active':True,
+                                      'timelines':timelines,
+                                      'last_timeline_id' : last_timeline_id }))
+    
