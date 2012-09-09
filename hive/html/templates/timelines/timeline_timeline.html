@@ -2,9 +2,9 @@
     	{% with post=timeline.post %}
 	<div id="post_container_{{ post.id }}">
 		{% if post.comments_count > 0 %}
-			{% include "posts/post_render.html" with post=post comment_list=post.comment_set.all %}
+			{% include "posts/post_render.html" with post=post comment_list=post.comment_set.all is_liked=timeline.is_liked %}
 		{% else %}
-			{% include "posts/post_render.html" with post=post %}
+			{% include "posts/post_render.html" with post=post is_liked=timeline.is_liked %}
 		{% endif %}
         {% endwith %}
 	</div>
