@@ -23,15 +23,19 @@ def get_contents_from_post(post_url, host_url=SEARCH_HOST):
     url = "%s/%s" %(host_url, post_url)
     soup = get_soup_from_htmlstream(url)
     
+    title_block_list = soup.findAll("td", "mw_basic_view_subject")
+    title = title_block_list.pop()
     content_block_list = soup.findAll("td","mw_basic_view_content")
     content = content_block_list.pop()#td_list = soup.findAll('td')
     
     # replace relative url to absolute url
     str_content = str(content)    
-    #for tdtag in td_list:
-    #    if tdtag.get('class') == 'mw_basic_view_content' :
-    #        print tdtag
-    return str_content.replace("../", "%s/" %(host_url))
+    str_content = str_content.replace("../", "%s/" %(host_url))
+    
+    str_title = str(title)
+    str_title = str_title.replace("<h1>", "<h3>")
+    
+    return ( str_title +"<br/>" + str_content )
 
 def get_post_list(host_url=SEARCH_HOST, board_url=DOGDRIP_BEST_URL):
     url = "%s/%s" %(host_url, board_url)
