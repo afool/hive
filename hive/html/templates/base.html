@@ -97,7 +97,7 @@
               	<a href="/">Home</a>
               	</li>
               {% if is_menu_profile %}<li class="active">{% else %}<li>{% endif %}
-              	<a href="/timelines/my_timeline/{{user.username}}/">Profile</a>
+              	<a href="/timelines/my_timeline/{{user.username}}/">My Profile</a>
               	</li>
               {% if is_menu_admins %}<li class="active">{% else %}<li>{% endif %}
               	<li><a href="/admins/">Admin</a>
@@ -130,31 +130,31 @@
 				  <li class="nav-header"><br/>Timeline</li>
 				  
 				  {% if is_maintimeline_active %} 	<li class="active">  {% else %}	<li>  {% endif %}
-				  	<a href="/">Main Timeline</a>
+				  	<a href="/"><i class="icon-chevron-right"></i>Main Timeline</a>
 				  	</li>
 				  {% if is_humortimeline_active %}	<li class="active"> {% else %} <li> {% endif %}
-				   	<a href="/timelines/humor_timeline/">Humor Timeline</a>
+				   	<a href="/timelines/humor_timeline/"><i class="icon-chevron-right"></i>Humor Timeline</a>
 				  	</li>
 				  {% if is_noticetimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
-				  	<a href="/timelines/notice_timeline/">Notice Timeline</a>
+				  	<a href="/timelines/notice_timeline/"><i class="icon-chevron-right"></i>Notice Timeline</a>
 				  	</li>
 				  {% if is_customtimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
 				  	<a href="#">Custom Timeline</a>
 				  	</li>
 				  <li class="nav-header">People</li>
 				  {% if is_peoplelist_active %} <li class="active"> {% else %}	<li> {% endif %}
-				    <a href="/accounts/people_list/">People List</a>
+				    <a href="/accounts/people_list/"><i class="icon-chevron-right"></i>People List</a>
 				    </li>
 				  {% if is_whoifollowed_active %} <li class="active"> {% else %}	<li> {% endif %}
-				    <a href="#">Who I Followed</a>
+				    <a href="#"><i class="icon-chevron-right"></i>Who I Followed</a>
 				    </li>
 				  {% if is_whofollowedme_active %} <li class="active"> {% else %}	<li> {% endif %}
-				    <a href="#">Who Followed me</a>
+				    <a href="#"><i class="icon-chevron-right"></i>Who Followed me</a>
 				    </li>
 				  {% if is_mention_active %} <li class="active"> {% else %}	<li> {% endif %}
 				    <li class="nav-header">Mention
 				    </li>
-				  <li><a href="#">Link</a></li>
+				  <li><a href="#"><i class="icon-chevron-right"></i>Link</a></li>
 				  <!--
 				  <li><a href="#">Link</a></li>
 				  <li><a href="#">Link</a></li>
