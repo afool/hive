@@ -5,7 +5,10 @@ from timelines.models import Timeline
 import random
 import datetime
 
-humor_bot = User.objects.create_user("humor_bot" , "humor_bot" + "@test.com" , "humor_bot")
+notice_bot = User.objects.create_user("notice_bot", "notice_bot@test.com", "notice_bot")
+UserProfile.objects.create(user=notice_bot)
+
+humor_bot = User.objects.create_user("humor_bot" , "humor_bot@test.com", "humor_bot")
 UserProfile.objects.create(user=humor_bot)
 
 for x in range(100):

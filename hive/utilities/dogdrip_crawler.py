@@ -31,6 +31,7 @@ def get_contents_from_post(post_url, host_url=SEARCH_HOST):
     # replace relative url to absolute url
     str_content = str(content)    
     str_content = str_content.replace("../", "%s/" %(host_url))
+    str_content = str_content.replace("&lt;/xml&gt;&lt;/xmp&gt;", "")
     
     str_title = str(title)
     str_title = str_title.replace("<h1>", "<h3>")
