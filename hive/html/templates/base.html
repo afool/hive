@@ -110,7 +110,48 @@
    <div class="container-fluid"
     <div class="row-fluid">
       <div class="span3">
-         {% block menu %}{% endblock %}
+         {% block menu %}
+	         <div class="well sidebar-nav">
+				 <ul class="nav nav-list"> 
+				  <li>
+						<center>
+						<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
+						<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
+						</center>
+				  </li>
+				  <li class="nav-header"><br/>Timeline</li>
+				  
+				  {% if is_maintimeline_active %} 	<li class="active">  {% else %}	<li>  {% endif %}
+				  	<a href="/">Main Timeline</a>
+				  	</li>
+				  {% if is_humortimeline_active %}	<li class="active"> {% else %} <li> {% endif %}
+				   	<a href="/timelines/humor_timeline/">Humor Timeline</a>
+				  	</li>
+				  {% if is_noticetimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
+				  	<a href="#">Notice Timeline</a>
+				  	</li>
+				  {% if is_customtimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
+				  	<a href="#">Custom Timeline</a>
+				  	</li>
+				  <li class="nav-header">People</li>
+				  {% if is_peoplelist_active %} <li class="active"> {% else %}	<li> {% endif %}
+				    <a href="/accounts/people_list/">People List</a>
+				    </li>
+				  {% if is_whoifollowed_active %} <li class="active"> {% else %}	<li> {% endif %}
+				    <a href="#">Who I Followed</a>
+				    </li>
+				  {% if is_whofollowedme_active %} <li class="active"> {% else %}	<li> {% endif %}
+				    <a href="#">Who Followed me</a>
+				    </li>
+				  {% if is_mention_active %} <li class="active"> {% else %}	<li> {% endif %}
+				    <li class="nav-header">Mention
+				    </li>
+				  <li><a href="#">Link</a></li>
+				  <li><a href="#">Link</a></li>
+				  <li><a href="#">Link</a></li>
+				 </ul>
+			 </div><!--/.well -->
+         {% endblock %}
       </div><!--/span-->
       
       <div class="span9">

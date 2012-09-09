@@ -32,13 +32,15 @@ def main_timeline_contents(request,request_timeline_id=None):
     if request_timeline_id:
         # render partial
         html = render_to_string('timelines/timeline_timeline.html', RequestContext(request,{
+                                      'is_maintimeline_active':True,
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
         html = html + """<script> var last_timeline_id = %s </script>""" % ( last_timeline_id )
         return HttpResponse(html)
-
-
+    
+    
     return render_to_response('timelines/timeline_view.html', RequestContext(request,{
+                                      'is_maintimeline_active':True,
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
 
@@ -83,12 +85,14 @@ def humor_timeline_contents(request,request_timeline_id=None):
     if request_timeline_id:
         # render partial
         html = render_to_string('timelines/timeline_timeline.html', RequestContext(request,{
+                                      'is_humortimeline_active': True,
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
         html = html + """<script> var last_timeline_id = %s </script>""" % ( last_timeline_id )
         return HttpResponse(html)
     
     return render_to_response('timelines/timeline_view.html', RequestContext(request,{
+                                      'is_humortimeline_active':True,
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
 
