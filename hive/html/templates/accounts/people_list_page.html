@@ -3,7 +3,7 @@
 {% block content %}
 	<h3> Search People </h3>
    <!-- search people text form--> 
-   <form action="/accounts/people_list/" method="GET" class="form-search">
+   <form action={{search_action_url}} method="GET" class="form-search">
     	<input type="text" name="search_var"
 	 class="input-medium search-query" placeholder="People Name">
     	<input type="submit" value="search" class="btn">
