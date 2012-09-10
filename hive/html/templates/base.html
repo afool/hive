@@ -105,12 +105,14 @@
               {% if is_menu_profile %}<li class="active">{% else %}<li>{% endif %}
               	<a href="/timelines/profile_timeline/{{user.username}}/">My Profile</a>
               	</li>
+              {% if user.is_staff %}
               {% if is_menu_admins %}<li class="active">{% else %}<li>{% endif %}
               	<li><a href="/admins/">Admin</a>
               	</li>
               {% if is_menu_admin %}<li class="active">{% else %}<li>{% endif %}
               	<li><a href="/admin/">django Admin</a>
               	</li>
+              {% endif %}
               <li><a href="/accounts/logout/">Sign Out</a></li>
             </ul>
               
