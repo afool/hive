@@ -1,12 +1,16 @@
 from admins.models import ActivitiesInformation, Trend, CustomizeInformation
+from accounts.models import UserProfile
 
+from django.core.paginator import Paginator
 from django.forms import ModelForm
 from django.forms.models import modelformset_factory
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-import datetime
+from django.contrib.auth.models import User
+
 from datetime import time, timedelta
+import datetime
 
 def get_last_activities():
     #under code is too long, must be refact code
@@ -77,3 +81,74 @@ def trend_overview(request):
                                                                         }))
 def analytics_detail(request, category):
     return render_to_response('admins/admins_'+category+'.html',RequestContext(request,{'latest_activities':get_last_activities()}))
+
+def control_user(request):
+    PAGE_SIZE = 20
+    ban_id_list  = User.objects.all().exclude(is_active=True).exclude(username=request.user.username)
+    staff_id_list = User.objects.all().exclude(is_staff=True).exclude(username=request.user.username)
+
+    search_var = request.GET.get('search_var', None)
+    url_search_param=""
+    if search_var is None:
+        people_profile_list=UserProfile.objects.select_related(depth=1).all().exclude(user=request.user)
+    else :
+        url_search_param="&search_var=%s" %(search_var)
+        people_profile_list = UserProfile.objects.select_related().all().filter(user__in=User.objects.all().filter(username__icontains=search_var))
+    paginator = Paginator(people_profile_list, PAGE_SIZE)
+    page = request.GET.get('page',1)
+    try:
+        peoples = paginator.page(page)
+    except PageNotAnInteger:
+        peoples = paginator.page(1)
+    except EmptyPage:
+        peoples = paginator.page(paginator.num_pages)
+
+    observer = request.user
+    return render_to_response('admins/admins_user.html',RequestContext(request,
+                                          {
+                                            'is_menu_home':True,
+                                            'is_peoplelist_active' : True,
+                                            'ban_id_list':ban_id_list,
+                                            'staff_id_list':staff_id_list,
+                                            'peoples':peoples,
+                                            'observer':observer,
+                                            'url_search_param':url_search_param, }))
+
+def ban_and_staff(request, category, method):
+    def _staff_category():
+        try:
+            user = User.objects.get(id=user_id)
+            if method == 'addstaff':
+                user.is_staff = False
+                user.is_superuser = False
+            elif method == 'removestaff':
+                user.is_staff = True
+                user.is_superuser = True
+            user.save()
+            return HttpResponse('OK')
+        except:
+            return HttpResponse('Fail')
+    
+    def _ban_category():
+        try:
+            user = User.objects.get(id=user_id)
+            if method == 'addban':
+                user.is_active = False
+            elif method == 'removeban':
+                user.is_active = True
+            user.save()
+            return HttpResponse('OK')
+        except:
+            return HttpResponse('Fail')
+
+    if request.GET.has_key('id'):
+        user_id = request.GET['id']
+        if category == 'staff':
+            _staff_category()
+        elif category == 'ban':
+            _ban_category()
+        else:
+            return HttpResponse('Fail')
+    else:
+        return HttpResponse('Fail')
+

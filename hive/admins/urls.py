@@ -10,8 +10,9 @@ urlpatterns = patterns('admins.views',
     
     url(r'^trend/$', 'trend_overview'),
     url(r'^trend/(?P<year>\d{4})(?P<month>\w{3})(?P<day>\d{2})/$', 'trend_detail'),
-       
+
+    url(r'^user/$', 'control_user'),
     url(r'^(\w+)/$', 'analytics_detail'),
 
-#    url(r'^test/$', 'test_page'),
+    url(r'^user/(\w+)/(\w+)/$', 'ban_and_staff'),
 )
