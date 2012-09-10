@@ -1,20 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
+	<table class="table table-striped">
 	{% for people in peoples %}
-    	{{ people.user.username }} 
+		<tr>
+		<td style="width:120px;"><img src="{{ people.user.get_profile.get_image }}" class="img-polaroid" ></td>
+    		<td class="middle"><p>{{ people.user.username }} </p></td>
+		<td class="middle">
+			<div>
 		{% if people.user.id not in followers_id_list %}
-		<button followid="{{ people.user.id }}" class="followbutton btn-followbutton" method="addfollow" >
+		<button followid="{{ people.user.id }}" class="btn btn-info followbutton btn-followbutton" method="addfollow" >
 		follow!
 		</button>
 		{% else %}
-		<button followid="{{ people.user.id }}" class="followbutton btn-followbutton" method="removefollow" >
+		<button followid="{{ people.user.id }}" class="btn btn-inverse followbutton btn-followbutton" method="removefollow" >
 		alreay followed!
 		</button>
+			</div>
 		{% endif %}
-		</br>
-		</hr>
-    {% endfor %}
+		</td>
+		
+		</tr>
+    	{% endfor %}
+	</table>
    <div class="pagination">
     <span class="step-links">
         {% if peoples.has_previous %}
