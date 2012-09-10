@@ -2,6 +2,7 @@
 
 {% block title %} timeline {% endblock %}
 
+
 {% block content %}
 	<p><p><p><p>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
@@ -37,6 +38,8 @@
 						var req_url='/timelines/humor_timeline/'+last_timeline_id + '/'
 						{% elif is_noticetimeline_active %}
 						var req_url='/timelines/notice_timeline/'+last_timeline_id + '/'
+						{% elif is_menu_profile %}
+						var req_url='/timelines/profile_timeline/{{user.username}}/'+last_timeline_id + '/'						
 						{% endif %}
 						$.get(req_url,function(data){
 							if(data){
@@ -62,6 +65,8 @@
 					var req_url='/timelines/humor_timeline/'+last_timeline_id + '/'
 					{% elif is_noticetimeline_active %}
 					var req_url='/timelines/notice_timeline/'+last_timeline_id + '/'
+					{% elif is_menu_profile %}
+					var req_url='/timelines/profile_timeline/{{user.username}}/'+last_timeline_id + '/'
 					{% endif %}
 					
 						$.get(req_url,function(data){
