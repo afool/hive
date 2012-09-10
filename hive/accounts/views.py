@@ -221,6 +221,13 @@ def people_list_page(request, is_whoifollowed=False, is_whofollowedme=False):
             url_search_param="&search_var=%s" %(search_var)
             people_profile_list = UserProfile.objects.select_related().all().filter(user__in=User.objects.all().filter(username__icontains=search_var))
     
+    # Delete self
+    people_profile_list = list(people_profile_list)
+    try:
+        people_profile_list.remove(request.user.get_profile())
+    except ValueError:
+        pass
+    
     paginator = Paginator(people_profile_list, PAGE_SIZE)
     page = request.GET.get('page',1)
     try:
