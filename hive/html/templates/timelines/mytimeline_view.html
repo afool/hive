@@ -11,21 +11,16 @@
 				<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
 				</center>
 		  </li>
-		  <li class="nav-header"><br/>My Profile</li>	
+		  <li class="nav-header"><br/>My Profile</li>
+		  </li>
+			{% if user.get_profile.department %}<li>{{ user.get_profile.department }}</li>{% endif %}
+			{% if user.get_profile.position %}<li>{{ user.get_profile.position }}</li>{% endif %}
+			<li><a href="/accounts/update_profile/">profile update</a></li>	
 		 </ul>
 	 </div><!--/.well -->
 {% endblock %}
 
 {% block content %}
-	<ul>
-		<li>
-			<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
-			<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
-		</li>
-		{% if user.get_profile.department %}<li>{{ user.get_profile.department }}</li>{% endif %}
-		{% if user.get_profile.position %}<li>{{ user.get_profile.position }}</li>{% endif %}
-		<li><a href="/accounts/update_profile/">profile update</a></li>
-	</ul>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
 	<!-- logout -->
 	<p>
