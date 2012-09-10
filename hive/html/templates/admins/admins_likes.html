@@ -9,6 +9,7 @@ admin page
  <ul class="nav nav-list"> 
   <li class="nav-header">Control</li>
   <li><a href="../">Main</a></li>
+  <li><a href="../user/">User</a></li>
   <li class="nav-header">Analytics</li>
   <li><a href="../posts/">Posts</a></li>
   <li class="active"><a href="#">Likes</a></li>
@@ -47,14 +48,18 @@ admin page
     </table>
 
 	<div id="holder"></div>
-	<script type="text/javascript" src="/static/js/raphael.js"></script>
-	<script type="text/javascript" src="/static/js/popup.js"></script>
-	<script type="text/javascript" src="/static/js/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="/static/js/analytics2.js"></script>
-    <script type="text/javascript">
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="/static/js/raphael.js"></script>
+<script type="text/javascript" src="/static/js/popup.js"></script>
+<script type="text/javascript" src="/static/js/analytics2.js"></script>
+<script type="text/javascript">
+{% autoescape off %}
         $(document).ready(function (){
             $('.nav li').eq(0).attr('class','')
-            $('.nav li').eq(2).attr('class','active')
+            $('.nav li').eq(3).attr('class','active')
+            
         });
-    </script>
+{% endautoescape %}
+</script>
 {% endblock %}

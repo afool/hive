@@ -1,12 +1,39 @@
-<html>
-	<head>
-		<title>activities_detail</title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block title %}
+admin page
+{% endblock %}
+
+{% block menu %}
+<div class="well sidebar-nav">
+ <ul class="nav nav-list"> 
+  <li class="nav-header">Control</li>
+  <li><a href="../">Main</a></li>
+  <li class="nav-header">Analytics</li>
+  <li><a href="../posts/">Posts</a></li>
+  <li><a href="../likes/">Likes</a></li>
+  <li class="active"><a href="#">Comments</a></li>
+  <li><a href="../feeds/">Web Feeds</a></li>
+  <li><a href="../messages/">Messages</a></li>
+ </ul>
+</div>
+{% endblock %}
+
+{% block content %}
 		activites of {{ activities.date }}</br>
 		number of likes : {{ activities.num_likes }} </br>
 		number of comments : {{ activities.num_comments }} </br>
 		number of web feeds : {{ activities.num_web_feeds }} </br>
 		number of messages : {{ activities.num_messages }} </br>				
-	</body>
-</html>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+{% autoescape off %}
+        $(document).ready(function (){
+            $('.nav li').eq(0).attr('class','')
+            $('.nav li').eq(3).attr('class','active')
+            
+        });
+{% endautoescape %}
+</script>
+{% endblock %}
