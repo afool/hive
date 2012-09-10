@@ -1,47 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
+	<h3> Search People </h3>
+   <!-- search people text form--> 
+   <form action="/accounts/people_list/" method="GET" class="form-search">
+    	<input type="text" name="search_var" class="input-medium search-query">
+    	<input type="submit" value="search" class="btn">
+   </form>
+	<hr>
+	<table class="table table-striped">
 	{% for people in peoples %}
-    	{{ people.user.username }} 
+		<tr>
+		<td style="width:120px;"><img src="{{ people.user.get_profile.get_image }}" class="img-polaroid" ></td>
+    		<td class="middle"><p>{{ people.user.username }} </p></td>
+		<td class="middle">
+			<div>
 		{% if people.user.id not in followers_id_list %}
-		<button followid="{{ people.user.id }}" class="followbutton btn-followbutton" method="addfollow" >
+		<button followid="{{ people.user.id }}" class="btn btn-info followbutton btn-followbutton" method="addfollow" >
 		follow!
 		</button>
 		{% else %}
-		<button followid="{{ people.user.id }}" class="followbutton btn-followbutton" method="removefollow" >
+		<button followid="{{ people.user.id }}" class="btn btn-inverse followbutton btn-followbutton" method="removefollow" >
 		alreay followed!
 		</button>
+			</div>
 		{% endif %}
-		</br>
-		</hr>
-    {% endfor %}
+		</td>
+		
+		</tr>
+    	{% endfor %}
+	</table>
    <div class="pagination">
-    <span class="step-links">
+	<ul>
         {% if peoples.has_previous %}
-            <a href="?page={{ peoples.previous_page_number }}{{url_search_param}}">previous</a>
+            <li><a href="?page={{ peoples.previous_page_number }}{{url_search_param}}">previous</a></li>
         {% endif %}
-
-        <span class="current">
-            {% for i in peoples.paginator.page_range %}
-                {% ifequal i peoples.number %}
-                    <p>{{ i }}</p>
+        {% for i in peoples.paginator.page_range %}
+        	{% ifequal i peoples.number %}
+                 <li class="disabled"><a href="#">{{ i }}</a></li>
                 {% else %}
-                    <a href="/accounts/people_list/?page={{ i }}{{url_search_param}}">{{ i }}</a>
+                   <li class="active"><a href="/accounts/people_list/?page={{ i }}{{url_search_param}}">{{ i }}</a></li>
                 {% endifequal %}
-            {% endfor %}
-        </span>
-
+        {% endfor %}
         {% if peoples.has_next %}
-            <a href="?page={{ peoples.next_page_number }}{{url_search_param}}">next</a>
+            <li><a href="?page={{ peoples.next_page_number }}{{url_search_param}}">next</a></li>
         {% endif %}
-    </span> 
+	<ul>
    </div> 
    
-   <!-- search people text form--> 
-   <form action="/accounts/people_list/" method="GET">
-    	<input type="text" name="search_var">
-    	<input type="submit" value="search">
-   </form>
       
 {% endblock %}
 {% block scripts %}
