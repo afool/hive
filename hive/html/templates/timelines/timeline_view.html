@@ -7,13 +7,26 @@
 	<p><p><p><p>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
 	<!-- Post Form -->
-	<p>
-		<form action="/posts/create_from_timeline/" method="post">{% csrf_token %}
-			say something! : </br> 
-    		<textarea id="redactor_content" name="post_contents"></textarea>
-    		<input type="submit" value="POST">
-    	</form>
-    </p>
+
+	{% if is_noticetimeline_active %}
+		{% if user.is_staff %} 
+			<p>
+				<form action="/posts/create_from_timeline/" method="post">{% csrf_token %}
+					say something! : </br> 
+		    		<textarea id="redactor_content" name="post_contents"></textarea>
+		    		<input type="submit" value="POST">
+		    	</form>
+		    </p>
+		{% endif %}
+    {% elif is_maintimeline_active %} 
+		<p>
+			<form action="/posts/create_from_timeline/" method="post">{% csrf_token %}
+				say something! : </br> 
+	    		<textarea id="redactor_content" name="post_contents"></textarea>
+	    		<input type="submit" value="POST">
+	    	</form>
+	    </p>
+    {% endif %}
     
     <!-- timeline -->				
     <div id="timeline_container">

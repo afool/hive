@@ -44,7 +44,8 @@ def main_timeline_contents(request,request_timeline_id=None):
                                       'is_maintimeline_active':True,
                                       'is_menu_home':True,
                                       'timelines':timelines,
-                                      'last_timeline_id' : last_timeline_id }))
+                                      'last_timeline_id' : last_timeline_id,
+                                       }))
 
 
 @login_required(login_url='/accounts/login')
