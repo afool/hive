@@ -249,6 +249,11 @@ def register_userinfo_page(request, key):
                 
                 # Enroll Email
                 new_user.email = user.email
+                
+                if User.objects.all().count() is 1:
+                    new_user.is_staff = True
+                    new_user.is_superuser = True
+                
                 new_user.save()
                 # Delete Activation Key 
                 user.delete() 
