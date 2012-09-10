@@ -325,4 +325,4 @@ def update_profile_save_page(request):
         else:
             return HttpResponseRedirect('/')
                                 
-        return HttpResponseRedirect('/timelines/my_timeline/')
+        return HttpResponseRedirect(user.get_absolute_url())
