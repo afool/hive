@@ -119,15 +119,15 @@ def ban_and_staff(request, category, method):
         try:
             user = User.objects.get(id=user_id)
             if method == 'addstaff':
-                user.is_staff = False
-                user.is_superuser = False
-            elif method == 'removestaff':
                 user.is_staff = True
                 user.is_superuser = True
+            elif method == 'removestaff':
+                user.is_staff = False
+                user.is_superuser = False
             user.save()
-            return HttpResponse('OK')
+            return True
         except:
-            return HttpResponse('Fail')
+            return False
     
     def _ban_category():
         try:
@@ -137,16 +137,16 @@ def ban_and_staff(request, category, method):
             elif method == 'removeban':
                 user.is_active = True
             user.save()
-            return HttpResponse('OK')
+            return True
         except:
-            return HttpResponse('Fail')
+            return False
 
     if request.GET.has_key('id'):
         user_id = request.GET['id']
         if category == 'staff':
-            _staff_category()
+            return HttpResponse(_staff_category())
         elif category == 'ban':
-            _ban_category()
+            return HttpResponse(_ban_category())
         else:
             return HttpResponse('Fail')
     else:
