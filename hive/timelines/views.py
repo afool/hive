@@ -147,6 +147,7 @@ def notice_timeline_contents(request,request_timeline_id=None):
         # render partial
         html = render_to_string('timelines/timeline_timeline.html', RequestContext(request,{
                                       'is_noticetimeline_active': True,
+                                      'is_menu_home':True,
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
         html = html + """<script> var last_timeline_id = %s </script>""" % ( last_timeline_id )
@@ -154,6 +155,7 @@ def notice_timeline_contents(request,request_timeline_id=None):
     
     return render_to_response('timelines/timeline_view.html', RequestContext(request,{
                                       'is_noticetimeline_active':True,
+                                      'is_menu_home': True,
                                       'timelines':timelines,
                                       'last_timeline_id' : last_timeline_id }))
     
