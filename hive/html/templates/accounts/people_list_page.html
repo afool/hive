@@ -4,7 +4,8 @@
 	<h3> Search People </h3>
    <!-- search people text form--> 
    <form action="/accounts/people_list/" method="GET" class="form-search">
-    	<input type="text" name="search_var" class="input-medium search-query">
+    	<input type="text" name="search_var"
+	 class="input-medium search-query" placeholder="People Name">
     	<input type="submit" value="search" class="btn">
    </form>
 	<hr>
@@ -12,9 +13,10 @@
 	{% for people in peoples %}
 		<tr>
 		<td style="width:120px;"><img src="{{ people.user.get_profile.get_image }}" class="img-polaroid" ></td>
-    		<td class="middle"><p>{{ people.user.username }} </p></td>
-		<td class="middle">
-			<div>
+		<td style="text-align:center;vertical-align:middle">
+    			<p>{{ people.user.username }} </p></td>
+		<td style="text-align:center;vertical-align:middle">
+		<p>
 		{% if people.user.id not in followers_id_list %}
 		<button followid="{{ people.user.id }}" class="btn btn-info followbutton btn-followbutton" method="addfollow" >
 		follow!
@@ -23,14 +25,16 @@
 		<button followid="{{ people.user.id }}" class="btn btn-inverse followbutton btn-followbutton" method="removefollow" >
 		alreay followed!
 		</button>
-			</div>
+		</p>
 		{% endif %}
 		</td>
 		
 		</tr>
     	{% endfor %}
 	</table>
-   <div class="pagination">
+	<hr>
+   <div class="row-fluid">
+   <div class="pagination span4 offset4">
 	<ul>
         {% if peoples.has_previous %}
             <li><a href="?page={{ peoples.previous_page_number }}{{url_search_param}}">previous</a></li>
@@ -47,6 +51,7 @@
         {% endif %}
 	<ul>
    </div> 
+</div>
    
       
 {% endblock %}
