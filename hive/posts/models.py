@@ -1,12 +1,7 @@
-#from timelines.models import FollowerList, Timeline
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import F
-from django.http import Http404
 from django.template.loader import render_to_string
-
-import datetime
 
 
 class Post(models.Model):    
@@ -84,7 +79,7 @@ class Post(models.Model):
 
 class Attachment(models.Model):
     file_name = models.CharField(max_length=100)
-    create_time = models.DateTimeField(default=datetime.datetime.now)
+    create_time = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=100)
     upload = models.FileField(upload_to="uploads/%Y/%m/%d/")
     post = models.ForeignKey(Post)
