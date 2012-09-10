@@ -186,18 +186,47 @@ def forgot_password_page(request):
 
     
 
-def people_list_page(request):
+def people_list_page(request, is_whoifollowed=False, is_whofollowedme=False):
     PAGE_SIZE = 20
     
-    followers_id_list = Following.objects.filter(
-         follower =request.user ).values_list('followee',flat=True)
+    followers_id_list = []
+    if (is_whofollowedme is True ):
+        followers_id_list = Following.objects.filter(
+                                followee =request.user ).values_list('follower',flat=True)
+    else :
+        followers_id_list = Following.objects.filter(
+                                follower =request.user ).values_list('followee',flat=True)
+    print followers_id_list
+
+    # Delete self    
+    followers_id_list = list(followers_id_list)    
+    try:
+        followers_id_list.remove(request.user.id)
+    except ValueError:
+        pass
+    
     search_var = request.GET.get('search_var', None)
     url_search_param=""
-    if search_var is None:
-        people_profile_list=UserProfile.objects.select_related(depth=1).all()
+    people_profile_list=[]
+    if (is_whoifollowed is True) or (is_whofollowedme is True):
+        if search_var is None:
+            people_profile_list=UserProfile.objects.select_related(depth=1).all().filter(user__id__in=followers_id_list)
+        else :
+            url_search_param="&search_var=%s" %(search_var)
+            people_profile_list = UserProfile.objects.select_related().all().filter(user__in=User.objects.all().filter(username__icontains=search_var)).filter(user__id__in=followers_id_list)        
     else :
-        url_search_param="&search_var=%s" %(search_var)
-        people_profile_list = UserProfile.objects.select_related().all().filter(user__in=User.objects.all().filter(username__icontains=search_var))
+        if search_var is None:
+            people_profile_list=UserProfile.objects.select_related(depth=1).all()
+        else :
+            url_search_param="&search_var=%s" %(search_var)
+            people_profile_list = UserProfile.objects.select_related().all().filter(user__in=User.objects.all().filter(username__icontains=search_var))
+    
+    # Delete self
+    people_profile_list = list(people_profile_list)
+    try:
+        people_profile_list.remove(request.user.get_profile())
+    except ValueError:
+        pass
     
     paginator = Paginator(people_profile_list, PAGE_SIZE)
     page = request.GET.get('page',1)
@@ -207,17 +236,25 @@ def people_list_page(request):
         peoples = paginator.page(1)
     except EmptyPage:
         peoples = paginator.page(paginator.num_pages)
-
+    
+    search_action_url="/accounts/people_list/"
+    if is_whoifollowed is True:
+        search_action_url="/accounts/who_i_followed/"
+    elif is_whofollowedme is True:
+        search_action_url="/accounts/who_followed_me/"
+        
     observer = request.user
     return render_to_response('accounts/people_list_page.html',RequestContext(request,
                                           {
-                                            'is_menu_home':True,
-                                            'is_peoplelist_active' : True,
-                                            'followers_id_list':followers_id_list,
+                                           'is_menu_home':True,
+                                           'is_peoplelist_active' : ((not is_whoifollowed) and (not is_whofollowedme)),
+                                           'is_whoifollowed_active' : is_whoifollowed,
+                                           'is_whofollowedme_active' : is_whofollowedme,
+                                           'followers_id_list':followers_id_list,
                                            'peoples':peoples,
                                            'observer':observer,
-                                           'url_search_param':url_search_param, }))
-    
+                                           'url_search_param':url_search_param,
+                                           'search_action_url':search_action_url, }))
     
     
 def profile_page(request, username):

@@ -15,6 +15,8 @@ urlpatterns = patterns('accounts.views',
     url(r'^renew_password/(?P<key>\w+)$', 'renew_password_page'),
     
     url(r'^people_list/$', 'people_list_page'),
+    url(r'^who_i_followed/$', 'people_list_page', {'is_whoifollowed':True}),
+    url(r'^who_followed_me/$', 'people_list_page', {'is_whofollowedme':True}),
     url(r'^profile/$', 'profile_page'), # just display current user's profile
     url(r'^profile/(?P<username>\w+)/$', 'profile_page'),
     
