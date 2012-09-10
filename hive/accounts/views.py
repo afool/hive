@@ -211,6 +211,7 @@ def people_list_page(request):
     observer = request.user
     return render_to_response('accounts/people_list_page.html',RequestContext(request,
                                           {
+                                            'is_menu_home':True,
                                             'is_peoplelist_active' : True,
                                             'followers_id_list':followers_id_list,
                                            'peoples':peoples,
