@@ -197,6 +197,13 @@ def people_list_page(request, is_whoifollowed=False, is_whofollowedme=False):
         followers_id_list = Following.objects.filter(
                                 follower =request.user ).values_list('followee',flat=True)
     print followers_id_list
+
+    # Delete self    
+    followers_id_list = list(followers_id_list)    
+    try:
+        followers_id_list.remove(request.user.id)
+    except ValueError:
+        pass
     
     search_var = request.GET.get('search_var', None)
     url_search_param=""
