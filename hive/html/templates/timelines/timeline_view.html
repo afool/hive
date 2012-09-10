@@ -18,8 +18,9 @@
     <div id="timeline_container">
 	{% include "timelines/timeline_timeline.html" %}
     </div>
+    <!--
 	<button id="loadmore" class="btn-large btn-block btn"> LoadMore </button>
-	
+	-->
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.0.min.js"></script>
 	<script src="{{ STATIC_URL }}js/redactor.js"></script>
 	<script> 
@@ -28,10 +29,30 @@
 			function()
 			{
 
+				$(window).scroll(function(){
+    				if($(window).scrollTop() == $(document).height() - $(window).height()){
+        				{% if is_maintimeline_active %}
+						var req_url='/timelines/get_more_timeline/'+last_timeline_id + '/'
+						{% elif is_humortimeline_active %}
+						var req_url='/timelines/humor_timeline/'+last_timeline_id + '/'
+						{% elif is_noticetimeline_active %}
+						var req_url='/timelines/notice_timeline/'+last_timeline_id + '/'
+						{% endif %}
+						$.get(req_url,function(data){
+							if(data){
+								$("#timeline_container").append(data);
+							}else{
+								$("#timeline_container").append("더 이상 표시할 포스트가 없습니다.");
+							}
+						});
+        		    }	
+				});
+
 				$("form textarea").redactor({
 				    imageUpload: '{% url posts.views.upload_photos %}',
 				    imageGetJson: '{% url posts.views.recent_photos %}'
 				});
+				/*
 				$("#loadmore").click(function(){
 					// http://127.0.0.1:8000/timelines/get_more_timeline/100/
 					// timeline_container
@@ -47,7 +68,7 @@
 							$("#timeline_container").append(data)
 						})
 				})
-
+				*/
 			function ajax_comment(event){
 				  var post_id_regex =  /posts\/create_comment\/(\d+)\//;
 				  var post_id = this.action.match(post_id_regex)[1]
