@@ -48,24 +48,43 @@ def main_timeline_contents(request,request_timeline_id=None):
 
 
 @login_required(login_url='/accounts/login')
-def my_timeline_contents(request, username):
+def profile_timeline_contents(request, username, request_timeline_id=None):
     if request.is_ajax() is True:
         pass
     
-    user = request.user
-    timelines = Timeline.objects.select_related(depth=1).filter(
-                                        writer = user
-                                        ).all()   
-
+    user = User.objects.get(username=username)
+    
+    if request_timeline_id:
+        timelines = Timeline.objects.select_related(depth=1).filter(
+            id__lt = request_timeline_id).filter(writer=user).all()[:10]
+    else:
+        timelines = Timeline.objects.select_related(depth=1).filter(writer=user).all()[:10]
+        # at first load 10
+    
+    # leave a flag whether current user liked this post
+    last_timeline_id = 0
     for timeline in timelines:
         timeline.is_liked = False
         if timeline.post.is_liked_by_observer(user):
             timeline.is_liked = True
-    return render_to_response('timelines/mytimeline_view.html', RequestContext(request,{
-                                                                                        'is_menu_profile':True,
-                                                                                        'timelines':timelines,
-                                                                                        'user': user,
-                                                                                        }))
+        last_timeline_id = timeline.id
+    if request_timeline_id:
+        # render partial
+        html = render_to_string('timelines/timeline_timeline.html', RequestContext(request,{
+                                      'user':user,
+                                      'is_menu_profile':True,
+                                      'timelines':timelines,
+                                      'last_timeline_id' : last_timeline_id }))
+        html = html + """<script> var last_timeline_id = %s </script>""" % ( last_timeline_id )
+        return HttpResponse(html)
+    
+    return render_to_response('timelines/timeline_view.html', RequestContext(request,{
+                                      'is_menu_profile':True,
+                                      'user': user,
+                                      'timelines':timelines,
+                                      'last_timeline_id' : last_timeline_id }))
+
+
 @login_required(login_url='/accounts/login')
 def humor_timeline_contents(request,request_timeline_id=None):
     user = request.user

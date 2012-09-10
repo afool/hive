@@ -103,7 +103,7 @@
               	<a href="/">Home</a>
               	</li>
               {% if is_menu_profile %}<li class="active">{% else %}<li>{% endif %}
-              	<a href="/timelines/my_timeline/{{user.username}}/">My Profile</a>
+              	<a href="/timelines/profile_timeline/{{user.username}}/">My Profile</a>
               	</li>
               {% if is_menu_admins %}<li class="active">{% else %}<li>{% endif %}
               	<li><a href="/admins/">Admin</a>
@@ -125,7 +125,8 @@
     <div class="row-fluid">
       <div class="span2">
          {% block menu %}
-	         <div class="well sidebar-nav">
+		     {% if is_menu_profile %}
+			 <div class="well sidebar-nav">
 				 <ul class="nav nav-list"> 
 				  <li>
 						<center>
@@ -133,40 +134,58 @@
 						<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
 						</center>
 				  </li>
-				  <li class="nav-header"><br/>Timeline</li>
-				  
-				  {% if is_maintimeline_active %} 	<li class="active">  {% else %}	<li>  {% endif %}
-				  	<a href="/"><i class="icon-chevron-right"></i>Main Timeline</a>
-				  	</li>
-				  {% if is_humortimeline_active %}	<li class="active"> {% else %} <li> {% endif %}
-				   	<a href="/timelines/humor_timeline/"><i class="icon-chevron-right"></i>Humor Timeline</a>
-				  	</li>
-				  {% if is_noticetimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
-				  	<a href="/timelines/notice_timeline/"><i class="icon-chevron-right"></i>Notice Timeline</a>
-				  	</li>
-				  {% if is_customtimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
-				  	<a href="#"><i class="icon-chevron-right"></i>Custom Timeline</a>
-				  	</li>
-				  <li class="nav-header">People</li>
-				  {% if is_peoplelist_active %} <li class="active"> {% else %}	<li> {% endif %}
-				    <a href="/accounts/people_list/"><i class="icon-chevron-right"></i>People List</a>
-				    </li>
-				  {% if is_whoifollowed_active %} <li class="active"> {% else %}	<li> {% endif %}
-				    <a href="#"><i class="icon-chevron-right"></i>Who I Followed</a>
-				    </li>
-				  {% if is_whofollowedme_active %} <li class="active"> {% else %}	<li> {% endif %}
-				    <a href="#"><i class="icon-chevron-right"></i>Who Followed me</a>
-				    </li>
-				  {% if is_mention_active %} <li class="active"> {% else %}	<li> {% endif %}
-				    <li class="nav-header">Mention
-				    </li>
-				  <li><a href="#"><i class="icon-chevron-right"></i>Link</a></li>
-				  <!--
-				  <li><a href="#">Link</a></li>
-				  <li><a href="#">Link</a></li>
-				  -->
+				  <li class="nav-header"><br/>My Profile</li>
+				  </li>
+					{% if user.get_profile.department %}<li>{{ user.get_profile.department }}</li>{% endif %}
+					{% if user.get_profile.position %}<li>{{ user.get_profile.position }}</li>{% endif %}
+					<li><a href="/accounts/update_profile/">profile update</a></li>	
 				 </ul>
 			 </div><!--/.well -->
+			 {% elif is_menu_home %}
+			 	         <div class="well sidebar-nav">
+						 <ul class="nav nav-list"> 
+						  <li>
+								<center>
+								<img src="{{ user.get_profile.get_image }}" alt="{{ user.username }}" width="60" height="60">
+								<a href="{{ user.get_profile.get_absolute_url }}">{{ user.username }}</a>
+								</center>
+						  </li>
+						  <li class="nav-header"><br/>Timeline</li>
+						  
+						  {% if is_maintimeline_active %} 	<li class="active">  {% else %}	<li>  {% endif %}
+						  	<a href="/"><i class="icon-chevron-right"></i>Main Timeline</a>
+						  	</li>
+						  {% if is_humortimeline_active %}	<li class="active"> {% else %} <li> {% endif %}
+						   	<a href="/timelines/humor_timeline/"><i class="icon-chevron-right"></i>Humor Timeline</a>
+						  	</li>
+						  {% if is_noticetimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
+						  	<a href="/timelines/notice_timeline/"><i class="icon-chevron-right"></i>Notice Timeline</a>
+						  	</li>
+						  {% if is_customtimeline_active %} <li class="active"> {% else %}	<li> {% endif %}
+						  	<a href="#"><i class="icon-chevron-right"></i>Custom Timeline</a>
+						  	</li>
+						  <li class="nav-header">People</li>
+						  {% if is_peoplelist_active %} <li class="active"> {% else %}	<li> {% endif %}
+						    <a href="/accounts/people_list/"><i class="icon-chevron-right"></i>People List</a>
+						    </li>
+						  {% if is_whoifollowed_active %} <li class="active"> {% else %}	<li> {% endif %}
+						    <a href="#"><i class="icon-chevron-right"></i>Who I Followed</a>
+						    </li>
+						  {% if is_whofollowedme_active %} <li class="active"> {% else %}	<li> {% endif %}
+						    <a href="#"><i class="icon-chevron-right"></i>Who Followed me</a>
+						    </li>
+						  {% if is_mention_active %} <li class="active"> {% else %}	<li> {% endif %}
+						    <li class="nav-header">Mention
+						    </li>
+						  <li><a href="#"><i class="icon-chevron-right"></i>Link</a></li>
+						  <!--
+						  <li><a href="#">Link</a></li>
+						  <li><a href="#">Link</a></li>
+						  -->
+						 </ul>
+					 </div><!--/.well -->
+			 {% endif %}
+         
          {% endblock %}
       </div><!--/span-->
       

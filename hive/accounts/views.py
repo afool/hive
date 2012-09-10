@@ -310,8 +310,10 @@ def update_profile_page(request):
     profile_form = UserProfileForm()
     
     return render_to_response('accounts/update_profile.html',
-                                    RequestContext(request,
-                                                   { 'profile_form' : profile_form }))
+                                    RequestContext(request, {
+                                                     'is_menu_profile': True,
+                                                     'profile_form' : profile_form 
+                                                     }))
 
 def update_profile_save_page(request):
     if request.method != "POST" :
