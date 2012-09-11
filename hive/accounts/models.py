@@ -44,12 +44,11 @@ class UserProfile(models.Model):
         ('S', 'Sad')
     )
     
-    # Will change null to blank. Now leave it because initial_data.json.
-    department = models.CharField(null=True, max_length=50)
-    emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
-    phone = models.CharField(null=True, max_length=50)
-    portrait = models.FileField(null=True,  upload_to= get_user_profile_upload_path)
-    position = models.CharField(null=True, max_length=50)
+    department = models.CharField(blank=True, max_length=50)
+    emotion = models.CharField(blank=True, choices=EMOTION_CHOICES, max_length=20)
+    phone = models.CharField(blank=True, max_length=50)
+    portrait = models.FileField(blank=True,  upload_to= get_user_profile_upload_path)
+    position = models.CharField(blank=True, max_length=50)
     user = models.OneToOneField(User) # User Profile have to contain this field.
     
     
@@ -60,8 +59,8 @@ class UserProfile(models.Model):
         return "%s's profile" %(self.user.username)
     
     def get_absolute_url(self):
-        return '/timelines/my_timeline/%s' % (self.user.username)
-    
+        return '/timelines/profile_timeline/%s' % (self.user.username)
+
     def get_image(self):
         if self.portrait == "":
             return hive.settings.STATIC_URL + "img/user_profile/default.png"

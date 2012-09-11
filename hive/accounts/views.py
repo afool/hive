@@ -256,20 +256,6 @@ def people_list_page(request, is_whoifollowed=False, is_whofollowedme=False):
                                            'url_search_param':url_search_param,
                                            'search_action_url':search_action_url, }))
     
-    
-def profile_page(request, username):
-    user = None
-    if username is None:
-        user = request.user
-    else :
-        user = User.objects.get(username=username)
-    user_profile = UserProfile.objects.get(user = user)
-    return render_to_response('accounts/detail_profile.html', RequestContext(request,{
-                                                               'user' : user,
-                                                               'user_profile':user_profile,
-                                                               }))
-
-
 
 def register_userinfo_page(request, key):
     if request.method != "POST" :
