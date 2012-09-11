@@ -140,13 +140,22 @@ def ban_and_staff(request, category, method):
             return True
         except:
             return False
+    def _change_password():
+        try:
+            user = User.objects.get(id=user_id)
+            user.set_password(request.POST['pw'])
+            return True
+        except:
+            return False
 
-    if request.GET.has_key('id'):
-        user_id = request.GET['id']
+    if request.POST.has_key('id'):
+        user_id = request.POST['id']
         if category == 'staff':
             return HttpResponse(_staff_category())
         elif category == 'ban':
             return HttpResponse(_ban_category())
+        elif category == 'password' and method == 'change':
+            return HttpResponse(_change_password())
         else:
             return HttpResponse('Fail')
     else:
