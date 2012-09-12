@@ -44,7 +44,7 @@ def get_post_list(host_url=SEARCH_HOST, board_url=DOGDRIP_BEST_URL):
     subject_td_list = soup.findAll("td", "mw_basic_list_subject")
     post_url_list = []
     for subject_td in subject_td_list:
-        url = subject_td.findAll("a")[1].get('href')
+        url = subject_td.findAll("a")[0].get('href')
         if( url.find('best=1') > -1 ):
             post_url_list.append(url[3:])
     
