@@ -31,7 +31,9 @@
 			{{ post.create_time|timesince }} ago
 		</div>
 		<div class="liker_list_container round-container" style="background-color:#eee">
-			{{ post.render_liker_list }}  
+			{% if post.render_liker_list %}
+            {{ post.render_liker_list }}  
+            {% endif %}
 		</div>
 		<div class="comment_container">
 			<table class="table ">

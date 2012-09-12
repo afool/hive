@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}
+admin page
+{% endblock %}
+
+{% block menu %}
+<div class="well sidebar-nav">
+ <ul class="nav nav-list"> 
+  <li class="nav-header">Control</li>
+  <li><a href="../">Main</a></li>
+  <li class="active"><a href="#">User</a></li>
+  <li class="nav-header">Analytics</li>
+  <li><a href="../posts/">Posts</a></li>
+  <li><a href="../likes/">Likes</a></li>
+  <li><a href="../comments/">Comments</a></li>
+  <li><a href="../feeds/">Web Feeds</a></li>
+  <li><a href="../messages/">Messages</a></li>
+ </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <h3> Search People </h3>
+   <!-- search people text form--> 
+   <form action="/accounts/people_list/" method="GET" class="form-search">
+    	<input type="text" name="search_var"
+	 class="input-medium search-query" placeholder="People Name">
+    	<input type="submit" value="search" class="btn">
+   </form>
+	<hr>
+	<table class="table table-striped">
+	{% for people in peoples %}
+		<tr>
+		<td style="width:120px;"><img src="{{ people.user.get_profile.get_image }}" class="img-polaroid" ></td>
+		<td style="text-align:center;vertical-align:middle">
+    			<p>{{ people.user.username }} </p></td>
+		<td style="text-align:center;vertical-align:middle">
+		<p>
+		{% if people.user in ban_id_list %}
+		<button userid="{{ people.user.id }}" class="btn btn-info banbutton btn-followbutton" method="removeban" >
+		User Un Ban!
+		</button>
+		{% else %}
+		<button userid="{{ people.user.id }}" class="btn btn-inverse banbutton btn-followbutton" method="addban" >
+		User Ban!
+		</button>
+		</p>
+		{% endif %}
+        {% if people.user not in staff_id_list %}
+        <button userid="{{ people.user.id }}" class="btn btn-info staffbutton btn-followbutton" method="removestaff" >
+        Divesture Staff!
+        </button>
+        {% else %}
+        <button userid="{{ people.user.id }}" class="btn btn-inverse staffbutton btn-followbutton" method="addstaff" >
+        Entrust Staff!
+        </button>
+        {% endif %}
+        <button userid="{{ people.user.id }}" class="btn btn-inverse changepw btn-followbutton" data-toggle="modal" href="#pwModal" >
+        Change Password!
+        </button>
+		</td>
+		
+		</tr>
+    	{% endfor %}
+	</table>
+	<hr>
+   <div class="row-fluid">
+   <div class="pagination span4 offset4">
+	<ul>
+        {% if peoples.has_previous %}
+            <li><a href="?page={{ peoples.previous_page_number }}{{url_search_param}}">previous</a></li>
+        {% endif %}
+        {% for i in peoples.paginator.page_range %}
+        	{% ifequal i peoples.number %}
+                 <li class="disabled"><a href="#">{{ i }}</a></li>
+                {% else %}
+                   <li class="active"><a href="/accounts/people_list/?page={{ i }}{{url_search_param}}">{{ i }}</a></li>
+                {% endifequal %}
+        {% endfor %}
+        {% if peoples.has_next %}
+            <li><a href="?page={{ peoples.next_page_number }}{{url_search_param}}">next</a></li>
+        {% endif %}
+	<ul>
+   </div> 
+</div>
+
+           
+<div id="pwModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="pwModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3 id="pwModalLabel">Change Password</h3>
+  </div>
+  <div class="modal-body">
+    <h4>Password</h4>
+    <input type="password" id="inputpw">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal">Cancel</button>
+    <button class="btn btn-primary" id="chpButton">Change</button>
+  </div>
+</div>
+{% csrf_token %}
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+{% autoescape off %}
+        $(document).ready(function (){
+          $('.nav li').eq(0).attr('class','');
+          $('.nav li').eq(2).attr('class','active');
+          $('#pwd').hide();
+          $('.banbutton').click(function(){
+              var user_id = $(this).attr("userid");
+              var ban_button = $(this);
+              var ban_method = $(this).attr("method");
+              if ( ban_method == "addban"){
+                  ban_button.text("User Un Ban!");
+                  $(this).attr("method","removeban");
+              } else {
+                  ban_button.text("User Ban!");
+                  $(this).attr("method","addban");
+              }
+              $.post('ban/'+ban_method+"/",{'id':user_id,'csrfmiddlewaretoken':$('input[name="csrfmiddlewaretoken"]').val()}, function(e){
+                   window.location.reload(true);
+              });
+          });
+          $('.staffbutton').click(function(){
+              var user_id = $(this).attr("userid");
+              var staff_button = $(this);
+              var staff_method = $(this).attr("method");
+              if ( staff_method == "addstaff"){
+                  staff_button.text("Divesture Staff!");
+                  $(this).attr("method","removestaff");
+              } else {
+                  staff_button.text("Entrust Staff!");
+                  $(this).attr("method","addstaff");
+              }
+              $.post('staff/'+staff_method+"/",{'id':user_id,'csrfmiddlewaretoken':$('input[name="csrfmiddlewaretoken"]').val()}, function(e){
+                  window.location.reload(true);
+              });
+          });
+          $('.changepw').click(function(){
+              var user_id = $(this).attr("userid");
+              $('#chpButton').click(function(){
+                $.post('password/change/',{'id':user_id,'pw':$('#inputpw').val(),'csrfmiddlewaretoken':$('input[name="csrfmiddlewaretoken"]').val()}, function(e){
+                  alert("Successfully Password Changed!");
+                  window.location.reload(true);
+                });
+              });
+
+          });
+        });
+{% endautoescape %}
+</script>
+{% endblock %}
