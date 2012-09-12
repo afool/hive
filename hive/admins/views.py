@@ -1,7 +1,7 @@
 from admins.models import ActivitiesInformation, Trend, CustomizeInformation
 from accounts.models import UserProfile
 
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import ModelForm
 from django.forms.models import modelformset_factory
 from django.http import Http404, HttpResponse
