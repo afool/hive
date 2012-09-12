@@ -13,7 +13,7 @@ HUMOR_BOT_PERIOD = 20
 def execute_analyze_activities():
     def _excute_again():
         execute_analyze_activities.apply_async(countdown=ANALYZING_PERIOD)
-
+    
     num_of_posts = Post.objects.all().count()
     num_of_likes = Like.objects.all().count()
     num_of_comments = Comment.objects.all().count()
@@ -24,7 +24,7 @@ def execute_analyze_activities():
                                          num_comments = num_of_comments,
                                          num_web_feeds = 0,
                                          num_messages = 0,
-                                          )
+                                        )
     _excute_again()
     execute_analyze_activities.name
 

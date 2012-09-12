@@ -20,23 +20,26 @@ def get_soup_from_htmlstream(url):
     return soup
 
 def get_contents_from_post(post_url, host_url=SEARCH_HOST):
-    url = "%s/%s" %(host_url, post_url)
-    soup = get_soup_from_htmlstream(url)
-    
-    title_block_list = soup.findAll("td", "mw_basic_view_subject")
-    title = title_block_list.pop()
-    content_block_list = soup.findAll("td","mw_basic_view_content")
-    content = content_block_list.pop()#td_list = soup.findAll('td')
-    
-    # replace relative url to absolute url
-    str_content = str(content)    
-    str_content = str_content.replace("../", "%s/" %(host_url))
-    str_content = str_content.replace("&lt;/xml&gt;&lt;/xmp&gt;", "")
-    
-    str_title = str(title)
-    str_title = str_title.replace("<h1>", "<h3>")
-    
-    return ( str_title +"<br/>" + str_content )
+    try:
+        url = "%s/%s" %(host_url, post_url)
+        soup = get_soup_from_htmlstream(url)
+        
+        title_block_list = soup.findAll("td", "mw_basic_view_subject")
+        title = title_block_list.pop()
+        content_block_list = soup.findAll("td","mw_basic_view_content")
+        content = content_block_list.pop()#td_list = soup.findAll('td')
+        
+        # replace relative url to absolute url
+        str_content = str(content)    
+        str_content = str_content.replace("../", "%s/" %(host_url))
+        str_content = str_content.replace("&lt;/xml&gt;&lt;/xmp&gt;", "")
+        
+        str_title = str(title)
+        str_title = str_title.replace("<h1>", "<h3>")
+        
+        return ( str_title +"<br/>" + str_content )
+    except:
+        return "Error Occured On retrieving Contents From (%s)" %(url)
 
 def get_post_list(host_url=SEARCH_HOST, board_url=DOGDRIP_BEST_URL):
     url = "%s/%s" %(host_url, board_url)

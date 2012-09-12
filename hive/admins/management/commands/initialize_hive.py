@@ -7,13 +7,22 @@ from admins.tasks import execute_analyze_activities, excute_post_humorbot
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        notice_bot = User.objects.create_user("notice_bot", "notice_bot@test.com", "notice_bot")
-        UserProfile.objects.create(user=notice_bot)
-        print "Notice Bot(%s) is Created" %(notice_bot)
+        try:
+            User.objects.get(username="notice_bot")
+            print "Notice Bot is exist"
+        except User.DoesNotExist:
+            notice_bot = User.objects.create_user("notice_bot", "notice_bot@test.com", "notice_bot")
+            UserProfile.objects.create(user=notice_bot)
+            print "Notice Bot(%s) is Created" %(notice_bot)
         
-        humor_bot = User.objects.create_user("humor_bot" , "humor_bot@test.com", "humor_bot")
-        UserProfile.objects.create(user=humor_bot)
-        print "Humor Bot(%s) is created" %(humor_bot)
+        try:
+            User.objects.get(username="humor_bot")
+            print "Humor Bot is exist"
+        except User.DoesNotExist:
+            humor_bot = User.objects.create_user("humor_bot" , "humor_bot@test.com", "humor_bot")
+            UserProfile.objects.create(user=humor_bot)
+            print "Humor Bot(%s) is created" %(humor_bot)
+            
         
         execute_analyze_activities()
         print "Activities Analyzer is excuted."
@@ -22,4 +31,4 @@ class Command(BaseCommand):
         print "Humor Bot is running"
         
         print "Initialize Completed"
-     
+

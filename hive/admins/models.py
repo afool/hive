@@ -3,7 +3,7 @@ from posts.models import Post
 
 # daily activities
 class ActivitiesInformation(models.Model):
-    date = models.DateField(unique=True)
+    date = models.DateField()
     num_posts = models.IntegerField(default =0)
     num_likes = models.IntegerField(default = 0)
     num_comments = models.IntegerField(default = 0)
