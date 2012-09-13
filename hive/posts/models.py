@@ -68,7 +68,10 @@ class Post(models.Model):
             return STR_SOMEONE_LIKE %(likers[0])
         else:
             likers = self.like_string.split()
-            return STR_SOMEBODIES_LIKE %(likers[0], len(likers)-1)
+            if len(likers) > 1:
+                return STR_SOMEBODIES_LIKE %(likers[0], len(likers)-1)
+            else:
+                return STR_SOMEBODIES_LIKE %(likers, len(likers)-1)
     
     def is_liked_by_observer(self, observer):
         # TO DO    : use database to check if observer liked this post
