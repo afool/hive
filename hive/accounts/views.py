@@ -118,7 +118,11 @@ def email_register_page(request):
                                                           {'form': AuthenticationForm(),
                                                            'status': status}))
 
-    return HttpResponseRedirect('/')
+    status = 'Registration success!'
+    return render_to_response('accounts/login.html',
+                                           RequestContext(request,
+                                                          {'form': AuthenticationForm(),
+                                                           'status': status}))
 
 
 def forgot_password_page(request):
