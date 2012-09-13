@@ -275,3 +275,8 @@ DEBUG_TOOLBAR_CONFIG={
     'INTERCEPT_REDIRECTS':False,
 }
 
+
+try:
+    from local_settings.py import *
+except:
+    pass
