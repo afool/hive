@@ -22,6 +22,9 @@ if os.environ.has_key("PRODUCTION"):
             'PASSWORD': '',                  # Not used with sqlite3.
             'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
             'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+             'OPTIONS': {
+               "init_command": "SET storage_engine=INNODB",
+            }
         }
     }
 else: # DEVELOPMENT
