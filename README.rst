@@ -3,7 +3,7 @@
 Hive_
 ~~~~~
 
-Hive is SNS for coperators 
+Hive is open source SNS for company
 
 
 Requirements
