@@ -17,8 +17,10 @@ Installation
 
 how to install hive::
 
+    $ apt-get install build-essential python-dev mysql-server 
+    $ apt-get install nginx libmysqlclient-dev python-pip
+    $ apt-get install git
     $ git clone https://github.com/afool/hive.git
-    $ apt-get install build-essential python-dev mysql-server
     $ pip install virtualenv
     $ virtualenv YOURENVNAME
     $ cd YOURENVNAME
