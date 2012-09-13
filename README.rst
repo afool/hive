@@ -5,6 +5,13 @@ Hive_
 
 Hive is SNS for coperators 
 
+
+Requirements
+------------
+
+* x86 hardware with more than 2 core, 1.5G memory, 10G disk space
+* which can run Ubuntu Linux server over 11.10
+
 Installation
 ------------
 
