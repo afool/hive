@@ -40,20 +40,17 @@ class Post(models.Model):
                                                            'comment_list':comment_list})
     
     def on_liked(self, like_user):
-        self.like_count = F('like_count')+1
+        like_set = self.like_set.select_related().all()
+        self.like_count = like_set.count()
         # TO DO : synchronize this field. 
-        self.like_string= self.like_string+" " + like_user.username
+        self.like_string= " ".join(map(lambda x:x["liker__username"] , like_set.values("liker__username")))
         self.save()
     
     def on_unliked(self, unlike_user):
-        self.like_count = F('like_count')-1
-        # TO DO : synchronize this field.
-        likers = self.like_string.split()
-        for liker in likers :
-            if liker == unlike_user.username :
-                likers.remove(liker)
-                self.like_string = ' '.join(likers)
-                break
+        self.like_set.filter(liker=unlike_user).delete()
+        like_set = self.like_set.select_related().all()
+        self.like_count = like_set.count()
+        self.like_string= " ".join(map(lambda x:x["liker__username"] , like_set.values("liker__username")))
         self.save()
     
     def render_liker_list(self):
