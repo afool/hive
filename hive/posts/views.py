@@ -119,6 +119,20 @@ def one_of_post_detail(request, post_id):
                              'post': post
                             }))    
 
+def remove(request, post_id):
+    try:
+        post = Post.objects.get(id = post_id)
+    except Post.DoesNotExist:
+        print "Can't find Post id:%d" %(post_id)
+        raise Http404
+    
+    post.delete()
+    
+    # To Do : just re render only the Liked Post ( not redirect and render whole page)
+    return HttpResponseRedirect('/')
+
+
+
 
 @login_required(login_url='/accounts/login')
 def recent_photos(request):

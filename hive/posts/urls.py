@@ -12,4 +12,5 @@ urlpatterns = patterns('posts.views',
     url(r'(?P<post_id>\d+)/$', 'one_of_post_detail'),
     url(r'(?P<post_id>\d+)/on_liked/$', 'on_liked'),
     url(r'(?P<post_id>\d+)/on_unliked/$', 'on_unliked'),   
+    url(r'(?P<post_id>\d+)/remove/$', 'remove'),   
 )

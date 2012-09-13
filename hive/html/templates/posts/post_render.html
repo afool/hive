@@ -16,6 +16,9 @@
 		 check whether post.contents is safe when User posts post-->
 				{% autoescape off %}
 				{{ post.contents }}
+                {% if user.is_superuser %}
+                    <a href="/posts/{{post.id}}/remove/">삭제</a>
+                {% endif %}
 				{% endautoescape %}
 				</blockquote>
 			</div>
