@@ -83,6 +83,7 @@ def email_register_page(request):
         email_key.update(email + str(time.time()))
         return email_key.hexdigest()
 
+    status = 'Registration success!'
     
     if request.method == 'POST':
         try:
@@ -101,24 +102,17 @@ def email_register_page(request):
                 EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
             else:
                 status = 'Correct your email or already registered.'
-                return render_to_response('accounts/login.html',
-                                           RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
+                
         except BadHeaderError:
             status = 'Invalid access.'
-            return render_to_response('accounts/login.html',
-                                           RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
+            pass
     else:
-        status = 'Invalid access.'
-        return render_to_response('accounts/login.html',
+        status = 'Invalid access.'        
+    
+    return render_to_response('accounts/login.html',
                                            RequestContext(request,
                                                           {'form': AuthenticationForm(),
                                                            'status': status}))
-
-    return HttpResponseRedirect('/')
 
 
 def forgot_password_page(request):
@@ -146,7 +140,7 @@ def forgot_password_page(request):
         email_key.update(email + str(time.time()))
         return email_key.hexdigest()
 
-        
+    status = 'Hive have sent activation key to your email.'    
     if request.method == 'POST':
         try:
             email = request.POST['email']
@@ -164,27 +158,15 @@ def forgot_password_page(request):
                 EmailActivation.objects.create(email=email, expire_date=expire_date, activation_key=keygen)
             else:
                 status = 'Correct your email or No user.'
-                return render_to_response('accounts/login.html',
-                                           RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
         except BadHeaderError:
             status = 'Invalid access.'
-            return render_to_response('accounts/login.html',
-                                           RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
     else:
         status = 'Invalid access.'
-        return render_to_response('accounts/login.html',
+
+    return render_to_response('accounts/forgot_password.html',
                                            RequestContext(request,
-                                                          {'form': AuthenticationForm(),
-                                                           'status': status}))
+                                                          {'status': status}))
 
-    return HttpResponseRedirect('/')
-
-
-    
 
 def people_list_page(request, is_whoifollowed=False, is_whofollowedme=False):
     PAGE_SIZE = 20

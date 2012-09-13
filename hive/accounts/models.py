@@ -44,11 +44,11 @@ class UserProfile(models.Model):
         ('S', 'Sad')
     )
     
-    department = models.CharField(blank=True, max_length=50)
-    emotion = models.CharField(blank=True, choices=EMOTION_CHOICES, max_length=20)
-    phone = models.CharField(blank=True, max_length=50)
-    portrait = models.FileField(blank=True,  upload_to= get_user_profile_upload_path)
-    position = models.CharField(blank=True, max_length=50)
+    department = models.CharField(null=True, max_length=50)
+    emotion = models.CharField(null=True, choices=EMOTION_CHOICES, max_length=20)
+    phone = models.CharField(null=True, max_length=50)
+    portrait = models.FileField(null=True,  upload_to= get_user_profile_upload_path)
+    position = models.CharField(null=True, max_length=50)
     user = models.OneToOneField(User) # User Profile have to contain this field.
     
     
