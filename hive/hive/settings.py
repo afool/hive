@@ -280,6 +280,6 @@ AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
 
 try:
-    from local_settings.py import *
+    from local_settings import *
 except:
     pass
