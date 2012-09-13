@@ -24,3 +24,16 @@ how to install hive::
     $ cd YOURENVNAME
     $ source YOURENVNAME/bin/source
     $ pip install -r requirements.txt
+
+
+Contributors
+------------
+
+Kim Sinhyub
+     https://github.com/Sinhyub
+Park Ayun
+     https://github.com/AcurosJr
+Choi Gilwoo
+     https://github.com/AstinCHOI
+Bae Kwonhan as Mentor
+     https://github.com/darjeeling
