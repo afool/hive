@@ -1,4 +1,4 @@
-.. image:: https://github.com/afool/hive/blob/master/hive/static/img/hive_logo_bee.png
+.. image:: https://raw.github.com/afool/hive/master/hive/static/img/hive_logo_bee.png
 
 Hive_
 ~~~~~
@@ -7,6 +7,8 @@ Hive is SNS for coperators
 
 Installation
 ------------
+
+how to install hive::
 
     $ git clone https://github.com/afool/hive.git
     $ apt-get install build-essential python-dev mysql-server
