@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 from utilities.dogdrip_crawler import get_contents_from_post, get_post_list 
 import datetime
 
-ANALYZING_PERIOD = 30
-HUMOR_BOT_PERIOD = 20
+ANALYZING_PERIOD = 60
+HUMOR_BOT_PERIOD = 50
 
 @task(name='execute_analyze_activities')
 def execute_analyze_activities():
