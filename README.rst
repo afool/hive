@@ -3,7 +3,7 @@
 Hive_
 ~~~~~
 
-Hive is open source SNS for company
+Hive is open source private SNS solution
 
 
 Requirements
@@ -34,7 +34,7 @@ Contributors
 Kim Sinhyub
      https://github.com/Sinhyub
 Park Ayun
-     https://github.com/AcurosJr
+     https://github.com/Parkayun
 Choi Gilwoo
      https://github.com/AstinCHOI
 Bae Kwonhan as Mentor

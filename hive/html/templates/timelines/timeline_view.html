@@ -7,7 +7,6 @@
 	<p><p><p><p>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/redactor.css" />
 	<!-- Post Form -->
-
 	{% if is_noticetimeline_active %}
 		{% if user.is_staff %} 
 			<p>
@@ -68,25 +67,6 @@
 				    imageUpload: '{% url posts.views.upload_photos %}',
 				    imageGetJson: '{% url posts.views.recent_photos %}'
 				});
-				/*
-				$("#loadmore").click(function(){
-					// http://127.0.0.1:8000/timelines/get_more_timeline/100/
-					// timeline_container
-					{% if is_maintimeline_active %}
-					var req_url='/timelines/get_more_timeline/'+last_timeline_id + '/'
-					{% elif is_humortimeline_active %}
-					var req_url='/timelines/humor_timeline/'+last_timeline_id + '/'
-					{% elif is_noticetimeline_active %}
-					var req_url='/timelines/notice_timeline/'+last_timeline_id + '/'
-					{% elif is_menu_profile %}
-					var req_url='/timelines/profile_timeline/{{user.username}}/'+last_timeline_id + '/'
-					{% endif %}
-					
-						$.get(req_url,function(data){
-							$("#timeline_container").append(data)
-						})
-				})
-				*/
 			function ajax_comment(event){
 				  var post_id_regex =  /posts\/create_comment\/(\d+)\//;
 				  var post_id = this.action.match(post_id_regex)[1]
@@ -108,9 +88,28 @@
 					event.preventDefault();
 				}
 
-				// attach comment submit event to form.comment
-				$("body").on("submit","form.comment", ajax_comment)
-			}
-		);
+                $(".like_button").bind("click", function()
+                {
+                    var button = $(this);
+                    var on_type = button.attr("data-on");
+                    var post_id = button.attr("data-id");
+                    var req_url = "/posts/ajax/post/";
+                    var text = $(this).children();
+                    if (on_type == "like") {
+                        req_url += "on_like/"+post_id+"/";
+                    } else if (on_type == "unlike") {
+                        req_url += "on_unlike/"+post_id+"/";
+                    }
+                    $.get(req_url, function(data)
+                    {
+                        if (data.status == "success") {
+                            location.reload();
+                        }
+                    });
+                });
+                // attach comment submit event to form.comment
+                $("body").on("submit","form.comment", ajax_comment)
+            }
+        );
 	</script>
 {% endblock %}

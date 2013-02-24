@@ -1,4 +1,4 @@
-from forms import PostForm, AttachmentForm
+from forms import AttachmentForm
 from posts.models import Post, Like, Comment, Attachment
 from timelines.models import Timeline
 
@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -74,37 +74,37 @@ def index(request):
 
 @login_required(login_url='/accounts/login')
 def on_liked(request, post_id):
+    results = {'status': 'success'}
+
     try :
         post = Post.objects.get(id = post_id)
+        like = Like.objects.create(liker=request.user, post=post)
+        like.save()
+        post.on_liked(request.user)
+
     except Post.DoesNotExist:
-        raise Http404
-    
-    like = Like.objects.create(liker=request.user, post=post)
-    like.save()
-    post.on_liked(request.user)
-    
-    # To Do : just re render only the Liked Post ( not redirect and render whole page)
-    return HttpResponseRedirect('/')
+        results['stauts'] = 'fail'
+        results['reason'] = 'post does not exist'
+
+    return HttpResponse(json.dumps(results), mimetype="application/json")
+
 
 @login_required(login_url='/accounts/login')
 def on_unliked(request, post_id):
+    results = {'status': 'success'}
     try:
         post = Post.objects.get(id = post_id)
-    except Post.DoesNotExist:
-        print "Can't find Post id:%d" %(post_id)
-        raise Http404
-    
-    try:
         like = Like.objects.get(post=post, liker=request.user)
+        post.on_unliked(like.liker)
+        like.delete()
+    except Post.DoesNotExist:
+        results['status'] = 'fail'
+        results['reason'] = 'post does not exist'
     except Like.DoesNotExist:
-        print "Can't find Like about %s by %s" %(post, request.user)
-        raise Http404
-    
-    post.on_unliked(like.liker)
-    like.delete()
-    
-    # To Do : just re render only the Liked Post ( not redirect and render whole page)
-    return HttpResponseRedirect('/')
+        results['status'] = 'fail'
+        results['reason'] = 'like does not exist'
+
+    return HttpResponse(json.dumps(results), mimetype="application/json")
 
 
 def one_of_post_detail(request, post_id):
