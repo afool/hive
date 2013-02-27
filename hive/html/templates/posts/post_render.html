@@ -17,7 +17,7 @@
 				{% autoescape off %}
 				{{ post.contents }}
                 {% if user.is_superuser %}
-                    <a href="/posts/{{post.id}}/remove/">삭제</a>
+                    <a href="#_" class="delete_button" data-id="{{ post.id }}">삭제</a>
                 {% endif %}
 				{% endautoescape %}
 				</blockquote>

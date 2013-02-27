@@ -107,6 +107,20 @@
                         }
                     });
                 });
+
+                $(".delete_button").bind("click", function()
+                {
+                    console.log('a');
+                    var post_id = $(this).attr('data-id');
+                    var req_url = "/posts/ajax/post/remove/"+post_id+"/";
+                    $.get(req_url, function(data){
+                        if (data.status == "success")
+                        {
+                            console.log('b');
+                            location.reload();
+                        }
+                    });
+                });
                 // attach comment submit event to form.comment
                 $("body").on("submit","form.comment", ajax_comment)
             }

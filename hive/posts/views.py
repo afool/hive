@@ -120,18 +120,15 @@ def one_of_post_detail(request, post_id):
                             }))    
 
 def remove(request, post_id):
+    results = {'status': 'success'}
     try:
         post = Post.objects.get(id = post_id)
+        post.delete()
     except Post.DoesNotExist:
-        print "Can't find Post id:%d" %(post_id)
-        raise Http404
-    
-    post.delete()
-    
-    # To Do : just re render only the Liked Post ( not redirect and render whole page)
-    return HttpResponseRedirect('/')
+        results['status'] = 'fail'
+        results['reason'] = "can't find post id: %d" %(post_id)
 
-
+    return HttpResponse(json.dumps(results), mimetype="application/json")
 
 
 @login_required(login_url='/accounts/login')
