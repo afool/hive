@@ -67,24 +67,24 @@
 				    imageUpload: '{% url posts.views.upload_photos %}',
 				    imageGetJson: '{% url posts.views.recent_photos %}'
 				});
-			function ajax_comment(event){
-				  var post_id_regex =  /posts\/create_comment\/(\d+)\//;
-				  var post_id = this.action.match(post_id_regex)[1]
-				  var action = this.action;
-				  var container_id = "div#post_container_" + post_id;
-				  // get all variable
-				  var a = $(this);
-				  var comment = $(a[0][1]).val();
-				  var csrf = $(a[0][0]).val();
-			 	$.post(action, {
-			       	"csrfmiddlewaretoken": csrf,
-			       	"comment_text": comment },
-			       function(data){
-			        $(container_id).html(data)
-			        var new_csrf = $(data).children("input[name=csrfmiddlewaretoken]")[0].value;
-			         $("input[name=csrfmiddlewaretoken").val(new_csrf);
+				function ajax_comment(event){
+					var post_id_regex =  /posts\/create_comment\/(\d+)\//;
+				  	var post_id = this.action.match(post_id_regex)[1]
+				  	var action = this.action;
+				  	var container_id = "div#post_container_" + post_id;
+				  	// get all variable
+				  	var a = $(this);
+				  	var comment = $(a[0][1]).val();
+				  	var csrf = $(a[0][0]).val();
+			 		$.post(action, {
+			       		"csrfmiddlewaretoken": csrf,
+			       		"comment_text": comment },
+			       		function(data){
+			        		$(container_id).html(data)
+                    		var new_csrf = $(data).find("input[name=csrfmiddlewaretoken]")[0].value;
+				         $("input[name=csrfmiddlewaretoken").val(new_csrf);
 				
-			       });
+				     });
 					event.preventDefault();
 				}
 
@@ -110,13 +110,11 @@
 
                 $(".delete_button").bind("click", function()
                 {
-                    console.log('a');
                     var post_id = $(this).attr('data-id');
                     var req_url = "/posts/ajax/post/remove/"+post_id+"/";
                     $.get(req_url, function(data){
                         if (data.status == "success")
                         {
-                            console.log('b');
                             location.reload();
                         }
                     });
